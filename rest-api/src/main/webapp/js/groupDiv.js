@@ -1,7 +1,11 @@
 var GDtot = 56;
 var GDUser = 10;
 var GDAllUsers = [0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+<<<<<<< HEAD
 var echelle = 20;
+=======
+var echelle = 30;
+>>>>>>> 071f1b8... add js files
 var canvas = document.getElementById("mon_canvas");
 var context = canvas.getContext("2d");
 
@@ -53,4 +57,8 @@ function refreshCanvas(){
 	eraseCanvas();
 	//TODO get values of group divergences.
 	putPicturesOnCanvas();
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 071f1b8... add js files
