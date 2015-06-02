@@ -107,3 +107,11 @@ body {
 textarea{ 
 	resize:none;
 }
+
+#selectReview {
+  margin-bottom: 30px;
+}
+
+#postReview {
+	margin-top : 50 px;
+}
