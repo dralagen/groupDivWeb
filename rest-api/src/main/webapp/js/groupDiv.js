@@ -1,7 +1,7 @@
 var GDtot = 56;
 var GDUser = 10;
 var GDAllUsers = [0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-var echelle = 30;
+var echelle = 20;
 var canvas = document.getElementById("mon_canvas");
 var context = canvas.getContext("2d");
 
