@@ -22,7 +22,7 @@
 
 
   <properties>
-    <appengine.sdk.version>1.9.17</appengine.sdk.version>
+    <appengine.sdk.version>1.9.19</appengine.sdk.version>
     <datanucleus.version>3.1.3</datanucleus.version>
   </properties>
 
@@ -61,7 +61,33 @@
         <artifactId>datanucleus-api-jdo</artifactId>
         <version>${datanucleus.version}</version>
       </dependency>
+
+      <dependency>
+        <groupId>com.google.http-client</groupId>
+        <artifactId>google-http-client-jackson2</artifactId>
+        <version>1.19.0</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.api-client</groupId>
+        <artifactId>google-api-client-appengine</artifactId>
+        <version>1.19.0</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
+
+  <profiles>
+    <profile>
+      <id>dev</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <api.id>533365872474-leaasssni60qdigm8ucrksv4fp1tfkfn.apps.googleusercontent.com</api.id>
+        <api.secret>cevsjfTey5vfibR_hXyYd3mq</api.secret>
+      </properties>
+    </profile>
+  </profiles>
 </project>

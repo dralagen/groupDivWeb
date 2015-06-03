@@ -13,10 +13,20 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <appengine.target.version>1.8.7</appengine.target.version>
+
+    <javaFilterDirectory>
+      ${project.basedir}/target/filtered-sources/java
+    </javaFilterDirectory>
   </properties>
 
 
   <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>model</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>com.google.appengine</groupId>
       <artifactId>appengine-api-1.0-sdk</artifactId>
@@ -26,11 +36,53 @@
       <groupId>com.google.appengine</groupId>
       <artifactId>appengine-endpoints</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>com.google.api-client</groupId>
+      <artifactId>google-api-client-appengine</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.http-client</groupId>
+      <artifactId>google-http-client-jackson2</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <!-- java source root to filter -->
+        <directory>src/main/filter-java</directory>
+        <!-- filtered java source -->
+        <targetPath>${javaFilterDirectory}</targetPath>
+        <!-- yes filter -->
+        <filtering>true</filtering>
+        <!-- include all java files -->
+        <includes>
+          <include>**/*.java</include>
+        </includes>
+      </resource>
+    </resources>
       <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
       <plugins>
+        <!-- Add the filtered java source root to compiler (3) -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>1.7</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>add-source</goal>
+              </goals>
+              <configuration>
+                <sources>
+                  <source>${javaFilterDirectory}</source>
+                </sources>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-war-plugin</artifactId>
@@ -58,8 +110,8 @@
           <configuration>
             <enableJarClasses>false</enableJarClasses>
             <!-- Comment in the below snippet to bind to all IPs instead of just localhost -->
-            <!--<address>0.0.0.0</address>
-            <port>8080</port>-->
+            <address>0.0.0.0</address>
+            <port>8080</port>
             <!-- Comment in the below snippet to enable local debugging with a remove debugger
                  like those included with Eclipse or IntelliJ -->
             <!--<jvmFlags>
