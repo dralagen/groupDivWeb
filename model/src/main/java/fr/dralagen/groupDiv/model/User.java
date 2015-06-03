@@ -29,4 +29,35 @@ public class User {
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private Map<Key, Integer> versionReview; // key foreign key of user
 
+  public Key getKey () {
+    return key;
+  }
+
+  public void setKey (Key key) {
+    this.key = key;
+  }
+
+  public String getName () {
+    return name;
+  }
+
+  public void setName (String name) {
+    this.name = name;
+  }
+
+  public Map<Key, Integer> getVersionUE () {
+    return versionUE;
+  }
+
+  public void setVersionUE (Map<Key, Integer> versionUE) {
+    this.versionUE = versionUE;
+  }
+
+  public Map<Key, Integer> getVersionReview () {
+    return versionReview;
+  }
+
+  public void setVersionReview (Map<Key, Integer> versionReview) {
+    this.versionReview = versionReview;
+  }
 }

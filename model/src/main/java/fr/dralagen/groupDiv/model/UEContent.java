@@ -29,4 +29,36 @@ public class UEContent {
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private UE ue;
+
+  public Key getKey () {
+    return key;
+  }
+
+  public void setKey (Key key) {
+    this.key = key;
+  }
+
+  public String getContent () {
+    return content;
+  }
+
+  public void setContent (String content) {
+    this.content = content;
+  }
+
+  public int getVersion () {
+    return version;
+  }
+
+  public void setVersion (int version) {
+    this.version = version;
+  }
+
+  public UE getUe () {
+    return ue;
+  }
+
+  public void setUe (UE ue) {
+    this.ue = ue;
+  }
 }

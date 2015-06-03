@@ -32,4 +32,44 @@ public class Review  {
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private String content;
+
+  public Key getKey () {
+    return key;
+  }
+
+  public void setKey (Key key) {
+    this.key = key;
+  }
+
+  public User getAuthor () {
+    return author;
+  }
+
+  public void setAuthor (User author) {
+    this.author = author;
+  }
+
+  public UE getUe () {
+    return ue;
+  }
+
+  public void setUe (UE ue) {
+    this.ue = ue;
+  }
+
+  public Date getTime () {
+    return time;
+  }
+
+  public void setTime (Date time) {
+    this.time = time;
+  }
+
+  public String getContent () {
+    return content;
+  }
+
+  public void setContent (String content) {
+    this.content = content;
+  }
 }

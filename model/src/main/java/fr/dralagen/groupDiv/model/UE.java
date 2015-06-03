@@ -29,4 +29,35 @@ public class UE {
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private Session session;
 
+  public Key getKey () {
+    return key;
+  }
+
+  public void setKey (Key key) {
+    this.key = key;
+  }
+
+  public String getTitle () {
+    return title;
+  }
+
+  public void setTitle (String title) {
+    this.title = title;
+  }
+
+  public List<UEContent> getContents () {
+    return contents;
+  }
+
+  public void setContents (List<UEContent> contents) {
+    this.contents = contents;
+  }
+
+  public Session getSession () {
+    return session;
+  }
+
+  public void setSession (Session session) {
+    this.session = session;
+  }
 }
