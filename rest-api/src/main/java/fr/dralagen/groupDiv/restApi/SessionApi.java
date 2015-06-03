@@ -15,6 +15,8 @@ import java.util.List;
 /**
  * Created on 6/3/15.
  *
+ * Rest API to get and create Session XP
+ *
  * @author dralagen
  */
 @Api(
