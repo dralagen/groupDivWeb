@@ -29,6 +29,11 @@ public class UE {
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private Session session;
 
+  @Persistent
+  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
+  private User author;
+
+
   public Key getKey () {
     return key;
   }
@@ -59,5 +64,13 @@ public class UE {
 
   public void setSession (Session session) {
     this.session = session;
+  }
+
+  public User getAuthor () {
+    return author;
+  }
+
+  public void setAuthor (User author) {
+    this.author = author;
   }
 }
