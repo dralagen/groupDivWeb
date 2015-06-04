@@ -51,4 +51,13 @@ public class SessionApi {
 
     return session;
   }
+  
+  @ApiMethod(name = "session.post", httpMethod = ApiMethod.HttpMethod.POST, path = "session")
+  public Session postSession(Session session){
+    session.setBeginDate(new Date());
+    session.setGDtot(0);
+    session.setLastLog(null);
+	
+	return session;
+  }
 }
