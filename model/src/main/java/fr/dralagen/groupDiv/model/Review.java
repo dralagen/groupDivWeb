@@ -18,11 +18,9 @@ public class Review  {
   private Key key;
 
   @Persistent
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private User author;
 
   @Persistent
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private UE ue;
 
   @Persistent

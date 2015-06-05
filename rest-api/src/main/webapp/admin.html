@@ -45,7 +45,7 @@
     <div class="container-fluid">
 		<div class="row">			
 			<div class="col-md-6">
-				<h2 class="text-center page-header">Stats de l'expérience</h2>
+				<h2 class="text-center page-header">Résultats de l'expérience</h2>
 				
 				<center>
 					<form>
@@ -60,7 +60,7 @@
 						<h4>Afficher les stats de :</h4>
 						<div class="checkbox" >
 								<label ng-repeat="user in admin.users">
-									<input id={{user}} type="checkbox" checked>{{user}}
+									<input type="checkbox" ng-model=user.s ng-click='admin.voirDivergence(voirDiv, user)'>{{user.value}}
 								</label>
 						</div>
 					</form>
@@ -71,7 +71,7 @@
 					<div class="col-md-12">
 						<div class="check-element animate-show" ng-show="checked1">
 							<h2 class="text-center page-header">Step Graph</h2>
-							<div id="stepGraph" style="width:95%; height:250px" ></div>
+							<div id="stepGraph" style="width:95%; height:300px" ></div>
 						</div>
 					</div>
 				</div>
@@ -81,8 +81,33 @@
 
 							<h2 class="text-center page-header">Courbe lissée</h2>
 
-							<div id="courbe" style="width:95%; height:250px"></div>
+							<div id="courbe" style="width:95%; height:300px"></div>
 						</div>
+					</div>
+
+				</div>
+				
+				
+				<div class="row">
+					<div class="col-md-12">
+							<h2 class="text-center page-header">Statistiques et valeures de divergence</h2>
+							
+							<table >
+								<tr >
+									<th ng-repeat="x in admin.users" class="check-element animate-show" ng-show=x.s> {{ x.value }}</th>
+								</tr>
+
+								<tr>
+									<td ng-repeat="x in admin.users" class="check-element animate-show" ng-show=x.s>
+										<table>
+											<tr ng-repeat="y in admin.getData(x.value)">
+												<td>{{ y[1] }}</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table> 
+							
 					</div>
 
 				</div>

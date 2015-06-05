@@ -1,4 +1,9 @@
-var divergencesValues = [{data: [], lines: { show: true, steps: true }, label: "GDTot"}];
+var divergencesValues = 
+	[
+		{data: [[Date.parse("2015-12-12T12:12:12"), 20],[Date.parse("2015-12-12T12:14:12"), 50], [Date.parse("2015-12-12T12:15:12"), 70], [Date.parse("2015-12-12T12:16:12"), 30]], label: "GDTot"},
+		{data: [[Date.parse("2015-12-12T12:12:12"), 1],[Date.parse("2015-12-12T12:14:12"), 2], [Date.parse("2015-12-12T12:15:12"), 3], [Date.parse("2015-12-12T12:16:12"), 4]],  label: "user1"},
+		{data: [[Date.parse("2015-12-12T12:12:12"), 100],[Date.parse("2015-12-12T12:14:12"), 200], [Date.parse("2015-12-12T12:15:12"), 300], [Date.parse("2015-12-12T12:16:12"), 400]],  label: "user2"}
+	];
 var plotStep, plotCourbe;
 
 $(document).ready(function(){
@@ -9,12 +14,19 @@ $(document).ready(function(){
 		xaxis: {
 			mode: "time",
 			timeformat: "%Y-%m-%d %H:%M:%S"
+			
 		},
 		legend: {
 			show: true,
 			position: "ne",
 			margin:[-60, 0],
 			noColumns: 1,
+		},
+		series: {
+			lines: {
+				show: true,
+				steps:true,
+			}
 		}
 	}
 	);
@@ -58,6 +70,14 @@ function updateGraph(){
 	plotStep.draw();
 }
 
+function fonctionQuiSexecuteToutesLesDeuxSecindes(){
+	// traitement
+	//alert("oui");
+	//setTimeout(tafonction,2000); /* rappel après 2 secondes = 2000 millisecondes */
+}
+ 
+//tafonction();
+
 (function(){
 	var app = angular.module("Admin", []);
 	
@@ -65,7 +85,8 @@ function updateGraph(){
 		this.tab = 1;
 
 		
-		this.users = ["GDTot", "user1", "user2", "user3", "user4", "user5", "user6", "user7", "user8", "user9", "user10", "user11", "user12", "user13", "user14", "user15", "user16"];
+		this.users = [{value: "GDTot", s:"GDTot"}, {value :"user1", s:"user1"}, {value:"user2", s:"user2"}];
+		
 		this.selectTab = function(setTab){
 			this.tab = setTab;
 		};
@@ -80,6 +101,37 @@ function updateGraph(){
 			plotCourbe.resize();
 			plotCourbe.setupGrid();
 			plotCourbe.draw();
+		};
+		
+		this.voirDivergence = function(b, n){
+			for(i in plotStep.getData()){
+				data = plotStep.getData();
+				if(data[i].label == n){
+					data[i].lines.show = !data[i].lines.show;
+					plotStep.setData(data);
+					
+					(plotCourbe.getData())[i].lines.show = !(plotCourbe.getData())[i].lines.show;
+				}
+			}
+			plotStep.setupGrid();
+			plotStep.draw();
+			
+			
+			plotCourbe.setupGrid();
+			plotCourbe.draw();
+		};
+		
+		this.getData = function(u){
+			var temp=[];
+			for(i in plotStep.getData()){
+				data = plotStep.getData();
+
+				if(data[i].label == u){
+					temp = data[i].data;
+				}
+			}
+			
+			return temp;			
 		};
 	});
 	

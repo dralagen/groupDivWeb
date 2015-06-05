@@ -23,7 +23,7 @@ import fr.dralagen.groupDiv.model.UE;
 public class ActionApi {
 
   @ApiMethod(name = "action.commit.ue", httpMethod = ApiMethod.HttpMethod.POST, path = "action/commit/ue")
-  public LogAction commitUe(@Named("content") String content, UE ue) {
+  public LogAction commitUe(@Named("contentUE") String content, UE ue) {
 
     //TODO dralagen 6/4/15 : Add new version of UE
     //TODO dralagen 6/4/15 : Log Commit UE
@@ -36,7 +36,7 @@ public class ActionApi {
   }
 
   @ApiMethod(name = "action.commit.review", httpMethod = ApiMethod.HttpMethod.POST, path = "action/commit/review")
-  public LogAction commitReview(@Named("content") String content, UE ue) {
+  public LogAction commitReview(@Named("contentReview") String content, UE ue) {
 
     //TODO dralagen 6/4/15 : Add new review of UE
     //TODO dralagen 6/4/15 : Log Commit review
@@ -48,11 +48,11 @@ public class ActionApi {
     return result;
   }
 
-  @ApiMethod(name = "action.commit.ue", httpMethod = ApiMethod.HttpMethod.GET, path = "action/pull/{userId}")
+  @ApiMethod(name = "action.pull", httpMethod = ApiMethod.HttpMethod.GET, path = "action/pull/{userId}")
   public LogAction pull(@Named("userId") String userId) {
 
-    //TODO dralagen 6/4/15 : Add new version of UE
-    //TODO dralagen 6/4/15 : Log Commit UE
+    //TODO dralagen 6/4/15 : Update position of user
+    //TODO dralagen 6/4/15 : Log Pull
     //TODO dralagen 6/4/15 : Update divergence
 
     LogAction result = new LogAction();
