@@ -23,6 +23,7 @@
 
 
   <properties>
+    <java.version>1.7</java.version>
     <appengine.sdk.version>1.9.19</appengine.sdk.version>
     <datanucleus.version>3.1.3</datanucleus.version>
   </properties>
@@ -68,13 +69,14 @@
       <dependency>
         <groupId>javax.jdo</groupId>
         <artifactId>jdo-api</artifactId>
-        <version>3.1</version>
+        <version>3.0.1</version>
       </dependency>
 
       <dependency>
         <groupId>org.datanucleus</groupId>
         <artifactId>datanucleus-core</artifactId>
         <version>${datanucleus.version}</version>
+        <scope>runtime</scope>
       </dependency>
       <dependency>
         <groupId>com.google.appengine.orm</groupId>

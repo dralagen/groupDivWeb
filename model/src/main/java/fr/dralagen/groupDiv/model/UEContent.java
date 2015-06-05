@@ -2,16 +2,14 @@ package fr.dralagen.groupDiv.model;
 
 import com.google.appengine.api.datastore.Key;
 
-import javax.jdo.annotations.Extension;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.*;
 
 /**
  * Created on 6/2/15.
  *
  * @author dralagen
  */
+@PersistenceCapable
 public class UEContent {
 
   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -52,13 +50,5 @@ public class UEContent {
 
   public void setVersion (int version) {
     this.version = version;
-  }
-
-  public UE getUe () {
-    return ue;
-  }
-
-  public void setUe (UE ue) {
-    this.ue = ue;
   }
 }
