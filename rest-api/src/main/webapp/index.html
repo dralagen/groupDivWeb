@@ -68,18 +68,21 @@
 
 				<div ng-controller="StoreController as store">
 					<section ng-controller="PanelController as panel">
-						<ul class="nav nav-pills">
-							<li ng-class="{ active: panel.isSelected(1)}">
+						<div class="panel-heading">
+						<ul class="nav nav-tabs">
+							<li ng-class="{ active: panel.isSelected(1)}" >
 								<a href ng-click="panel.selectTab(1)">Description</a>
 							</li>
 							<li ng-class="{ active: panel.isSelected(2)}">
-								<a href ng-click="panel.selectTab(2)">Reviews</a>
+								<a href  ng-click="panel.selectTab(2)">Reviews</a>
 							</li>
 							<li ng-class="{ active: panel.isSelected(3)}">
 								<a href ng-click="panel.selectTab(3)">Historique des modifications</a>
 							</li>
 
 						</ul>
+						</div>
+						<div class="panel-body">
 						<li class="list-group-item">
 
 							<div class="panel" ng-show="panel.isSelected(1)">
@@ -94,6 +97,7 @@
 								<div ng-include="'partial/historique.html'"></div>
 							</div>
 						</li>
+						</div>
 					</section>
 				</div>
 				
