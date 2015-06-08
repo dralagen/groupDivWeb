@@ -5,9 +5,7 @@ import fr.dralagen.groupDiv.model.UE;
 import fr.dralagen.groupDiv.persistence.SessionRepository;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created on 6/5/15.
@@ -35,6 +33,10 @@ public class SessionServices {
     session.setGDtot(0);
 
     return SessionRepository.getInstance().create(session);
+  }
+
+  public Collection<Session> getAll () {
+    return SessionRepository.getInstance().findAll();
   }
 
   private void checkSession(Session session) throws InvalidFormException {

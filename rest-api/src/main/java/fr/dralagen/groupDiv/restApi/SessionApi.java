@@ -11,6 +11,7 @@ import fr.dralagen.groupDiv.services.SessionServices;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +30,12 @@ import java.util.List;
     scopes = {}
 )
 public class SessionApi {
+
+  @ApiMethod(name = "session.list", httpMethod = ApiMethod.HttpMethod.GET, path = "session")
+  public Collection<Session> getAllSession () {
+
+    return SessionServices.getInstance().getAll();
+  }
 
   @ApiMethod(name = "session.get", httpMethod = ApiMethod.HttpMethod.GET, path = "session/{sessionId}")
   public Session getSession(@Named("sessionId") String id) {

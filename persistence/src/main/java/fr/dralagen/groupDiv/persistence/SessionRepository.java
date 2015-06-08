@@ -6,6 +6,8 @@ import fr.dralagen.groupDiv.model.Session;
 
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
+import java.util.Collection;
 
 /**
  * Created on 6/5/15.
@@ -24,6 +26,18 @@ public class SessionRepository {
       repo = new SessionRepository();
     }
     return repo;
+  }
+
+  public Collection<Session> findAll () {
+    PersistenceManager pm = PMF.get().getPersistenceManager();
+
+    Query q = pm.newQuery(Session.class);
+
+    try {
+      return (Collection<Session>) q.execute();
+    } catch (JDOObjectNotFoundException e) {
+      return null;
+    }
   }
 
   public Session findOne(String sessionId) {
