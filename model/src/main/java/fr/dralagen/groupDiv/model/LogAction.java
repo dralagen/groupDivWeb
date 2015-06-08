@@ -2,16 +2,14 @@ package fr.dralagen.groupDiv.model;
 
 import com.google.appengine.api.datastore.Key;
 
-import javax.jdo.annotations.Extension;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.*;
 
 /**
  * Created on 6/4/15.
  *
  * @author dralagen
  */
+@PersistenceCapable
 public class LogAction {
 
   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

@@ -58,14 +58,6 @@ public class UE {
     this.contents = contents;
   }
 
-  public Session getSession () {
-    return session;
-  }
-
-  public void setSession (Session session) {
-    this.session = session;
-  }
-
   public User getAuthor () {
     return author;
   }

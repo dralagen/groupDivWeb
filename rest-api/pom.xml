@@ -24,7 +24,11 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>model</artifactId>
-      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>services</artifactId>
     </dependency>
 
     <dependency>

@@ -11,5 +11,17 @@
 
   <artifactId>services</artifactId>
 
+  <dependencies>
+    <dependency>
+      <groupId>${project.parent.groupId}</groupId>
+      <artifactId>model</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.parent.groupId}</groupId>
+      <artifactId>persistence</artifactId>
+    </dependency>
+  </dependencies>
+
 
 </project>

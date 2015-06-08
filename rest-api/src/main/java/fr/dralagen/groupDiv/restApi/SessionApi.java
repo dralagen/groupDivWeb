@@ -3,9 +3,12 @@ package fr.dralagen.groupDiv.restApi;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
+import com.google.api.server.spi.response.BadRequestException;
 import fr.dralagen.groupDiv.model.Session;
 import fr.dralagen.groupDiv.model.UE;
 import fr.dralagen.groupDiv.model.User;
+import fr.dralagen.groupDiv.services.SessionServices;
+import fr.dralagen.groupDiv.services.exception.InvalidFormException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,11 +56,11 @@ public class SessionApi {
   }
   
   @ApiMethod(name = "session.post", httpMethod = ApiMethod.HttpMethod.POST, path = "session")
-  public Session postSession(Session session){
-    session.setBeginDate(new Date());
-    session.setGDtot(0);
-    session.setLastLog(null);
-	
-	return session;
+  public Session postSession(Session session) throws BadRequestException {
+    try {
+      return SessionServices.getInstance().create(session);
+    } catch (InvalidFormException e) {
+      throw new BadRequestException(e);
+    }
   }
 }
