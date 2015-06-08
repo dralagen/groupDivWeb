@@ -4,6 +4,10 @@
 	
 	app.controller("AdminController", function(){
 		
+		this.sessionChoisie = false;
+		
+		this.sessions = [{nom: "Session1"}, {nom: "Session2"}, {nom:"Session3"}];
+		
 		this.users = [{value: "GDTot", s:"GDTot"}, {value :"user1", s:"user1"}, {value:"user2", s:"user2"}];
 
 		this.divergencesValues = [
@@ -104,6 +108,10 @@
 			this.plotCourbe.setupGrid();
 			this.plotCourbe.draw();
 		};
+		
+		this.test = function(){
+			this.sessionChoisie = ! this.sessionChoisie;
+		}
 		
 		this.getData = function(u){
 			var a;
