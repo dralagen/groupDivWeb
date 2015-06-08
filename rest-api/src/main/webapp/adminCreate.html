@@ -45,7 +45,7 @@
 	<!--==============================================-->
 	<div class="row" ng-controller="StoreController as store">
 		<div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-2 main">
-			<h1> Création de session </h1>
+			<h1> Create a session </h1>
 		<div>
 			<table class="userUeList">
 				<tr>
@@ -66,8 +66,8 @@
 					</th>
 				</tr>
 				<tr>
-					<th> Nom de l'utilisateur </th>
-					<th> Nom de l'UE </th>
+					<th> Name of the user </th>
+					<th> Name of the course </th>
 					<th class="action"> </th>
 				</tr>
 				<tr ng-repeat="ue in session.ues">
@@ -82,14 +82,14 @@
 				<tr>
 					<th class="cell-lg" colspan="3">
 					  <div>
-						<button class="btn btn-info" ng-click="addUe();"> <span class="glyphicon glyphicon-plus" ></span> &nbsp; Ajouter un utilisateur </button>
+						<button class="btn btn-info" ng-click="addUe();"> <span class="glyphicon glyphicon-plus" ></span> &nbsp; Add a user </button>
 					  </div>
 					</th>
 				</tr>
 			</table>
 			</div>
 			<div class="text-center">
-				<button class="btn btn-info" ng-click="createSession(session);"><!--ng-click="newFavoriteList()--> <span class=" glyphicon glyphicon-ok"></span>&nbsp; Creer la session</button>
+				<button class="btn btn-info" ng-click="createSession(session);"><!--ng-click="newFavoriteList()--> <span class=" glyphicon glyphicon-ok"></span>&nbsp; Create the session</button>
 			</div>
 		</div>
 	
