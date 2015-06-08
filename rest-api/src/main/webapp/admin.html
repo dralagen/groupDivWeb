@@ -23,16 +23,23 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     
-
+	<style>
+		.bodycontainer {
+			max-height: 450px;
+			overflow-y: auto;
+		}
+	</style>
 
   </head>
 
   <body ng-controller="AdminController as admin">
 
+<!--================barre du haut===================-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">GroupDiv</a>
+          <a class="navbar-brand" href="adminCreate.html">Create</a>
+		  <a class="navbar-brand" href="admin.html">View</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -60,7 +67,7 @@
 						<h4>Afficher les stats de :</h4>
 						<div class="checkbox" >
 								<label ng-repeat="user in admin.users">
-									<input type="checkbox" ng-model=user.s ng-click='admin.voirDivergence(voirDiv, user)'>{{user.value}}
+									<input type="checkbox" ng-model=user.s ng-init="user.s=true" ng-click='admin.voirDivergence(user.value)' ng-checked="true">{{user.value}}
 								</label>
 						</div>
 					</form>
@@ -91,27 +98,29 @@
 				<div class="row">
 					<div class="col-md-12">
 							<h2 class="text-center page-header">Statistiques et valeures de divergence</h2>
-							
-							<table >
-								<tr >
-									<th ng-repeat="x in admin.users" class="check-element animate-show" ng-show=x.s> {{ x.value }}</th>
-								</tr>
+							<center>
+								<table class="table-bordered">
+									<thead><tr >
+										<th ng-repeat="x in admin.users" class="check-element animate-show" ng-show=x.s> {{ x.value }}</th>
+									</tr></thead>
 
-								<tr>
-									<td ng-repeat="x in admin.users" class="check-element animate-show" ng-show=x.s>
-										<table>
-											<tr ng-repeat="y in admin.getData(x.value)">
-												<td>{{ y[1] }}</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</table> 
-							
+									<tr>
+										<td ng-repeat="x in admin.users" class="check-element animate-show" ng-show=x.s>
+											<div class="bodycontainer scrollable">
+											<table id="tableParams" class="table table-hover table-striped table-condensed table-scrollable">
+												<tbody>
+													<tr ng-repeat="y in admin.getData(x.value)">
+														<td>{{ y[1] }}</td>
+													</tr>
+												</tbody>
+											</table>
+											</div>
+										</td>
+									</tr>
+								</table> 
+							</center>	
 					</div>
-
 				</div>
-
 			</div>
 
 			<div class="col-md-6" >

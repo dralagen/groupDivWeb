@@ -1,54 +1,50 @@
-var GDtot = 56;
-var GDUser = 10;
-var GDAllUsers = [0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-<<<<<<< HEAD
-var echelle = 20;
-=======
-var echelle = 30;
->>>>>>> 071f1b8... add js files
-var canvas = document.getElementById("mon_canvas");
-var context = canvas.getContext("2d");
+this.GDtot = 56;
+this.GDUser = 10;
+this.users = [{name: "user1", value:20}, {name :"user2", value:0}, {value:"user3", value:30}];
+this.echelle = 20;
 
-var xWing = new Image();
-xWing.src = 'img/xwing.gif';
+this.canvas = document.getElementById("mon_canvas");
+this.context = canvas.getContext("2d");
 
-var edlm = new Image();
-edlm.src = 'img/edlm.gif';
+this.xWing = new Image();
+this.xWing.src = 'img/xwing.gif';
 
-var yoda = new Image();
-yoda.src = 'img/yoda.gif';
+this.edlm = new Image();
+this.edlm.src = 'img/edlm.gif';
 
-var xWingUser = new Image();
-xWingUser.src = 'img/xwingUSER.gif';
+this.yoda = new Image();
+this.yoda.src = 'img/yoda.gif';
 
-putPicturesOnCanvas();
+this.xWingUser = new Image();
+this.xWingUser.src = 'img/xwingUSER.gif';
 
-function eraseCanvas(){
-	context.clearRect(0, 0, canvas.width, canvas.height);
+
+this.eraseCanvas = function(){
+	this.context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function putPicturesOnCanvas(){
-	if(GDtot === 0){
-		context.drawImage(yoda, canvas.width/2 - yoda.width/2, canvas.height - yoda.height);
+this.putPicturesOnCanvas = function(){
+	if(this.GDtot === 0){
+		this.context.drawImage(this.yoda, this.canvas.width/2 - this.yoda.width/2, this.canvas.height - this.yoda.height);
 	}
 	else{
-		context.drawImage(edlm, canvas.width/2 - edlm.width/2, canvas.height - edlm.height);	
+		this.context.drawImage(this.edlm, this.canvas.width/2 - this.edlm.width/2, this.canvas.height - this.edlm.height);	
 	}
-	var divMinHeightPosition = canvas.height - edlm.height - xWingUser.height
+	this.divMinHeightPosition = this.canvas.height - this.edlm.height - this.xWingUser.height
 	
-	var j = 5;
-	var k = 0;
+	j = 5;
+	k = 0;
 	
-	context.drawImage(xWingUser, 15 + k + j, divMinHeightPosition * GDUser / echelle);	
+	this.context.drawImage(this.xWingUser, 15 + k + j, this.divMinHeightPosition * this.GDUser / this.echelle);	
 
-	for(x of GDAllUsers){
+	for(x of this.users){
 		if( k === 0){
 			j += 5;
 			if(j === 10){
 				j = -5;
 			}
 		}
-		context.drawImage(xWing, 15 + k + j, divMinHeightPosition - (divMinHeightPosition * x / echelle));	
+		this.context.drawImage(this.xWing, 15 + k + j, this.divMinHeightPosition - (this.divMinHeightPosition * x.value / this.echelle));	
 		k = (k+40)%160;
 	}
 }
@@ -57,8 +53,8 @@ function refreshCanvas(){
 	eraseCanvas();
 	//TODO get values of group divergences.
 	putPicturesOnCanvas();
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 071f1b8... add js files
+
+$(document).ready(function(){
+	putPicturesOnCanvas();
+});
