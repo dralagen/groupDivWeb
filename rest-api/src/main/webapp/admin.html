@@ -38,8 +38,8 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="adminCreate.html">Create</a>
-		  <a class="navbar-brand" href="admin.html">View</a>
+          <a class="navbar-brand" ng-href="adminCreate.html">Create</a>
+		  <a class="navbar-brand" ng-href="admin.html">View</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -48,18 +48,18 @@
         </div>
       </div>
     </nav>
-    <center>
-		<h2 class="text-center page-header">Choisir une session à regarder : </h2>
+	<div ng-hide="admin.sessionChoisie">
+		<center>
+			<h2 class="text-center page-header">Choisir une session à regarder : </h2>
 
-		<div ng-hide="admin.sessionChoisie">
-			<form>
-				<select ng-selected="admin.sessions[0]" ng-model='selectedSession' ng-options="session.nom for session in admin.sessions">
-					<option value="">-- Select an option--</option>
-				</select>
-				<input type="button" value="Ok" ng-click="admin.test()"/>
-			</form>
-		</div>
-	</center>
+				<form>
+					<select ng-selected="admin.sessions[0]" ng-model='selectedSession' ng-options="session.nom for session in admin.sessions">
+						<option value="">-- Select an option--</option>
+					</select>
+					<input type="button" value="Ok" ng-click="admin.test()"/>
+				</form>
+		</center>
+	</div>
 
     <div class="container-fluid" ng-show="admin.sessionChoisie">
 		<div class="row">			
