@@ -53,10 +53,10 @@
 			<h2 class="text-center page-header">Choisir une session à regarder : </h2>
 
 				<form>
-					<select ng-selected="admin.sessions[0]" ng-model='selectedSession' ng-options="session.nom for session in admin.sessions">
+					<select ng-selected="admin.sessions[0]" ng-model='selectedSession' ng-options="session.id as session.name for session in sessions">
 						<option value="">-- Select an option--</option>
 					</select>
-					<input type="button" value="Ok" ng-click="admin.test()"/>
+					<input type="button" value="Ok" ng-click="admin.choisirSession()"/>
 				</form>
 		</center>
 	</div>

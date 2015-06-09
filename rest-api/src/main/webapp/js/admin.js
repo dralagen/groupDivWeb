@@ -2,11 +2,11 @@
 	
 	var app = angular.module("Admin", []);
 	
-	app.controller("AdminController", function(){
+	app.controller("AdminController", function($scope, $http){
 		
 		this.sessionChoisie = false;
 		
-		this.sessions = [{nom: "Session1"}, {nom: "Session2"}, {nom:"Session3"}];
+		$scope.sessions = [];
 		
 		this.users = [{value: "GDTot", s:"GDTot"}, {value :"user1", s:"user1"}, {value:"user2", s:"user2"}];
 
@@ -15,6 +15,14 @@
 			{data: [[Date.parse("2015-12-12T12:12:12"), 1],[Date.parse("2015-12-12T12:14:12"), 2], [Date.parse("2015-12-12T12:15:12"), 3], [Date.parse("2015-12-12T12:16:12"), 4]],  label: "user1"},
 			{data: [[Date.parse("2015-12-12T12:12:12"), 100],[Date.parse("2015-12-12T12:14:12"), 200], [Date.parse("2015-12-12T12:15:12"), 300], [Date.parse("2015-12-12T12:16:12"), 400]],  label: "user2"}
 		];
+		
+		$http.get('https://groupdivxp.appspot.com/_ah/api/groupDivWeb/v1/session?fields=items(key%2Cname)').
+			success(function(data) {
+				for(x of data.items){
+					temp = {name: x.name, id: x.key.id};
+					$scope.sessions.push(temp);
+				}
+			});
 
 		this.plotStep = $.plot(
 			"#stepGraph", 
@@ -109,8 +117,11 @@
 			this.plotCourbe.draw();
 		};
 		
-		this.test = function(){
-			this.sessionChoisie = ! this.sessionChoisie;
+		this.choisirSession = function(){
+			if(!angular.isUndefined($scope.selectedSession)){
+				this.sessionChoisie = ! this.sessionChoisie;
+
+			}
 		}
 		
 		this.getData = function(u){
