@@ -30,7 +30,7 @@ public class UERepository {
     return repo;
   }
 
-  public Collection<UE> findAll(String sessionId) {
+  public Collection<UE> findAll(long sessionId) {
 
     Session session = SessionRepository.getInstance().findOne(sessionId);
 
@@ -41,7 +41,7 @@ public class UERepository {
     return session.getUes();
   }
 
-  public UE findOne(String sessionId, String ueId) {
+  public UE findOne(long sessionId, String ueId) {
     return findOne(forgeKey(sessionId, ueId));
   }
 
@@ -55,7 +55,7 @@ public class UERepository {
     }
   }
 
-  static Key forgeKey(String sessionId, String ueId) {
+  static Key forgeKey(long sessionId, String ueId) {
     return new KeyFactory.Builder(Session.class.getSimpleName(), sessionId).addChild(UE.class.getSimpleName(), ueId).getKey();
   }
 

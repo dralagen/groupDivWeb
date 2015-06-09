@@ -40,7 +40,7 @@ public class SessionRepository {
     }
   }
 
-  public Session findOne(String sessionId) {
+  public Session findOne(long sessionId) {
     return findOne(forgeKey(sessionId));
   }
 
@@ -67,7 +67,7 @@ public class SessionRepository {
     return session;
   }
 
-  private static Key forgeKey(String id) {
+  private static Key forgeKey(long id) {
     return new KeyFactory.Builder(Session.class.getSimpleName(), id).getKey();
   }
 }
