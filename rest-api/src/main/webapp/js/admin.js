@@ -3,8 +3,14 @@
 	var app = angular.module("Admin", []);
 	
 	app.controller("AdminController", function($scope, $http){
+		//https://groupdivxp.appspot.com/_ah/api/groupDivWeb/v1/session/'+$scope.selectedSession
+		var ROOT = 'https://groupdivxp.appspot.com/_ah/api';
+			gapi.client.load('groupDivWeb', 'v1', function() {
+			doSomethingAfterLoading();
+		}, ROOT);
+
 		
-		this.sessionChoisie = false;
+		this.sessionchoosen = false;
 		
 		$scope.useGroupDiv = true;
 		$scope.sessions = [];
@@ -49,8 +55,8 @@
 			}
 		);
 	
-		this.plotCourbe = $.plot(
-			"#courbe", 
+		this.plotCurve = $.plot(
+			"#curve", 
 			this.divergencesValues,
 			{
 				xaxis: {
@@ -83,12 +89,6 @@
 			plotStep.setupGrid();
 			plotStep.draw();
 		};
-
-		this.fonctionQuiSexecuteToutesLesDeuxSecindes = function(){
-			// traitement
-			//alert("oui");
-			//setTimeout(tafonction,2000); /* rappel après 2 secondes = 2000 millisecondes */
-		};
  					
 		this.visibilityStepGraph = function(bool){
 			this.plotStep.resize();
@@ -96,31 +96,31 @@
 			this.plotStep.draw();
 		};
 		
-		this.visibilityCourbe = function(bool){
-			this.plotCourbe.resize();
-			this.plotCourbe.setupGrid();
-			this.plotCourbe.draw();
+		this.visibilityCurve = function(bool){
+			this.plotCurve.resize();
+			this.plotCurve.setupGrid();
+			this.plotCurve.draw();
 		};
 		
-		this.voirDivergence = function(n){
+		this.watchDivergence = function(n){
 			for(i in this.plotStep.getData()){
 				data = this.plotStep.getData();
 				if(data[i].label == n){
 					data[i].lines.show = !data[i].lines.show;
 					this.plotStep.setData(data);
-					(this.plotCourbe.getData())[i].lines.show = !(this.plotCourbe.getData())[i].lines.show;
+					(this.plotCurve.getData())[i].lines.show = !(this.plotCurve.getData())[i].lines.show;
 				}
 			}
 			this.plotStep.setupGrid();
 			this.plotStep.draw();
 			
-			this.plotCourbe.setupGrid();
-			this.plotCourbe.draw();
+			this.plotCurve.setupGrid();
+			this.plotCurve.draw();
 		};
 		
-		this.choisirSession = function(){
+		this.chooseSession = function(){
 			if(!angular.isUndefined($scope.selectedSession)){
-				this.sessionChoisie = ! this.sessionChoisie;
+				this.sessionchoosen = ! this.sessionchoosen;
 				$http.get('https://groupdivxp.appspot.com/_ah/api/groupDivWeb/v1/session/'+$scope.selectedSession).
 					success(function(data) {
 					$scope.useGroupDiv = data.withGroupDiv;
