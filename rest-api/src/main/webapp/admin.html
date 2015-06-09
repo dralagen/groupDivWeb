@@ -78,8 +78,8 @@
 						</div>
 						<h4>Afficher les stats de :</h4>
 						<div class="checkbox" >
-								<label ng-repeat="user in admin.users">
-									<input type="checkbox" ng-model=user.s ng-init="user.s=true" ng-click='admin.voirDivergence(user.value)' ng-checked="true">{{user.value}}
+								<label ng-repeat="user in users">
+									<input type="checkbox" ng-model=user.s ng-init="user.s=true" ng-click='admin.voirDivergence(user.name)' ng-checked="true">{{user.name}}
 								</label>
 						</div>
 					</form>
@@ -113,15 +113,15 @@
 							<center>
 								<table class="table-bordered">
 									<thead><tr >
-										<th ng-repeat="x in admin.users" class="check-element animate-show" ng-show=x.s> {{ x.value }}</th>
+										<th ng-repeat="x in users" class="check-element animate-show" ng-show=x.s> {{ x.name }}</th>
 									</tr></thead>
 
 									<tr>
-										<td ng-repeat="x in admin.users" class="check-element animate-show" ng-show=x.s>
+										<td ng-repeat="x in users" class="check-element animate-show" ng-show=x.s>
 											<div class="bodycontainer scrollable">
 											<table id="tableParams" class="table table-hover table-striped table-condensed table-scrollable">
 												<tbody>
-													<tr ng-repeat="y in admin.getData(x.value)">
+													<tr ng-repeat="y in admin.getData(x.name)">
 														<td>{{ y[1] }}</td>
 													</tr>
 												</tbody>

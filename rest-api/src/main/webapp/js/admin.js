@@ -6,14 +6,15 @@
 		
 		this.sessionChoisie = false;
 		
+		$scope.useGroupDiv = true;
 		$scope.sessions = [];
 		
-		this.users = [{value: "GDTot", s:"GDTot"}, {value :"user1", s:"user1"}, {value:"user2", s:"user2"}];
+		$scope.users = [];
 
 		this.divergencesValues = [
 			{data: [[Date.parse("2015-12-12T12:12:12"), 20],[Date.parse("2015-12-12T12:14:12"), 50], [Date.parse("2015-12-12T12:15:12"), 70], [Date.parse("2015-12-12T12:16:12"), 30]], label: "GDTot"},
-			{data: [[Date.parse("2015-12-12T12:12:12"), 1],[Date.parse("2015-12-12T12:14:12"), 2], [Date.parse("2015-12-12T12:15:12"), 3], [Date.parse("2015-12-12T12:16:12"), 4]],  label: "user1"},
-			{data: [[Date.parse("2015-12-12T12:12:12"), 100],[Date.parse("2015-12-12T12:14:12"), 200], [Date.parse("2015-12-12T12:15:12"), 300], [Date.parse("2015-12-12T12:16:12"), 400]],  label: "user2"}
+			{data: [[Date.parse("2015-12-12T12:12:12"), 1],[Date.parse("2015-12-12T12:14:12"), 2], [Date.parse("2015-12-12T12:15:12"), 3], [Date.parse("2015-12-12T12:16:12"), 4]],  label: "usr1"},
+			{data: [[Date.parse("2015-12-12T12:12:12"), 100],[Date.parse("2015-12-12T12:14:12"), 200], [Date.parse("2015-12-12T12:15:12"), 300], [Date.parse("2015-12-12T12:16:12"), 400]],  label: "usr2"}
 		];
 		
 		$http.get('https://groupdivxp.appspot.com/_ah/api/groupDivWeb/v1/session?fields=items(key%2Cname)').
@@ -120,19 +121,34 @@
 		this.choisirSession = function(){
 			if(!angular.isUndefined($scope.selectedSession)){
 				this.sessionChoisie = ! this.sessionChoisie;
+				$http.get('https://groupdivxp.appspot.com/_ah/api/groupDivWeb/v1/session/'+$scope.selectedSession).
+					success(function(data) {
+					$scope.useGroupDiv = data.withGroupDiv;
+					temp = {name: "GDTot", ue: "no ue", div: data.gdtot, s:"GDTot"};
+					$scope.users.push(temp);
+					for(info of data.ues){
+						temp = {name: info.author.name, ue: info.title, div:0, s:info.author.name};
+						$scope.users.push(temp);
+					}
+				});
 
 			}
 		}
 		
 		this.getData = function(u){
-			var a;
+			var a=-1;
 			data = this.plotStep.getData();
 			for(i in data){				
 				if(data[i].label == u){
 					a = i;
 				}
 			}
-			return data[a].data;			
+			if(a === -1){
+				return [];
+			}
+			else{
+				return data[a].data;
+			}
 		};
 	});		
 })();
