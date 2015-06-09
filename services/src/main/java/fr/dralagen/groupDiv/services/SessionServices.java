@@ -39,6 +39,10 @@ public class SessionServices {
     return SessionRepository.getInstance().findAll();
   }
 
+  public Session get(long sessionId) {
+    return SessionRepository.getInstance().findOne(sessionId);
+  }
+
   private void checkSession(Session session) throws InvalidFormException {
     Map<String, String> errors = new HashMap<>();
 
