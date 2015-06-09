@@ -7,6 +7,7 @@ import fr.dralagen.groupDiv.model.UE;
 
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 import java.util.Collection;
 
 /**
@@ -22,7 +23,7 @@ public class UERepository {
 
   }
 
-  private static UERepository getInstance() {
+  public static UERepository getInstance() {
     if (repo == null) {
       repo = new UERepository();
     }
@@ -31,14 +32,18 @@ public class UERepository {
   }
 
   public Collection<UE> findAll(long sessionId) {
+    PersistenceManager pm = PMF.get().getPersistenceManager();
 
-    Session session = SessionRepository.getInstance().findOne(sessionId);
+    Query q = pm.newQuery(UE.class);
+    q.setFilter("sessionId == sessionIdParam");
+    q.declareParameters("long sessionIdParam");
 
-    if (session == null) {
+    try {
+      return (Collection<UE>) q.execute(sessionId);
+    } catch (JDOObjectNotFoundException e) {
       return null;
     }
 
-    return session.getUes();
   }
 
   public UE findOne(long sessionId, String ueId) {
@@ -59,4 +64,15 @@ public class UERepository {
     return new KeyFactory.Builder(Session.class.getSimpleName(), sessionId).addChild(UE.class.getSimpleName(), ueId).getKey();
   }
 
+  public UE create (UE ue) {
+    PersistenceManager pm = PMF.get().getPersistenceManager();
+
+    try {
+      pm.makePersistent(ue);
+    } finally {
+      pm.close();
+    }
+
+    return ue;
+  }
 }
