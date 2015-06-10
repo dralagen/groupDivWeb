@@ -10,7 +10,7 @@ import javax.jdo.annotations.*;
  * @author dralagen
  */
 @PersistenceCapable
-public class UEContent {
+public class UeContent {
 
   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
   @PrimaryKey

@@ -1,6 +1,7 @@
-package fr.dralagen.groupDiv.model;
+package fr.dralagen.groupDiv.bean;
 
 import com.google.appengine.api.datastore.Key;
+import fr.dralagen.groupDiv.model.Ue;
 
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,7 @@ public class SessionBean {
 
   private Boolean withGroupDiv;
 
-  private List<UE> ues;
+  private List<Ue> ues;
 
   public Key getKey () {
     return key;
@@ -74,11 +75,11 @@ public class SessionBean {
     this.withGroupDiv = withGroupDiv;
   }
 
-  public List<UE> getUes () {
+  public List<Ue> getUes () {
     return ues;
   }
 
-  public void setUes (List<UE> ues) {
+  public void setUes (List<Ue> ues) {
     this.ues = ues;
   }
 }

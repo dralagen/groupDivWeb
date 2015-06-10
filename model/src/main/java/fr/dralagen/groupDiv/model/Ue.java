@@ -10,7 +10,7 @@ import javax.jdo.annotations.*;
  * @author dralagen
  */
 @PersistenceCapable
-public class UE {
+public class Ue {
 
   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
   @PrimaryKey
@@ -21,7 +21,7 @@ public class UE {
   private String title;
 
   @Persistent
-  private Key sessionId;
+  private long sessionId;
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
@@ -44,11 +44,11 @@ public class UE {
     this.title = title;
   }
 
-  public Key getSessionId () {
+  public long getSessionId () {
     return sessionId;
   }
 
-  public void setSessionId (Key sessionId) {
+  public void setSessionId (long sessionId) {
     this.sessionId = sessionId;
   }
 

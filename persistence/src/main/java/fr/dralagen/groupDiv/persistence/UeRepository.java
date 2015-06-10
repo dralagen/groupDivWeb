@@ -2,8 +2,7 @@ package fr.dralagen.groupDiv.persistence;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import fr.dralagen.groupDiv.model.Session;
-import fr.dralagen.groupDiv.model.UE;
+import fr.dralagen.groupDiv.model.Ue;
 
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
@@ -15,56 +14,56 @@ import java.util.Collection;
  *
  * @author dralagen
  */
-public class UERepository {
+public class UeRepository {
 
-  private static UERepository repo = null;
+  private static UeRepository repo = null;
 
-  private UERepository() {
+  private UeRepository () {
 
   }
 
-  public static UERepository getInstance() {
+  public static UeRepository getInstance() {
     if (repo == null) {
-      repo = new UERepository();
+      repo = new UeRepository();
     }
 
     return repo;
   }
 
-  public Collection<UE> findAll(long sessionId) {
+  public Collection<Ue> findAll(long sessionId) {
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
-    Query q = pm.newQuery(UE.class);
+    Query q = pm.newQuery(Ue.class);
     q.setFilter("sessionId == sessionIdParam");
     q.declareParameters("long sessionIdParam");
 
     try {
-      return (Collection<UE>) q.execute(sessionId);
+      return (Collection<Ue>) q.execute(sessionId);
     } catch (JDOObjectNotFoundException e) {
       return null;
     }
 
   }
 
-  public UE findOne(long sessionId, String ueId) {
-    return findOne(forgeKey(sessionId, ueId));
+  public Ue findOne(long ueId) {
+    return findOne(forgeKey(ueId));
   }
 
-  public UE findOne(Key id) {
+  public Ue findOne(Key id) {
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
     try {
-      return pm.getObjectById(UE.class, id);
+      return pm.getObjectById(Ue.class, id);
     } catch (JDOObjectNotFoundException e) {
       return null;
     }
   }
 
-  static Key forgeKey(long sessionId, String ueId) {
-    return new KeyFactory.Builder(Session.class.getSimpleName(), sessionId).addChild(UE.class.getSimpleName(), ueId).getKey();
+  static Key forgeKey(long ueId) {
+    return new KeyFactory.Builder(Ue.class.getSimpleName(), ueId).getKey();
   }
 
-  public UE create (UE ue) {
+  public Ue create (Ue ue) {
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
     try {

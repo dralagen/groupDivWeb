@@ -5,7 +5,7 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
 import fr.dralagen.groupDiv.model.Action;
 import fr.dralagen.groupDiv.model.LogAction;
-import fr.dralagen.groupDiv.model.UE;
+import fr.dralagen.groupDiv.model.Ue;
 
 /**
  * Created on 6/3/15.
@@ -23,7 +23,7 @@ import fr.dralagen.groupDiv.model.UE;
 public class ActionApi {
 
   @ApiMethod(name = "action.commit.ue", httpMethod = ApiMethod.HttpMethod.POST, path = "action/commit/ue")
-  public LogAction commitUe(@Named("contentUE") String content, UE ue) {
+  public LogAction commitUe(@Named("contentUE") String content, Ue ue) {
 
     //TODO dralagen 6/4/15 : Add new version of UE
     //TODO dralagen 6/4/15 : Log Commit UE
@@ -36,7 +36,7 @@ public class ActionApi {
   }
 
   @ApiMethod(name = "action.commit.review", httpMethod = ApiMethod.HttpMethod.POST, path = "action/commit/review")
-  public LogAction commitReview(@Named("contentReview") String content, UE ue) {
+  public LogAction commitReview(@Named("contentReview") String content, Ue ue) {
 
     //TODO dralagen 6/4/15 : Add new review of UE
     //TODO dralagen 6/4/15 : Log Commit review
