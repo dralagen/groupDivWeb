@@ -1,6 +1,5 @@
-(function(){
-	var app = angular.module("Experience", []);
 
+	var app = angular.module("groupDiv", ['groupDiv.choicesController']);
 	
 	app.controller("ExpController", function(){
 		this.tab = 1;
@@ -73,4 +72,3 @@
 		this.putPicturesOnCanvas();
 	});
 
-})();

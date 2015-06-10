@@ -1,0 +1,73 @@
+
+<div ng-controller="ExpController as exp">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">GroupDiv</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Name</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<div ng-include="'partial/pullZone.html'"></div>
+				</ul>
+			</div>
+			
+			<div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-2 main">
+					<section>
+						<div class="panel-heading">
+						<ul class="nav nav-tabs">
+							<li ng-class="{ active: exp.isSelected(1)}" >
+								<a href ng-click="exp.selectTab(1)">Description</a>
+							</li>
+							<li ng-class="{ active: exp.isSelected(2)}">
+								<a href  ng-click="exp.selectTab(2)">Reviews</a>
+							</li>
+							<li ng-class="{ active: exp.isSelected(3)}">
+								<a href ng-click="exp.selectTab(3)">Historique des modifications</a>
+							</li>
+
+						</ul>
+						</div>
+						<div class="panel-body">
+						<li class="list-group-item">
+
+							<div class="panel" ng-show="exp.isSelected(1)">
+								<div ng-include="'partial/descriptionUETab.html'"></div>
+							</div>
+
+							<div class="panel" ng-show="exp.isSelected(2)">
+								<div ng-include="'partial/reviewsTab.html'"></div>
+							</div>
+
+							<div class="panel" ng-show="exp.isSelected(3)">
+								<div ng-include="'partial/historyTab.html'"></div>
+							</div>
+						</li>
+						</div>
+					</section>
+				</div>
+
+			<!-- new controller for this -->
+			<div class="col-md-2 col-xs-10 main" >
+				<ul class="nav nav-sidebar">
+				<div class="container-fluid" style="position: fixed;">
+						<canvas id="mon_canvas" width="170" height="500" class="bg-info">
+						</canvas>
+					    <div ng-include="'partial/groupDivWidget.html'"></div>
+							
+				</div>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+</div>
