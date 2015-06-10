@@ -1,5 +1,4 @@
-
-<div ng-controller="ExpController as exp">
+<div ng-controller="userController as userCtrl">
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -25,14 +24,14 @@
 					<section>
 						<div class="panel-heading">
 						<ul class="nav nav-tabs">
-							<li ng-class="{ active: exp.isSelected(1)}" >
-								<a href ng-click="exp.selectTab(1)">Description</a>
+							<li ng-class="{ active: userCtrl.isSelected(1)}" >
+								<a href ng-click="userCtrl.selectTab(1)">Description</a>
 							</li>
-							<li ng-class="{ active: exp.isSelected(2)}">
-								<a href  ng-click="exp.selectTab(2)">Reviews</a>
+							<li ng-class="{ active: userCtrl.isSelected(2)}">
+								<a href  ng-click="userCtrl.selectTab(2)">Reviews</a>
 							</li>
-							<li ng-class="{ active: exp.isSelected(3)}">
-								<a href ng-click="exp.selectTab(3)">Historique des modifications</a>
+							<li ng-class="{ active: userCtrl.isSelected(3)}">
+								<a href ng-click="userCtrl.selectTab(3)">Historique des modifications</a>
 							</li>
 
 						</ul>
@@ -40,15 +39,15 @@
 						<div class="panel-body">
 						<li class="list-group-item">
 
-							<div class="panel" ng-show="exp.isSelected(1)">
+							<div class="panel" ng-show="userCtrl.isSelected(1)">
 								<div ng-include="'partial/descriptionUETab.html'"></div>
 							</div>
 
-							<div class="panel" ng-show="exp.isSelected(2)">
+							<div class="panel" ng-show="userCtrl.isSelected(2)">
 								<div ng-include="'partial/reviewsTab.html'"></div>
 							</div>
 
-							<div class="panel" ng-show="exp.isSelected(3)">
+							<div class="panel" ng-show="userCtrl.isSelected(3)">
 								<div ng-include="'partial/historyTab.html'"></div>
 							</div>
 						</li>

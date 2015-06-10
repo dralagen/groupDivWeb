@@ -10,7 +10,6 @@
 	<button type="button" class="btn btn-primary btn-lg btn-block" ng-click="loadUserInterface();" ng-show="choice">User</button>
 	<button type="button" class="btn btn-primary btn-lg btn-block" ng-click="loadAdminInterface();" ng-show="choice">Admin</button>
 	
-	<div ng-include="'partial/userInterface.html'" ng-show="user"></div>
-	<div ng-include="'partial/adminInterface.html'" ng-show="admin"></div>
-
+	<div ng-include="'partial/userInterface.html'" ng-if="user"></div>
+	<div ng-include="'partial/adminInterface.html'" ng-if="admin"></div>
 </div>

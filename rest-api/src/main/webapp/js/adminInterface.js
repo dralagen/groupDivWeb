@@ -1,19 +1,17 @@
-(function(){
-	
-	var app = angular.module("Admin", []);
-	
-	app.controller("AdminController", function($scope, $http){
-		//https://groupdivxp.appspot.com/_ah/api/groupDivWeb/v1/session/'+$scope.selectedSession
+var app = angular.module("groupDiv.adminController", []);
+
+	app.controller("adminController",['$scope', '$http', function($scope, $http){
+	/*	//https://groupdivxp.appspot.com/_ah/api/groupDivWeb/v1/session/'+$scope.selectedSession
 		var ROOT = 'https://groupdivxp.appspot.com/_ah/api';
 			gapi.client.load('groupDivWeb', 'v1', function() {
 			doSomethingAfterLoading();
-		}, ROOT);
+		}, ROOT);*/
+		
 
-		
-		this.sessionchoosen = false;
-		
+		$scope.sessionChoosen = false;
 		$scope.useGroupDiv = true;
-		$scope.sessions = [];
+		$scope.sessions = [{name: "Session one",id: "5639445604728832"}, {name: "Session Two",id: "5639445604238832"}];
+		console.log("coucou");
 		
 		$scope.users = [];
 
@@ -23,14 +21,14 @@
 			{data: [[Date.parse("2015-12-12T12:12:12"), 100],[Date.parse("2015-12-12T12:14:12"), 200], [Date.parse("2015-12-12T12:15:12"), 300], [Date.parse("2015-12-12T12:16:12"), 400]],  label: "usr2"}
 		];
 		
-		$http.get('https://groupdivxp.appspot.com/_ah/api/groupDivWeb/v1/session?fields=items(key%2Cname)').
-			success(function(data) {
-				for(x of data.items){
-					temp = {name: x.name, id: x.key.id};
-					$scope.sessions.push(temp);
-				}
-			});
+		//$http.get('https://groupdivxp.appspot.com/_ah/api/groupDivWeb/v1/session?fields=items(key%2Cname)').
+			//success(function(data) {
+				//for(x of data.items){
+					//temp = {name: x.name, id: x.key.id};
+					//$scope.sessions.push({name: "Session one",id: "5639445604728832"})
+			//});
 
+	/*	
 		this.plotStep = $.plot(
 			"#stepGraph", 
 			this.divergencesValues,
@@ -89,7 +87,7 @@
 			plotStep.setupGrid();
 			plotStep.draw();
 		};
- 					
+		
 		this.visibilityStepGraph = function(bool){
 			this.plotStep.resize();
 			this.plotStep.setupGrid();
@@ -117,10 +115,10 @@
 			this.plotCurve.setupGrid();
 			this.plotCurve.draw();
 		};
-		
-		this.chooseSession = function(){
+		*/
+		$scope.chooseSession = function(){
 			if(!angular.isUndefined($scope.selectedSession)){
-				this.sessionchoosen = ! this.sessionchoosen;
+				$scope.sessionChoosen = true;
 				$http.get('https://groupdivxp.appspot.com/_ah/api/groupDivWeb/v1/session/'+$scope.selectedSession).
 					success(function(data) {
 					$scope.useGroupDiv = data.withGroupDiv;
@@ -134,7 +132,7 @@
 
 			}
 		}
-		
+		/*
 		this.getData = function(u){
 			var a=-1;
 			data = this.plotStep.getData();
@@ -150,5 +148,5 @@
 				return data[a].data;
 			}
 		};
-	});		
-})();
+*/
+	}]);		

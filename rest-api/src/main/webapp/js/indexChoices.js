@@ -4,8 +4,6 @@
 		$scope.admin = false;
 		$scope.choice = true;
 		
-		console.log("choicesController is load");
-		
 		$scope.loadUserInterface = function(){
 			$scope.user = true;
 			$scope.choice = false;
