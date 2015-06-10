@@ -1,16 +1,18 @@
 (function(){
 	
-	var app = angular.module("Admin", []);
-	
-	app.controller("AdminController", function($scope, $http){
-		//https://groupdivxp.appspot.com/_ah/api/groupDivWeb/v1/session/'+$scope.selectedSession
-		var ROOT = 'https://groupdivxp.appspot.com/_ah/api';
-			gapi.client.load('groupDivWeb', 'v1', function() {
-			doSomethingAfterLoading();
-		}, ROOT);
-
+	var app = angular.module("Admin", ['angular-google-gapi']);
 		
-		this.sessionchoosen = false;
+	app.run(['GApi', 'GAuth',
+		function(GApi, GAuth) {
+			var BASE = '//localhost:8080/_ah/api';
+			GApi.load('groupDivWeb','v1',BASE);
+			
+		}
+	]);
+	
+	app.controller("AdminController", ['$scope', 'GApi', function($scope, GApi){	
+		
+		this.sessionChoosen = false;
 		
 		$scope.useGroupDiv = true;
 		$scope.sessions = [];
@@ -22,14 +24,30 @@
 			{data: [[Date.parse("2015-12-12T12:12:12"), 1],[Date.parse("2015-12-12T12:14:12"), 2], [Date.parse("2015-12-12T12:15:12"), 3], [Date.parse("2015-12-12T12:16:12"), 4]],  label: "usr1"},
 			{data: [[Date.parse("2015-12-12T12:12:12"), 100],[Date.parse("2015-12-12T12:14:12"), 200], [Date.parse("2015-12-12T12:15:12"), 300], [Date.parse("2015-12-12T12:16:12"), 400]],  label: "usr2"}
 		];
-		
-		$http.get('https://groupdivxp.appspot.com/_ah/api/groupDivWeb/v1/session?fields=items(key%2Cname)').
-			success(function(data) {
-				for(x of data.items){
+	
+			
+			GApi.execute('groupDivWeb', 'session.list').then(
+				function(data) {
+					data = {
+					items :{
+						item:{
+						name:"oui", 
+						key:{
+							id:"pm"
+						}
+					}
+					}
+				};
+				angular.forEach(data.items, function(x){
+					alert(x);
 					temp = {name: x.name, id: x.key.id};
 					$scope.sessions.push(temp);
+				});
+				},
+				function() {
+					console.log("error :(");
 				}
-			});
+			);
 
 		this.plotStep = $.plot(
 			"#stepGraph", 
@@ -119,19 +137,23 @@
 		};
 		
 		this.chooseSession = function(){
-			if(!angular.isUndefined($scope.selectedSession)){
-				this.sessionchoosen = ! this.sessionchoosen;
-				$http.get('https://groupdivxp.appspot.com/_ah/api/groupDivWeb/v1/session/'+$scope.selectedSession).
-					success(function(data) {
-					$scope.useGroupDiv = data.withGroupDiv;
-					temp = {name: "GDTot", ue: "no ue", div: data.gdtot, s:"GDTot"};
-					$scope.users.push(temp);
-					for(info of data.ues){
-						temp = {name: info.author.name, ue: info.title, div:0, s:info.author.name};
+			if($scope.selectedSession != null){
+				this.sessionChoosen = true;
+				GApi.execute('groupDivWeb', 'session.get', {sessionId: $scope.selectedSession}).then(
+					function(data){
+						$scope.useGroupDiv = data.withGroupDiv;
+						temp = {name: "GDTot", ue: "no ue", div: data.gdtot, s:"GDTot"};
 						$scope.users.push(temp);
+						
+						angular.forEach(data.ues, function(info){
+							temp = {name: info.author.name, ue: info.title, div:0, s:info.author.name};
+							$scope.users.push(temp);
+							
+						});			
+					}, function(){
+						console.log("error");
 					}
-				});
-
+				);
 			}
 		}
 		
@@ -150,5 +172,7 @@
 				return data[a].data;
 			}
 		};
-	});		
+	}]);		
+	
+	
 })();
