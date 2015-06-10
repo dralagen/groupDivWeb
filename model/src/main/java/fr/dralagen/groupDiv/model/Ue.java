@@ -3,7 +3,6 @@ package fr.dralagen.groupDiv.model;
 import com.google.appengine.api.datastore.Key;
 
 import javax.jdo.annotations.*;
-import java.util.List;
 
 /**
  * Created on 6/2/15.
@@ -11,7 +10,7 @@ import java.util.List;
  * @author dralagen
  */
 @PersistenceCapable
-public class UE {
+public class Ue {
 
   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
   @PrimaryKey
@@ -21,13 +20,8 @@ public class UE {
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private String title;
 
-  @Persistent(mappedBy = "ue")
-  @Element(dependent = "true")
-  private List<UEContent> contents;
-
   @Persistent
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
-  private Session session;
+  private long sessionId;
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
@@ -50,12 +44,12 @@ public class UE {
     this.title = title;
   }
 
-  public List<UEContent> getContents () {
-    return contents;
+  public long getSessionId () {
+    return sessionId;
   }
 
-  public void setContents (List<UEContent> contents) {
-    this.contents = contents;
+  public void setSessionId (long sessionId) {
+    this.sessionId = sessionId;
   }
 
   public User getAuthor () {

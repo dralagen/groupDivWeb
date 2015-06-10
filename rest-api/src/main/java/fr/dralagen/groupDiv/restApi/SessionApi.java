@@ -4,6 +4,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.BadRequestException;
+import fr.dralagen.groupDiv.bean.SessionBean;
 import fr.dralagen.groupDiv.model.Session;
 import fr.dralagen.groupDiv.services.SessionServices;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
@@ -34,13 +35,16 @@ public class SessionApi {
 
   @ApiMethod(name = "session.get", httpMethod = ApiMethod.HttpMethod.GET, path = "session/{sessionId}")
   public Session getSession(@Named("sessionId") long id) {
+
     return SessionServices.getInstance().get(id);
   }
   
   @ApiMethod(name = "session.post", httpMethod = ApiMethod.HttpMethod.POST, path = "session")
-  public Session postSession(Session session) throws BadRequestException {
+  public Session postSession (SessionBean session) throws BadRequestException {
     try {
+
       return SessionServices.getInstance().create(session);
+
     } catch (InvalidFormException e) {
       throw new BadRequestException(e);
     }

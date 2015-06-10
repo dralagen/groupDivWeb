@@ -1,11 +1,16 @@
 package fr.dralagen.groupDiv.services;
 
+import fr.dralagen.groupDiv.bean.SessionBean;
 import fr.dralagen.groupDiv.model.Session;
-import fr.dralagen.groupDiv.model.UE;
+import fr.dralagen.groupDiv.model.Ue;
 import fr.dralagen.groupDiv.persistence.SessionRepository;
+import fr.dralagen.groupDiv.persistence.UeRepository;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created on 6/5/15.
@@ -25,14 +30,25 @@ public class SessionServices {
     return service;
   }
 
-  public Session create(Session session) throws InvalidFormException {
+  public Session create(SessionBean session) throws InvalidFormException {
 
     checkSession(session);
 
-    session.setBeginDate(new Date());
-    session.setGDtot(0);
+    Session newSession = new Session();
+    newSession.setName(session.getName());
+    newSession.setWithGroupDiv(session.getWithGroupDiv());
+    newSession.setLastLog(null);
+    newSession.setBeginDate(new Date());
+    newSession.setGDtot(0);
 
-    return SessionRepository.getInstance().create(session);
+    newSession = SessionRepository.getInstance().create(newSession);
+
+    for (Ue ue: session.getUes()) {
+      ue.setSessionId(newSession.getKey().getId());
+      UeRepository.getInstance().create(ue);
+    }
+
+    return newSession;
   }
 
   public Collection<Session> getAll () {
@@ -43,7 +59,7 @@ public class SessionServices {
     return SessionRepository.getInstance().findOne(sessionId);
   }
 
-  private void checkSession(Session session) throws InvalidFormException {
+  private void checkSession(SessionBean session) throws InvalidFormException {
     Map<String, String> errors = new HashMap<>();
 
     if (session.getName() == null || session.getName().equals("")) {
@@ -54,7 +70,7 @@ public class SessionServices {
       errors.put("ue", "At least one UE is mandatory for a session");
     }
 
-    for (UE ue : session.getUes()) {
+    for (Ue ue : session.getUes()) {
       String ueTitle = ue.getTitle();
       if (ueTitle == null || ueTitle.equals("")) {
         errors.put("ueTitle", "UE title is mandatory");

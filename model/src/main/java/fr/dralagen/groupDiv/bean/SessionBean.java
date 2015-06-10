@@ -1,41 +1,31 @@
-package fr.dralagen.groupDiv.model;
+package fr.dralagen.groupDiv.bean;
 
 import com.google.appengine.api.datastore.Key;
+import fr.dralagen.groupDiv.model.Ue;
 
-import javax.jdo.annotations.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created on 6/2/15.
  *
  * @author dralagen
  */
-@PersistenceCapable
-public class Session {
+public class SessionBean {
 
-  @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-  @PrimaryKey
   private Key key;
 
-  @Persistent
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private String name;
 
-  @Persistent
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private Date beginDate;
 
-  @Persistent
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private Date lastLog;
 
-  @Persistent
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private int GDtot;
 
-  @Persistent
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private Boolean withGroupDiv;
+
+  private List<Ue> ues;
 
   public Key getKey () {
     return key;
@@ -83,5 +73,13 @@ public class Session {
 
   public void setWithGroupDiv (Boolean withGroupDiv) {
     this.withGroupDiv = withGroupDiv;
+  }
+
+  public List<Ue> getUes () {
+    return ues;
+  }
+
+  public void setUes (List<Ue> ues) {
+    this.ues = ues;
   }
 }
