@@ -1,5 +1,6 @@
 var app = angular.module("groupDiv.adminController", []);
 
+
 	app.controller("adminController",['$scope', 'GApi', function($scope, GApi){
 
 

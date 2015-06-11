@@ -1,9 +1,9 @@
 var app = angular.module("groupDiv", [
 	'groupDiv.choicesController',
 	'groupDiv.userController',
-	'groupDiv.adminController'
+	'groupDiv.adminController',
+	'angular-google-gapi'
 ]);
-	
 
 app.run(['GApi', 'GAuth',
 	function(GApi, GAuth) {

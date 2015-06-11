@@ -1,6 +1,7 @@
 (function(){
 	var app = angular.module('createUeUser', []);
 
+
 	app.controller('StoreController', function($scope) {
 			
 		$scope.session = {};
