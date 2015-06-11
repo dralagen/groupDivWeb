@@ -1,0 +1,15 @@
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">GroupDiv</a>
+        </div>
+      </div>
+    </nav>
+
+<div ng-controller="choicesController">
+	<button type="button" class="btn btn-primary btn-lg btn-block" ng-click="loadUserInterface();" ng-show="choice">User</button>
+	<button type="button" class="btn btn-primary btn-lg btn-block" ng-click="loadAdminInterface();" ng-show="choice">Admin</button>
+	
+	<div ng-include="'partial/userInterface.html'" ng-if="user"></div>
+	<div ng-include="'partial/adminInterface.html'" ng-if="admin"></div>
+</div>

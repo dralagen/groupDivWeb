@@ -107,3 +107,8 @@ body {
 textarea{ 
 	resize:none;
 }
+
+.bodycontainer {
+	max-height: 120px;
+	overflow-y: auto;
+}

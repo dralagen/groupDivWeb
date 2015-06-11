@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="Experience">
+<html lang="en" ng-app="groupDiv">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,126 +23,11 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     
-    	<style>
-		.bodycontainer {
-			max-height: 120px;
-			overflow-y: auto;
-		}
-	</style>
   </head>
 
-  <body ng-controller="ExpController as exp">
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">GroupDiv</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Name</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <div class="container-fluid">
-		<div class="row">
-			<div class="col-sm-3 col-md-2 sidebar">
-			 <!-- <ul class="nav nav-sidebar">
-				<li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-				<li><a href="#">Analytics</a></li>
-				<li><a href="#">Export</a></li>
-			  </ul>-->
-				<ul class="nav nav-sidebar">
-					<p> Pull from : <p>
-					<!--
-					<li><a href="" class="btn btn-primary">User 1</a></li>
-					<li><a href="" class="btn btn-primary">User 2</a></li>
-					<li><a href="" class="btn btn-primary">User 3</a></li>
-					<li><a href="" class="btn btn-primary">User 4</a></li>
-					<li><a href="" class="btn btn-primary">User 5</a></li>
-					-->
-					<button type="button" class="btn btn-primary btn-lg btn-block">User 1</button>
-					<button type="button" class="btn btn-primary btn-lg btn-block">User 2</button>
-					<button type="button" class="btn btn-primary btn-lg btn-block">User 3</button>
-					<button type="button" class="btn btn-primary btn-lg btn-block">User 4</button>
-					<button type="button" class="btn btn-primary btn-lg btn-block">User 5</button>
-				</ul>
-			</div>
-			
-			<div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-2 main">
-					<section>
-						<div class="panel-heading">
-						<ul class="nav nav-tabs">
-							<li ng-class="{ active: exp.isSelected(1)}" >
-								<a href ng-click="exp.selectTab(1)">Description</a>
-							</li>
-							<li ng-class="{ active: exp.isSelected(2)}">
-								<a href  ng-click="exp.selectTab(2)">Reviews</a>
-							</li>
-							<li ng-class="{ active: exp.isSelected(3)}">
-								<a href ng-click="exp.selectTab(3)">Historique des modifications</a>
-							</li>
-
-						</ul>
-						</div>
-						<div class="panel-body">
-						<li class="list-group-item">
-
-							<div class="panel" ng-show="exp.isSelected(1)">
-								<div ng-include="'partial/descriptionUE.html'"></div>
-							</div>
-
-							<div class="panel" ng-show="exp.isSelected(2)">
-								<div ng-include="'partial/reviews.html'"></div>
-							</div>
-
-							<div class="panel" ng-show="exp.isSelected(3)">
-								<div ng-include="'partial/historique.html'"></div>
-							</div>
-						</li>
-						</div>
-					</section>
-				</div>
-
-			
-			<!--
-						<div class="col-sm-3 col-md-2 sidebar">
--->
-			<div class="col-md-2 col-xs-10 main" >
-				<ul class="nav nav-sidebar">
-					<div class="container-fluid" style="position: fixed;">
-						<h3> GroupDiv </h3>
-						<canvas id="mon_canvas" width="170" height="500" class="bg-info">
-						</canvas>
-						
-						<center>
-
-										<div class="bodycontainer scrollable">
-											<p>GDTot : 50</p>
-											<p>Distance : 50</p>
-											<p>User1 : 20</p>
-											<p>User2 : 10</p>
-											<p>User3 : 0</p>
-											<p>User4 : 0</p>
-											<p>User5 : 0</p>
-											<p>User6 : 0</p>
-											<p>User7 : 0</p>
-											<p>User8 : 0</p>
-										</div>
-									
-						</center>
-							
-							
-					</div>
-				</ul>
-			</div>
-
-		</div>
-	</div>
-
-
+  <body>
+	<div ng-include="'partial/indexChoices.html'"></div>
+	
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -153,6 +38,19 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/ie10-viewport-bug-workaround.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	
+	<script language="javascript" type="text/javascript" src="js/flot/jquery.flot.min.js"></script>
+	<script language="javascript" type="text/javascript" src="js/flot/jquery.flot.time.js"></script>
+	
+	<script src="https://apis.google.com/js/client.js?onload=init"></script>
+	
 	<script type="text/javascript" src="js/app.js"></script>
+	<script type="text/javascript" src="js/indexChoices.js"></script>
+	<script type="text/javascript" src="js/adminInterface.js"></script>
+	<script type="text/javascript" src="js/userInterface.js"></script>
+	<script src="js/d3.min.js"></script>
+	<script src="xcharts.min.js"></script>
+	<script src="rainbow.min.js"></script>
+	
   </body>
 </html>

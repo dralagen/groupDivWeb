@@ -1,0 +1,82 @@
+
+    <div class="container-fluid">
+		<div class="row">			
+			<div class="col-md-6">
+				<h2 class="text-center page-header">Résultats de l'expérience</h2>
+				
+				<center>
+					<form>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="checked1" ng-click="admin.visibilityStepGraph(checked1)" /> Afficher un step graph
+							</label>
+							<label>
+								<input type="checkbox" ng-model="checked2" ng-click="admin.visibilityCurve(checked2)" /> Afficher une courbe lissée
+							</label>
+						</div>
+						<h4>Afficher les stats de :</h4>
+						<div class="checkbox" >
+								<label ng-repeat="user in users">
+									<input type="checkbox" ng-model="user.s" ng-init="user.s=true" ng-click="admin.watchDivergence(user.name)" ng-checked="true" />{{user.name}}
+								</label>
+						</div>
+					</form>
+				</center>
+				
+				<div ng-init="init_plot()">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="check-element animate-show" ng-show="checked1">
+								<h2 class="text-center page-header">Step Graph</h2>
+								<div id="stepGraph" style="width:95%; height:300px" ></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="check-element animate-show" ng-show="checked2">
+
+								<h2 class="text-center page-header">Courbe lissée</h2>
+
+								<div id="curve" style="width:95%; height:300px"></div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-12">
+							<h2 class="text-center page-header">Statistiques et valeures de divergence</h2>
+							<center>
+								<table class="table-bordered">
+									<thead><tr >
+										<th ng-repeat="x in users" class="check-element animate-show" ng-show=x.s> {{ x.name }}</th>
+									</tr></thead>
+
+									<tr>
+										<td ng-repeat="x in users" class="check-element animate-show" ng-show=x.s>
+											<div class="bodycontainer scrollable">
+											<table id="tableParams" class="table table-hover table-striped table-condensed table-scrollable">
+												<tbody>
+													<tr ng-repeat="y in admin.getData(x.name)">
+														<td>{{ y[1] }}</td>
+													</tr>
+												</tbody>
+											</table>
+											</div>
+										</td>
+									</tr>
+								</table> 
+							</center>	
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6" >
+				<div ng-include="'partial/seeUEAndReview.html'"></div>
+			</div>
+
+		</div>
+	</div>
+

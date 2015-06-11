@@ -1,0 +1,31 @@
+
+<div ng-controller="adminController as admin">
+   <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">GroupDiv :</a>
+          <a class="navbar-brand" ng-href="adminCreate.html">Create</a>
+		  <a class="navbar-brand" ng-href="admin.html">View</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Admin</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+	<div ng-hide="sessionChoosen">
+		<center>
+			<h2 class="text-center page-header">Choisir une session à regarder : </h2>
+
+				<form>
+					<select ng-selected="sessions[0]" ng-model='selectedSession' ng-options="session.id as session.name for session in sessions">
+						<option value="">-- Select an option--</option>
+					</select>
+					<input type="button" value="Ok" ng-click="chooseSession()"/>
+				</form>
+		</center>
+	</div>
+	<div ng-include="'partial/admin.html'" ng-show="sessionChoosen"></div>
+
+ </div>
