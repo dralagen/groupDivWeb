@@ -15,7 +15,7 @@ var app = angular.module("groupDiv.adminController", []);
 		
 		$scope.users = [];
 
-		this.divergencesValues = [
+		$scope.divergencesValues = [
 			{data: [[Date.parse("2015-12-12T12:12:12"), 20],[Date.parse("2015-12-12T12:14:12"), 50], [Date.parse("2015-12-12T12:15:12"), 70], [Date.parse("2015-12-12T12:16:12"), 30]], label: "GDTot"},
 			{data: [[Date.parse("2015-12-12T12:12:12"), 1],[Date.parse("2015-12-12T12:14:12"), 2], [Date.parse("2015-12-12T12:15:12"), 3], [Date.parse("2015-12-12T12:16:12"), 4]],  label: "usr1"},
 			{data: [[Date.parse("2015-12-12T12:12:12"), 100],[Date.parse("2015-12-12T12:14:12"), 200], [Date.parse("2015-12-12T12:15:12"), 300], [Date.parse("2015-12-12T12:16:12"), 400]],  label: "usr2"}
@@ -28,94 +28,96 @@ var app = angular.module("groupDiv.adminController", []);
 					//$scope.sessions.push({name: "Session one",id: "5639445604728832"})
 			//});
 
-	/*	
-		this.plotStep = $.plot(
-			"#stepGraph", 
-			this.divergencesValues,
-			{
-				xaxis: {
-					mode: "time",
-					timeformat: "%Y-%m-%d %H:%M:%S"
-					
-				},
-				legend: {
-					show: true,
-					position: "ne",
-					margin:[-60, 0],
-					noColumns: 1,
-				},
-				series: {
-					lines: {
+		
+		$scope.init_plot = function(){
+			console.log("init des plot");
+			$scope.plotStep = $.plot(
+				"#stepGraph", 
+				$scope.divergencesValues,
+				{
+					xaxis: {
+						mode: "time",
+						timeformat: "%Y-%m-%d %H:%M:%S"
+						
+					},
+					legend: {
 						show: true,
-						steps:true,
+						position: "ne",
+						margin:[-60, 0],
+						noColumns: 1,
+					},
+					series: {
+						lines: {
+							show: true,
+							steps:true,
+						}
 					}
 				}
-			}
-		);
-	
-		this.plotCurve = $.plot(
-			"#curve", 
-			this.divergencesValues,
-			{
-				xaxis: {
-					mode: "time",
-					timeformat: "%Y-%m-%d %H:%M:%S"
-				},
-				legend: {
-					show: true,
-					position: "ne",
-					margin:[-60, 0],
-					noColumns: 1,
+			);
+		
+			$scope.plotCurve = $.plot(
+				"#curve", 
+				$scope.divergencesValues,
+				{
+					xaxis: {
+						mode: "time",
+						timeformat: "%Y-%m-%d %H:%M:%S"
+					},
+					legend: {
+						show: true,
+						position: "ne",
+						margin:[-60, 0],
+						noColumns: 1,
+					}
 				}
-			}
-		);
+			);
 
-		$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+			$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+		}
 
-
-		this.addDivergenceForUsers = function(){
+		$scope.addDivergenceForUsers = function(){
 			//TODO get the group divergence for all the users
 		};
 
-		this.getUsers = function(){
+		$scope.getUsers = function(){
 			//TODO ask server to know the name of all the users
 		};
 
-		this.updateGraph = function(){
+		$scope.updateGraph = function(){
 			//TODO put in dataAndLabelForGraph the data of all users
 			plotStep.setData(dataAndLabelForGraph);
 			plotStep.setupGrid();
 			plotStep.draw();
 		};
 		
-		this.visibilityStepGraph = function(bool){
-			this.plotStep.resize();
-			this.plotStep.setupGrid();
-			this.plotStep.draw();
+		$scope.visibilityStepGraph = function(bool){
+			$scope.plotStep.resize();
+			$scope.plotStep.setupGrid();
+			$scope.plotStep.draw();
 		};
 		
-		this.visibilityCurve = function(bool){
-			this.plotCurve.resize();
-			this.plotCurve.setupGrid();
-			this.plotCurve.draw();
+		$scope.visibilityCurve = function(bool){
+			$scope.plotCurve.resize();
+			$scope.plotCurve.setupGrid();
+			$scope.plotCurve.draw();
 		};
 		
-		this.watchDivergence = function(n){
-			for(i in this.plotStep.getData()){
-				data = this.plotStep.getData();
+		$scope.watchDivergence = function(n){
+			for(i in $scope.plotStep.getData()){
+				data = $scope.plotStep.getData();
 				if(data[i].label == n){
 					data[i].lines.show = !data[i].lines.show;
-					this.plotStep.setData(data);
-					(this.plotCurve.getData())[i].lines.show = !(this.plotCurve.getData())[i].lines.show;
+					$scope.plotStep.setData(data);
+					($scope.plotCurve.getData())[i].lines.show = !($scope.plotCurve.getData())[i].lines.show;
 				}
 			}
-			this.plotStep.setupGrid();
-			this.plotStep.draw();
+			$scope.plotStep.setupGrid();
+			$scope.plotStep.draw();
 			
-			this.plotCurve.setupGrid();
-			this.plotCurve.draw();
+			$scope.plotCurve.setupGrid();
+			$scope.plotCurve.draw();
 		};
-		*/
+		
 		$scope.chooseSession = function(){
 			if(!angular.isUndefined($scope.selectedSession)){
 				$scope.sessionChoosen = true;
@@ -132,10 +134,10 @@ var app = angular.module("groupDiv.adminController", []);
 
 			}
 		}
-		/*
-		this.getData = function(u){
+		
+		$scope.getData = function(u){
 			var a=-1;
-			data = this.plotStep.getData();
+			data = $scope.plotStep.getData();
 			for(i in data){				
 				if(data[i].label == u){
 					a = i;
@@ -148,5 +150,5 @@ var app = angular.module("groupDiv.adminController", []);
 				return data[a].data;
 			}
 		};
-*/
+
 	}]);		

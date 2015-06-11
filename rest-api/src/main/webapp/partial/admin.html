@@ -23,27 +23,27 @@
 					</form>
 				</center>
 				
-				
-				<div class="row">
-					<div class="col-md-12">
-						<div class="check-element animate-show" ng-show="checked1">
-							<h2 class="text-center page-header">Step Graph</h2>
-							<div id="stepGraph" style="width:95%; height:300px" ></div>
+				<div ng-init="init_plot()">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="check-element animate-show" ng-show="checked1">
+								<h2 class="text-center page-header">Step Graph</h2>
+								<div id="stepGraph" style="width:95%; height:300px" ></div>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="check-element animate-show" ng-show="checked2">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="check-element animate-show" ng-show="checked2">
 
-							<h2 class="text-center page-header">Courbe lissée</h2>
+								<h2 class="text-center page-header">Courbe lissée</h2>
 
-							<div id="curve" style="width:95%; height:300px"></div>
+								<div id="curve" style="width:95%; height:300px"></div>
+							</div>
 						</div>
-					</div>
 
+					</div>
 				</div>
-				
 				
 				<div class="row">
 					<div class="col-md-12">
