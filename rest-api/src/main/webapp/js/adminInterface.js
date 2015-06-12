@@ -20,29 +20,17 @@ var app = angular.module("groupDiv.adminController", []);
 
 		GApi.execute('groupDivWeb', 'session.list').then(
 			function(data) {
-				data = {
-					items :{
-						item:{
-							name:"oui",
-							key:{
-								id:"pm"
-							}
-						}
-					}
-				};
-				angular.forEach(data.items, function(x){
-					temp = {name: x.name, id: x.key.id};
+				angular.forEach(data.items, function(item){
+					temp = {name: item.name, id: item.key.id};
 					$scope.sessions.push(temp);
 				});
 			},
 			function() {
-				console.log("error :(");
+				console.log("error : we can't get the list of sessions");
 			}
 		);
 
-
 		$scope.init_plot = function(){
-			console.log("init des plot");
 			$scope.plotStep = $.plot(
 				"#stepGraph",
 				$scope.divergencesValues,
@@ -133,6 +121,7 @@ var app = angular.module("groupDiv.adminController", []);
 		$scope.chooseSession = function(){
 			if(!angular.isUndefined($scope.selectedSession)){
 				$scope.sessionChoosen = true;
+				
 				GApi.execute('groupDivWeb', 'session.get', {sessionId: $scope.selectedSession}).then(
 					function(data){
 						$scope.useGroupDiv = data.withGroupDiv;
@@ -145,7 +134,7 @@ var app = angular.module("groupDiv.adminController", []);
 
 						});
 					}, function(){
-						console.log("error");
+						console.log("error : we can't load the session");
 					}
 				);
 
