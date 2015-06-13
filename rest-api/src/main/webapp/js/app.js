@@ -2,6 +2,7 @@ var app = angular.module("groupDiv", [
 	'groupDiv.choicesController',
 	'groupDiv.userController',
 	'groupDiv.adminController',
+	'groupDiv.createUeUser',
 	'angular-google-gapi',
 	'ngRoute'
 ]);
@@ -18,11 +19,12 @@ app.config(['$routeProvider',
 	function($routeProvider){
 		$routeProvider.
 			when('/adminCreate', {
-				templateUrl: '/adminCreate.html',
+				templateUrl: 'partial/adminCreate.html',
 			}).when('/adminView', {
-				templateUrl: '/adminView.html',
-			}).otherwise({
-				redirectTo: '/autre'
+				templateUrl: 'partial/admin.html',
+				controller: 'adminController',
+			}).when('/user', {
+				templateUrl: 'partial/userInterface.html',
 			});
 	}
 ]);

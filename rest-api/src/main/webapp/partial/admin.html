@@ -1,5 +1,18 @@
+	<div ng-include="'partial/adminInterface.html'"></div>
+<div ng-hide="sessionChoosen">
+	<center>
+		<h2 class="text-center page-header">Choisir une session à regarder : </h2>
 
-    <div class="container-fluid">
+			<form>
+				<select ng-selected="sessions[0]" ng-model='selectedSession' ng-options="session.id as session.name for session in sessions">
+					<option value="">-- Select an option--</option>
+				</select>
+				<input type="button" value="Ok" ng-click="chooseSession()"/>
+			</form>
+	</center>
+</div>
+<div ng-show="sessionChoosen">
+	<div class="container-fluid">
 		<div class="row">			
 			<div class="col-md-6">
 				<h2 class="text-center page-header">Résultats de l'expérience</h2>
@@ -79,4 +92,4 @@
 
 		</div>
 	</div>
-
+</div>

@@ -12,7 +12,7 @@
 	
 	app.controller("AdminController", ['$scope', 'GApi', function($scope, GApi){	
 		
-		this.sessionChoosen = false;
+		this.sessionChoosen = true;
 		
 		$scope.useGroupDiv = true;
 		$scope.sessions = [];

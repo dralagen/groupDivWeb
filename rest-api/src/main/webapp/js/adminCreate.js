@@ -1,8 +1,8 @@
 (function(){
-	var app = angular.module('createUeUser', []);
+	var app = angular.module('groupDiv.createUeUser', []);
 
 
-	app.controller('StoreController', function($scope) {
+	app.controller('createUeUser', function($scope) {
 			
 		$scope.session = {};
 		$scope.session.ues = [];
