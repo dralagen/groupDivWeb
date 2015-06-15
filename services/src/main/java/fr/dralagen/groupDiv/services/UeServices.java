@@ -2,8 +2,11 @@ package fr.dralagen.groupDiv.services;
 
 import fr.dralagen.groupDiv.bean.UeBean;
 import fr.dralagen.groupDiv.model.Ue;
+import fr.dralagen.groupDiv.model.UeContent;
 import fr.dralagen.groupDiv.model.User;
+import fr.dralagen.groupDiv.persistence.UeContentRepository;
 import fr.dralagen.groupDiv.persistence.UeRepository;
+import fr.dralagen.groupDiv.persistence.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,9 +28,20 @@ public class UeServices {
     return service;
   }
 
-  public UeBean getUe(long ueId, User user) {
+  public UeBean getUe (long sessionId, long ueId, User user) {
+
+    Integer ueVersion = user.getVersionUE().get(ueId);
+    if (ueVersion == null) {
+      User persistedUser = UserRepository.getInstance().findOne(user.getKey());
+      ueVersion = persistedUser.getVersionUE().get(ueId);
+    }
 
     UeBean result = UeBean.toBean(UeRepository.getInstance().findOne(ueId));
+
+    UeContent content = UeContentRepository.getInstance().findOne(ueId, ueVersion);
+
+    result.setContent(content.getContent());
+    result.setVersion(content.getVersion());
 
     return result;
 

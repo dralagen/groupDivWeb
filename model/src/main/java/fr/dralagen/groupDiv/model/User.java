@@ -23,11 +23,11 @@ public class User {
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
-  private Map<Key, Integer> versionUE; // Key foreign key of ue
+  private Map<Long, Integer> versionUE; // Key foreign key of ue
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
-  private Map<Key, Integer> versionReview; // key foreign key of user
+  private Map<Long, Integer> versionReview; // key foreign key of user
 
   public Key getKey () {
     return key;
@@ -45,19 +45,19 @@ public class User {
     this.name = name;
   }
 
-  public Map<Key, Integer> getVersionUE () {
+  public Map<Long, Integer> getVersionUE () {
     return versionUE;
   }
 
-  public void setVersionUE (Map<Key, Integer> versionUE) {
+  public void setVersionUE (Map<Long, Integer> versionUE) {
     this.versionUE = versionUE;
   }
 
-  public Map<Key, Integer> getVersionReview () {
+  public Map<Long, Integer> getVersionReview () {
     return versionReview;
   }
 
-  public void setVersionReview (Map<Key, Integer> versionReview) {
+  public void setVersionReview (Map<Long, Integer> versionReview) {
     this.versionReview = versionReview;
   }
 }

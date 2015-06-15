@@ -26,9 +26,9 @@ public class UeApi {
 
 
   @ApiMethod(name = "session.ue.get", httpMethod = ApiMethod.HttpMethod.GET, path = "session/{sessionId}/ue/{ueId}")
-  public UeBean getUe(@Named("sessionId") long sessionId, @Named("ueId") long UeId, User user) {
+  public UeBean getUe(@Named("sessionId") long sessionId, @Named("ueId") long ueId, User user) {
 
-    return new UeBean();
+    return UeServices.getInstance().getUe(sessionId, ueId, user);
   }
 
   @ApiMethod(name = "session.ue.list", httpMethod = ApiMethod.HttpMethod.GET, path = "session/{sessionId}/ue")
