@@ -25,6 +25,8 @@ app.config(['$routeProvider',
 				controller: 'adminController',
 			}).when('/user', {
 				templateUrl: 'partial/userInterface.html',
+			}).otherwise({
+				templateUrl: 'partial/indexChoices.html',
 			});
 	}
 ]);

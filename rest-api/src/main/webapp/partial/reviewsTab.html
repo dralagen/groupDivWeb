@@ -1,7 +1,4 @@
-<select class="form-control" id="selectReview">
-	<option value="value1">UE 1</option>
-	<option value="value2">UE 2</option>
-	<option value="value3">UE 3</option>
+<select class="form-control" id="selectReview" ng-model="selectedUE" ng-change="test(selectedUE)" ng-options="ue.id as ue.name for ue in ues">
 </select>
 
 <h2 class="text-center page-header">Review de l'UE : web sémantique</h2>
@@ -20,6 +17,6 @@
 <form class="input-group input-group-lg">
 	<input type="text" class="form-control" />
 	<span class="input-group-btn">
-		<button type="button" class="btn btn-primary btn-lg" >Post</button>
+		<button type="button" class="btn btn-primary btn-lg" ng-click="postReview()">Post</button>
 	</span>
 </form>
