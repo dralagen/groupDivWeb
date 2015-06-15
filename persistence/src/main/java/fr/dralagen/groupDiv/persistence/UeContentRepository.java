@@ -39,6 +39,24 @@ public class UeContentRepository {
     }
   }
 
+  public UeContent create(UeContent content) {
+    if (content.getKey() != null) {
+      return null;
+    }
+
+    content.setKey(forgeKey(content.getUeId(), content.getVersion()));
+
+    PersistenceManager pm = PMF.get().getPersistenceManager();
+
+    try {
+      pm.makePersistent(content);
+    } finally {
+      pm.close();
+    }
+
+    return content;
+  }
+
   private Key forgeKey (long ueId, int version) {
     return  new KeyFactory.Builder(Ue.class.getSimpleName(), ueId)
         .addChild("version", ((long) version))

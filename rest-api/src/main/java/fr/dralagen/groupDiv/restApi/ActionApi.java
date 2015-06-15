@@ -22,19 +22,6 @@ import fr.dralagen.groupDiv.model.Ue;
 )
 public class ActionApi {
 
-  @ApiMethod(name = "action.commit.ue", httpMethod = ApiMethod.HttpMethod.POST, path = "action/commit/ue")
-  public LogAction commitUe(@Named("contentUE") String content, Ue ue) {
-
-    //TODO dralagen 6/4/15 : Add new version of UE
-    //TODO dralagen 6/4/15 : Log Commit UE
-    //TODO dralagen 6/4/15 : Update divergence
-
-    LogAction result = new LogAction();
-    result.setAction(Action.COMMIT);
-    result.setResult("Commit UE");
-    return result;
-  }
-
   @ApiMethod(name = "action.commit.review", httpMethod = ApiMethod.HttpMethod.POST, path = "action/commit/review")
   public LogAction commitReview(@Named("contentReview") String content, Ue ue) {
 

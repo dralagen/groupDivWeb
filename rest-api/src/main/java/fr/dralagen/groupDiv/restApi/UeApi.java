@@ -35,4 +35,9 @@ public class UeApi {
   public Collection<UeBean> list(@Named("sessionId") long sessionId) {
     return UeServices.getInstance().getAllUe(sessionId);
   }
+
+  @ApiMethod(name = "session.ue.commit", httpMethod = ApiMethod.HttpMethod.POST, path = "session/{sessionId}/ue")
+  public UeBean commit(@Named("sessionId") long sessionId, UeBean ue) {
+    return UeServices.getInstance().updateUe(ue);
+  }
 }

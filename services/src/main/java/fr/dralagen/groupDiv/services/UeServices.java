@@ -59,4 +59,23 @@ public class UeServices {
     return result;
 
   }
+
+  public UeBean updateUe(UeBean ueBean) {
+
+    User userPersisted = UserRepository.getInstance().findOne(ueBean.getAuthor().getKey());
+
+    UeContent content = new UeContent();
+    content.setContent(ueBean.getContent());
+    content.setVersion(userPersisted.getVersionUE().get(ueBean.getKey().getId()) + 1);
+    content.setUeId(ueBean.getKey().getId());
+
+    content = UeContentRepository.getInstance().create(content);
+
+    userPersisted.getVersionUE().put(ueBean.getKey().getId(), content.getVersion());
+
+    //TODO dralagen 6/15/15 : log commit UE
+    //TODO dralagen 6/15/15 : update divergence
+
+    return ueBean;
+  }
 }

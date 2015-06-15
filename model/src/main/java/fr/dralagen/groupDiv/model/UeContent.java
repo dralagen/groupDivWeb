@@ -25,7 +25,7 @@ public class UeContent {
   private int version;
 
   @Persistent
-  private Key ueId;
+  private long ueId;
 
   public Key getKey () {
     return key;
@@ -51,11 +51,11 @@ public class UeContent {
     this.version = version;
   }
 
-  public Key getUeId () {
+  public long getUeId () {
     return ueId;
   }
 
-  public void setUeId (Key ueId) {
+  public void setUeId (long ueId) {
     this.ueId = ueId;
   }
 }
