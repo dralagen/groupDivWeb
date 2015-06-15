@@ -1,4 +1,4 @@
-<select class="form-control" id="selectReview" ng-model="selectedUE" ng-change="test(selectedUE)" ng-options="ue.id as ue.name for ue in ues">
+<select class="form-control" id="selectedUE" ng-init="selectedUE = ues[0].id" ng-model="selectedUE" ng-change="changerUE(selectedUE)" ng-options="ue.id as ue.name for ue in ues">
 </select>
 
 <h2 class="text-center page-header">Review de l'UE : web sémantique</h2>

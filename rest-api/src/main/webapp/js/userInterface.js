@@ -3,7 +3,7 @@ var app = angular.module("groupDiv.userController", []);
 app.controller("userController", ['$scope', function($scope){
 
 		$scope.tab = 1;
-		
+		$scope.selectedUE;
 		$scope.selectTab = function(setTab){
 			$scope.tab = setTab;
 		};
@@ -14,7 +14,7 @@ app.controller("userController", ['$scope', function($scope){
 		
 		$scope.GDtot = 56;
 		$scope.GDUser = 10;
-		$scope.ues = [{name: "ue1", id:"1"}, {name:"ue2", id:"2"}, {name:"ue3", id:"3"}];
+		$scope.ues = [{name: "ue1", id:"u1"}, {name:"ue2", id:"u2"}, {name:"ue3", id:"u3"}];
 		$scope.users = [{name: "user1", id:20}, {name :"user2", id:0}, {name:"user3", id:30}];
 		$scope.echelle = 20;
 
@@ -80,7 +80,7 @@ app.controller("userController", ['$scope', function($scope){
 			console.log("post sur : " );
 		}
 
-		$scope.test = function(t){
-			console.log(t);
+		$scope.changerUE = function(ue){
+			console.log("ue " + ue + " choisie");
 		}
 	}]);
