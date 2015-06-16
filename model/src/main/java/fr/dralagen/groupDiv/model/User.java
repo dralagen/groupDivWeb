@@ -29,6 +29,11 @@ public class User {
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private Map<Long, Integer> versionReview; // key foreign key of user
 
+  @Persistent
+  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
+  @Element(dependent = "true")
+  private Session session;
+
   public Key getKey () {
     return key;
   }

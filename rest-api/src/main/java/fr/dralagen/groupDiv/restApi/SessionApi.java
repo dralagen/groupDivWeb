@@ -15,7 +15,7 @@ import java.util.Collection;
 /**
  * Created on 6/3/15.
  *
- * Rest API to get and create Session XP
+ * Rest API to get and save Session XP
  *
  * @author dralagen
  */

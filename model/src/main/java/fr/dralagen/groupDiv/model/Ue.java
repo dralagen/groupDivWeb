@@ -1,6 +1,7 @@
 package fr.dralagen.groupDiv.model;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 
 import javax.jdo.annotations.*;
 import java.util.List;
@@ -31,6 +32,7 @@ public class Ue {
   private Session session;
 
   @Persistent
+  @Unowned
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private User author;
 

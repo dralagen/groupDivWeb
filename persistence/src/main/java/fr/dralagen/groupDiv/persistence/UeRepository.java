@@ -42,8 +42,8 @@ public class UeRepository {
     return session.getUes();
   }
 
-  public Ue findOne(long ueId) {
-    return findOne(forgeKey(ueId));
+  public Ue findOne(long sessionId, long ueId) {
+    return findOne(forgeKey(sessionId, ueId));
   }
 
   public Ue findOne(Key id) {
@@ -56,7 +56,7 @@ public class UeRepository {
     }
   }
 
-  static Key forgeKey(long ueId) {
-    return new KeyFactory.Builder(Ue.class.getSimpleName(), ueId).getKey();
+  private static Key forgeKey(long sessionId, long ueId) {
+    return new KeyFactory.Builder(Session.class.getSimpleName(), sessionId).addChild(Ue.class.getSimpleName(), ueId).getKey();
   }
 }

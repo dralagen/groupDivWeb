@@ -55,7 +55,7 @@ public class SessionRepository {
 
   }
 
-  public Session create(Session session) {
+  public Session save(Session session) {
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
     try {

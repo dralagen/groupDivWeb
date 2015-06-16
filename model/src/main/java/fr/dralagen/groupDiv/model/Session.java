@@ -38,6 +38,10 @@ public class Session {
   @Element(dependent = "true")
   private List<Ue> ues;
 
+  @Persistent(mappedBy = "session")
+  @Element(dependent = "true")
+  private List<User> users;
+
   public Key getKey () {
     return key;
   }
@@ -84,5 +88,13 @@ public class Session {
 
   public void setUes (List<Ue> ues) {
     this.ues = ues;
+  }
+
+  public List<User> getUsers() {
+    return users;
+  }
+
+  public void setUsers(List<User> users) {
+    this.users = users;
   }
 }

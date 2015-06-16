@@ -5,6 +5,7 @@ import fr.dralagen.groupDiv.bean.NewUeBean;
 import fr.dralagen.groupDiv.bean.SessionBean;
 import fr.dralagen.groupDiv.model.Session;
 import fr.dralagen.groupDiv.model.Ue;
+import fr.dralagen.groupDiv.model.UeContent;
 import fr.dralagen.groupDiv.model.User;
 import fr.dralagen.groupDiv.persistence.SessionRepository;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
@@ -40,19 +41,46 @@ public class SessionServices {
     newSession.setGDtot(0);
 
     List<Ue> ueList = new ArrayList<>();
+    List<User> userList = new ArrayList<>();
     for (NewUeBean ue: session.getUe()) {
       User newUser = new User();
       newUser.setName(ue.getUser());
+      userList.add(newUser);
+
+      UeContent newContent = new UeContent();
+      newContent.setVersion(0);
+      newContent.setContent("");
+      List<UeContent> contents = new ArrayList<>();
+      contents.add(newContent);
 
       Ue newUe = new Ue();
       newUe.setTitle(ue.getTitle());
       newUe.setAuthor(newUser);
+      newUe.setContents(contents);
 
       ueList.add(newUe);
     }
     newSession.setUes(ueList);
+    newSession.setUsers(userList);
 
-    newSession = SessionRepository.getInstance().create(newSession);
+    newSession = SessionRepository.getInstance().save(newSession);
+
+    // init divergence of all user
+    Map<Long, Integer> versionUE = new HashMap<>();
+    for (Ue oneUe: newSession.getUes()) {
+      versionUE.put(oneUe.getKey().getId(), 0);
+    }
+    Map<Long, Integer> versionReview = new HashMap<>();
+    for (User oneUser: newSession.getUsers()) {
+      versionReview.put(oneUser.getKey().getId(), 0);
+    }
+
+    for (User oneUser: newSession.getUsers()) {
+      oneUser.setVersionUE(versionUE);
+      oneUser.setVersionReview(versionReview);
+    }
+
+    SessionRepository.getInstance().save(newSession);
 
     return SessionBean.toBean(newSession);
   }
