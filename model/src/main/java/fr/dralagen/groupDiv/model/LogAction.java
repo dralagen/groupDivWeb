@@ -28,7 +28,7 @@ public class LogAction {
   private String result;
 
   @Persistent
-  private Key sessionId;
+  private long sessionId;
 
   public Key getKey() {
     return key;
@@ -62,11 +62,11 @@ public class LogAction {
     this.result = result;
   }
 
-  public Key getSessionId () {
+  public long getSessionId () {
     return sessionId;
   }
 
-  public void setSessionId (Key sessionId) {
+  public void setSessionId (long sessionId) {
     this.sessionId = sessionId;
   }
 }
