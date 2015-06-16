@@ -2,6 +2,8 @@ package fr.dralagen.groupDiv.bean;
 
 import fr.dralagen.groupDiv.model.Action;
 
+import java.util.Date;
+
 /**
  * Created on 6/16/15.
  *
@@ -16,6 +18,8 @@ public class LogBean {
   private Action action;
 
   private String message;
+
+  private Date date;
 
   public long getId() {
     return id;
@@ -47,5 +51,13 @@ public class LogBean {
 
   public void setMessage(String message) {
     this.message = message;
+  }
+
+  public Date getDate() {
+    return date;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
   }
 }
