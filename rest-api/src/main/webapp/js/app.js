@@ -3,13 +3,13 @@ var app = angular.module("groupDiv", [
 	'groupDiv.userController',
 	'groupDiv.adminController',
 	'groupDiv.createUeUser',
+	'ngRoute',
 	'angular-google-gapi',
-	'ngRoute'
 ]);
 
 app.run(['GApi', 'GAuth',
 	function(GApi, GAuth) {
-		var BASE = '//localhost:8080/_ah/api';
+		var BASE = 'https://groupdivxp.appspot.com/_ah/api';
 		GApi.load('groupDivWeb','v1',BASE);
 		
 	}

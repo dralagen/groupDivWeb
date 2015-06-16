@@ -1,13 +1,13 @@
 <center>
-	<h2 class="page-header">Description de l'UE : web sémantique</h2>
+	<h2 class="page-header">Description de l'UE : {{UEOfCurrentUser.name}}</h2>
 </center>
 
 <h3 class="sub-header">Description de L'UE</h3>
 <form name="reviewForm">
 	<div class="jumbotron">
-	<textarea class="form-control" rows="20"></textarea>
+	<textarea class="form-control" ng-model="UEOfCurrentUser.content" rows="20"></textarea>
 	<p>
-		<button class="btn btn-primary btn-lg pull-right" type="submit" style="margin-top:5px;">Post</button>
+		<button class="btn btn-primary btn-lg pull-right" type="submit" style="margin-top:5px;" ng-click="postUE">Post</button>
 	</p>
 </div>
 </form>

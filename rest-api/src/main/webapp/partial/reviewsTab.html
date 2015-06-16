@@ -1,13 +1,13 @@
-<select class="form-control" id="selectedUE" ng-init="selectedUE = ues[0].id" ng-model="selectedUE" ng-change="changerUE(selectedUE)" ng-options="ue.id as ue.name for ue in ues">
+<select class="form-control" id="selectedUE" ng-init="selectedUE = ues[0]" ng-model="selectedUE" ng-change="changerUE(selectedUE.id)" ng-options="ue as ue.name for ue in ues">
 </select>
 
-<h2 class="text-center page-header">Review de l'UE : web sémantique</h2>
+<h2 class="text-center page-header">Review de l'UE : {{selectedUE.name}}</h2>
 
 <div class="jumbotron">
 	<div class="servive-block servive-block-grey">
 		<h3 class="sub-header">Description de l'UE</h3>
 		<form name="reviewForm">
-			<textarea class="form-control" rows="20"></textarea>
+			<textarea class="form-control" ng-model="selectedUE.content" rows="20"></textarea>
 		</form>
 		<div ng-include="'partial/reviews.html'"></div>
 	</div>

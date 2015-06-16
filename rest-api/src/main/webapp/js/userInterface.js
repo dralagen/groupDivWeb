@@ -1,8 +1,11 @@
 var app = angular.module("groupDiv.userController", []);
 
-app.controller("userController", ['$scope', function($scope){
+app.controller("userController", ['$scope', 'GApi', function myCC($scope, GApi){
 
 		$scope.tab = 1;
+		
+		$scope.sessionId = "123456789";
+		
 		$scope.selectedUE;
 		$scope.selectTab = function(setTab){
 			$scope.tab = setTab;
@@ -13,10 +16,12 @@ app.controller("userController", ['$scope', function($scope){
 		};
 		
 		$scope.GDtot = 56;
-		$scope.GDUser = 10;
-		$scope.ues = [{name: "ue1", id:"u1"}, {name:"ue2", id:"u2"}, {name:"ue3", id:"u3"}];
-		$scope.users = [{name: "user1", id:20}, {name :"user2", id:0}, {name:"user3", id:30}];
-		$scope.echelle = 20;
+		$scope.currentUsr = {name: "me", id: 10, GD:"10"};
+		$scope.users = [{name: "user1", id:20, GD:"10"}, {name :"user2", id:0, GD:"20"}, {name:"user3", id:30, GD:"50"}, {name:"user4", id:40, GD:"0"}, {name:"user5", id:50, GD:"5"}];
+
+		$scope.UEOfCurrentUser = {name: "une ue", id: "uespe", content: "blablabla"};
+		$scope.ues = [{name: "ue1", id:"u1", content: "je suis ue1"}, {name:"ue2", id:"u2", content: "je suis ue 2"}, {name:"ue3", id:"u3", content: "je suis ue 3"}];
+		$scope.echelle = 50;
 
 		$scope.canvas = document.getElementById("mon_canvas");
 		$scope.context = $scope.canvas.getContext("2d");
@@ -50,7 +55,7 @@ app.controller("userController", ['$scope', function($scope){
 			j = 5;
 			k = 0;
 			
-			$scope.context.drawImage($scope.xWingUser, 15 + k + j, $scope.divMinHeightPosition * $scope.GDUser / $scope.echelle);	
+			$scope.context.drawImage($scope.xWingUser, 15 + k + j, $scope.divMinHeightPosition * $scope.currentUsr.GD / $scope.echelle);	
 
 			for(x of $scope.users){
 				if( k === 0){
@@ -59,7 +64,10 @@ app.controller("userController", ['$scope', function($scope){
 						j = -5;
 					}
 				}
-				$scope.context.drawImage($scope.xWing, 15 + k + j, $scope.divMinHeightPosition - ($scope.divMinHeightPosition * x.value / $scope.echelle));	
+				console.log(x);
+				console.log("   "+ k + "   "+ j);
+
+				$scope.context.drawImage($scope.xWing, 15 + k + j, $scope.divMinHeightPosition - ($scope.divMinHeightPosition * x.GD / $scope.echelle));	
 				k = (k+40)%160;
 			}
 		}
@@ -72,15 +80,26 @@ app.controller("userController", ['$scope', function($scope){
 
 		$scope.putPicturesOnCanvas();
 
-		$scope.pullUsr = function(userName){
-			console.log("pull sur : " + userName);
+		$scope.pullUsr = function(userId){
+			console.log("pull sur : " + userId);
+		
+			GApi.execute('groupDivWeb', 'action.pull', {userId: userId}).then(
+				function(resp) {
+					console.log(resp);
+					//TODO use resp to update local data
+				}, function() {
+					console.log("error you can't pull : " + userId);
+				}
+			);
 		}
 
 		$scope.postReview = function(){
 			console.log("post sur : " );
+			//TODO add rest call
 		}
 
-		$scope.changerUE = function(ue){
-			console.log("ue " + ue + " choisie");
+		$scope.postUE = function(){
+			console.log("post UE : " );
+			//TODO add rest call
 		}
 	}]);

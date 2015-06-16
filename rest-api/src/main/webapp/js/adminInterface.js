@@ -1,7 +1,7 @@
 var app = angular.module("groupDiv.adminController", []);
 
 
-	app.controller("adminController",['$scope', 'GApi', function($scope, GApi){
+	app.controller("adminController",['$scope', 'GApi', function myC($scope, GApi){
 
 
 		$scope.sessionChoosen = false;
@@ -17,15 +17,16 @@ var app = angular.module("groupDiv.adminController", []);
 			{data: [[Date.parse("2015-12-12T12:12:12"), 100],[Date.parse("2015-12-12T12:14:12"), 200], [Date.parse("2015-12-12T12:15:12"), 300], [Date.parse("2015-12-12T12:16:12"), 400]],  label: "usr2"}
 		];
 
-
+		console.log("je suis ici");
 		GApi.execute('groupDivWeb', 'session.list').then(
-			function(data) {
+			function(data){
+				console.log("list sessions ok ");
 				angular.forEach(data.items, function(item){
 					temp = {name: item.name, id: item.key.id};
 					$scope.sessions.push(temp);
 				});
 			},
-			function() {
+			function(){
 				console.log("error : we can't get the list of sessions");
 			}
 		);
@@ -131,7 +132,6 @@ var app = angular.module("groupDiv.adminController", []);
 						angular.forEach(data.ues, function(info){
 							temp = {name: info.author.name, ue: info.title, div:0, s:info.author.name};
 							$scope.users.push(temp);
-
 						});
 					}, function(){
 						console.log("error : we can't load the session");
