@@ -2,7 +2,6 @@ package fr.dralagen.groupDiv.persistence;
 
 import com.google.appengine.api.datastore.Key;
 import fr.dralagen.groupDiv.model.Review;
-import fr.dralagen.groupDiv.model.Ue;
 import fr.dralagen.groupDiv.model.User;
 
 import javax.jdo.JDOObjectNotFoundException;
@@ -24,7 +23,7 @@ public class ReviewRepository {
 
   }
 
-  private static ReviewRepository getInstance() {
+  public static ReviewRepository getInstance() {
     if (repo == null) {
       repo = new ReviewRepository();
     }
@@ -49,16 +48,16 @@ public class ReviewRepository {
     return result;
   }
 
-  public Collection<Review> findAllByUe(Ue ue) {
+  public Collection<Review> findAllByUe(long ueId) {
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
     List<Review> result;
     Query q = pm.newQuery(Review.class);
     q.setFilter("ue == paramUe");
-    q.declareParameters("UE paramUe");
+    q.declareParameters("long paramUe");
 
     try {
-      result = (List<Review>) q.execute(ue);
+      result = (List<Review>) q.execute(ueId);
     } finally {
       q.closeAll();
     }
