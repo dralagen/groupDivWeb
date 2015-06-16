@@ -33,12 +33,7 @@ app.config(['$routeProvider',
 ]);
 
 app.config(function($translateProvider) {
-	$translateProvider.useSanitizeValueStrategy(escape);
-	$translateProvider.preferredLanguage('fr');
-    $translateProvider.translations('fr', {
-		USER: 'Utilisateur',
-		ADMIN: 'Administrateur'
-    });
-	//TODO/ mettre une variable et dans un fichier json a part inclut dans le html mettre les donnees
-	
+	$translateProvider.useSanitizeValueStrategy(null);
+	$translateProvider.preferredLanguage('en');
+    $translateProvider.translations('en', translateEn);	
 });

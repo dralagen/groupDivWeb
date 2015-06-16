@@ -1,11 +1,11 @@
 <select class="form-control" id="selectedUE" ng-init="selectedUE = ues[0].id" ng-model="selectedUE" ng-change="changerUE(selectedUE)" ng-options="ue.id as ue.name for ue in ues">
 </select>
 
-<h2 class="text-center page-header">Review de l'UE : web sémantique</h2>
+<h2 class="text-center page-header">{{ 'UE_REVIEWS' | translate }} : web sémantique</h2>
 
 <div class="jumbotron">
 	<div class="servive-block servive-block-grey">
-		<h3 class="sub-header">Description de l'UE</h3>
+		<h3 class="sub-header">{{ 'UE_DESCRIPTION' | translate }}</h3>
 		<form name="reviewForm">
 			<textarea class="form-control" rows="20"></textarea>
 		</form>
@@ -13,10 +13,10 @@
 	</div>
 </div>
 
-<h3 class="sub-header">Votre review</h3>
+<h3 class="sub-header">{{ 'YOUR_REVIEW' | translate }}</h3>
 <form class="input-group input-group-lg">
 	<input type="text" class="form-control" />
 	<span class="input-group-btn">
-		<button type="button" class="btn btn-primary btn-lg" ng-click="postReview()">Post</button>
+		<button type="button" class="btn btn-primary btn-lg" ng-click="postReview()">{{ 'POST' | translate }}</button>
 	</span>
 </form>

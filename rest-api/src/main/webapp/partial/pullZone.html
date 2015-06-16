@@ -1,4 +1,4 @@
-<p> Pull from : </p>
+<p> {{ 'DO_PULL' | translate }} : </p>
 <div ng-repeat="user in users">
 	<button type="button" class="btn btn-primary btn-lg btn-block" ng-click="pullUsr(user.id)">{{user.name}}</button>
 </div>
