@@ -1,16 +1,15 @@
 package fr.dralagen.groupDiv.services;
 
+import fr.dralagen.groupDiv.bean.NewSessionBean;
+import fr.dralagen.groupDiv.bean.NewUeBean;
 import fr.dralagen.groupDiv.bean.SessionBean;
 import fr.dralagen.groupDiv.model.Session;
 import fr.dralagen.groupDiv.model.Ue;
+import fr.dralagen.groupDiv.model.User;
 import fr.dralagen.groupDiv.persistence.SessionRepository;
-import fr.dralagen.groupDiv.persistence.UeRepository;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created on 6/5/15.
@@ -30,51 +29,71 @@ public class SessionServices {
     return service;
   }
 
-  public Session create(SessionBean session) throws InvalidFormException {
+  public SessionBean create(NewSessionBean session) throws InvalidFormException {
 
     checkSession(session);
 
     Session newSession = new Session();
     newSession.setName(session.getName());
     newSession.setWithGroupDiv(session.getWithGroupDiv());
-    newSession.setLastLog(null);
-    newSession.setBeginDate(new Date());
+    newSession.setCreateDate(new Date());
     newSession.setGDtot(0);
+
+    List<Ue> ueList = new ArrayList<>();
+    for (NewUeBean ue: session.getUe()) {
+      User newUser = new User();
+      newUser.setName(ue.getUser());
+
+      Ue newUe = new Ue();
+      newUe.setTitle(ue.getTitle());
+      newUe.setAuthor(newUser);
+
+      ueList.add(newUe);
+    }
+    newSession.setUes(ueList);
 
     newSession = SessionRepository.getInstance().create(newSession);
 
-
-    return newSession;
+    return SessionBean.toBean(newSession);
   }
 
-  public Collection<Session> getAll () {
-    return SessionRepository.getInstance().findAll();
+  public Collection<SessionBean> getAll () {
+    Collection<Session> allSession = SessionRepository.getInstance().findAll();
+
+    Collection<SessionBean> allBean = new ArrayList<>();
+    for(Session oneSession: allSession) {
+      allBean.add(SessionBean.toBean(oneSession));
+    }
+
+    return allBean;
   }
 
-  public Session get(long sessionId) {
-    return SessionRepository.getInstance().findOne(sessionId);
+  public SessionBean get(long sessionId) {
+    return SessionBean.toBean(SessionRepository.getInstance().findOne(sessionId));
   }
 
-  private void checkSession(SessionBean session) throws InvalidFormException {
+  private void checkSession(NewSessionBean session) throws InvalidFormException {
     Map<String, String> errors = new HashMap<>();
 
     if (session.getName() == null || session.getName().equals("")) {
       errors.put("name", "Name is mandatory for a session");
     }
 
-    if (session.getUes().isEmpty()) {
+    if (session.getUe().isEmpty()) {
       errors.put("ue", "At least one UE is mandatory for a session");
     }
 
-    for (Ue ue : session.getUes()) {
+    for (NewUeBean ue : session.getUe()) {
       String ueTitle = ue.getTitle();
       if (ueTitle == null || ueTitle.equals("")) {
         errors.put("ueTitle", "UE title is mandatory");
-      } else {
-        if (ue.getAuthor() == null || ue.getAuthor().getName() == null || ue.getAuthor().getName().equals("")) {
-          errors.put(ue.getTitle(), "User is mandatory for an UE");
-        }
       }
+
+      String userName = ue.getUser();
+      if (userName == null || userName.equals("")) {
+        errors.put("userName", "User name is mandatory");
+      }
+
     }
 
     if (!errors.isEmpty()) {

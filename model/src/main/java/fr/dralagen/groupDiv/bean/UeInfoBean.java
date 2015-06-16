@@ -1,5 +1,7 @@
 package fr.dralagen.groupDiv.bean;
 
+import fr.dralagen.groupDiv.model.Ue;
+
 /**
  * Created on 6/16/15.
  *
@@ -25,5 +27,17 @@ public class UeInfoBean {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public static UeInfoBean toBean(Ue one) {
+    UeInfoBean bean = new UeInfoBean();
+
+    if (one.getKey() != null) {
+      bean.setId(one.getKey().getId());
+    }
+
+    bean.setTitle(one.getTitle());
+
+    return bean;
   }
 }

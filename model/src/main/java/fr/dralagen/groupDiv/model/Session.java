@@ -24,11 +24,7 @@ public class Session {
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
-  private Date beginDate;
-
-  @Persistent
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
-  private Date lastLog;
+  private Date createDate;
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
@@ -58,20 +54,12 @@ public class Session {
     this.name = name;
   }
 
-  public Date getBeginDate () {
-    return beginDate;
+  public Date getCreateDate() {
+    return createDate;
   }
 
-  public void setBeginDate (Date beginDate) {
-    this.beginDate = beginDate;
-  }
-
-  public Date getLastLog () {
-    return lastLog;
-  }
-
-  public void setLastLog (Date lastLog) {
-    this.lastLog = lastLog;
+  public void setCreateDate(Date createDate) {
+    this.createDate = createDate;
   }
 
   public int getGDtot () {
