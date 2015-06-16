@@ -1,14 +1,6 @@
 (function(){
 	
-	var app = angular.module("Admin", ['angular-google-gapi']);
-		
-	app.run(['GApi', 'GAuth',
-		function(GApi, GAuth) {
-			var BASE = '//localhost:8080/_ah/api';
-			GApi.load('groupDivWeb','v1',BASE);
-			
-		}
-	]);
+	var app = angular.module("Admin", []);
 	
 	app.controller("AdminController", ['$scope', 'GApi', function($scope, GApi){	
 		

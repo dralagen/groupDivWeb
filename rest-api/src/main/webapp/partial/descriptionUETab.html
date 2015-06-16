@@ -1,11 +1,11 @@
 <center>
-	<h2 class="page-header">{{ 'UE_DESCRIPTION' | translate }} : web sémantique</h2>
+	<h2 class="page-header">{{ 'UE_DESCRIPTION' | translate }} : {{UEOfCurrentUser.name}}</h2>
 </center>
 
 <h3 class="sub-header">{{ 'UE_DESCRIPTION' | translate }}</h3>
 <form name="reviewForm">
 	<div class="jumbotron">
-	<textarea class="form-control" rows="20"></textarea>
+	<textarea class="form-control" ng-model="UEOfCurrentUser.content" rows="20"></textarea>
 	<p>
 		<button class="btn btn-primary btn-lg pull-right" type="submit" style="margin-top:5px;">{{ 'POST' | translate }}</button>
 	</p>
