@@ -2,7 +2,7 @@
 
 <div class="row" ng-controller="createUeUser as store">
 	<div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-2 main">
-		<h1> Create a session </h1>
+		<h1> {{ 'CREATE_SESSION' | translate }} </h1>
 	<div>
 		<table class="userUeList">
 			<tr>
@@ -18,13 +18,13 @@
 			<tr>
 				<th>
 					<label>
-						<input type="checkbox" ng-model="session.withGroupDiv"/> With groupDiv
+						<input type="checkbox" ng-model="session.withGroupDiv"/> {{ 'WITH_GD' | translate }}
 					</label>
 				</th>
 			</tr>
 			<tr>
-				<th> Name of the user </th>
-				<th> Name of the course </th>
+				<th> {{ 'USER_NAME' | translate }} </th>
+				<th> {{ 'COURSE_NAME' | translate }} </th>
 				<th class="action"> </th>
 			</tr>
 			<tr ng-repeat="ue in session.ues">
@@ -34,19 +34,19 @@
 				<td>
 					<input type="text"  class="form-control" value="{{ue.author.name}}" ng-model="ue.author.name"/> 
 				</td>
-				<td class="action"><button class="btn btn-danger" ng-click="deleteUe(ue);"><span class="glyphicon glyphicon-trash" ></span></button></td> <!--ng-click="deleteMember(member);" tooltip="{{ 'action.favoriteList.deleteMember' | translate }} "-->
+				<td class="action"><button class="btn btn-danger" ng-click="deleteUe(ue);"><span class="glyphicon glyphicon-trash" ></span></button></td> 
 			</tr>
 			<tr>
 				<th class="cell-lg" colspan="3">
 				  <div>
-					<button class="btn btn-info" ng-click="addUe();"> <span class="glyphicon glyphicon-plus" ></span> &nbsp; Add a user </button>
+					<button class="btn btn-info" ng-click="addUe();"> <span class="glyphicon glyphicon-plus" ></span> &nbsp; {{ 'ADD_USER' | translate }} </button>
 				  </div>
 				</th>
 			</tr>
 		</table>
 		</div>
 		<div class="text-center">
-			<button class="btn btn-info" ng-click="createSession(session);"><!--ng-click="newFavoriteList()--> <span class=" glyphicon glyphicon-ok"></span>&nbsp; Create the session</button>
+			<button class="btn btn-info" ng-click="createSession(session);"><!--ng-click="newFavoriteList()--> <span class=" glyphicon glyphicon-ok"></span>&nbsp; {{ 'CREATE_THE_SESSION' | translate }}</button>
 		</div>
 	</div>
 

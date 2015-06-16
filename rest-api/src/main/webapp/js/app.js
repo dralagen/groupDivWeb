@@ -34,6 +34,6 @@ app.config(['$routeProvider',
 
 app.config(function($translateProvider) {
 	$translateProvider.useSanitizeValueStrategy(null);
-	$translateProvider.preferredLanguage('en');
-    $translateProvider.translations('en', translateEn);	
+	$translateProvider.preferredLanguage('fr');
+    $translateProvider.translations('fr', translateFr);	
 });
