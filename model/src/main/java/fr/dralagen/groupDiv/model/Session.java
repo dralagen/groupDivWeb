@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.Key;
 
 import javax.jdo.annotations.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created on 6/2/15.
@@ -36,6 +37,10 @@ public class Session {
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private Boolean withGroupDiv;
+
+  @Persistent(mappedBy = "session")
+  @Element(dependent = "true")
+  private List<Ue> ues;
 
   public Key getKey () {
     return key;
@@ -83,5 +88,13 @@ public class Session {
 
   public void setWithGroupDiv (Boolean withGroupDiv) {
     this.withGroupDiv = withGroupDiv;
+  }
+
+  public List<Ue> getUes () {
+    return ues;
+  }
+
+  public void setUes (List<Ue> ues) {
+    this.ues = ues;
   }
 }

@@ -44,7 +44,6 @@ public class UeContentRepository {
       return null;
     }
 
-    content.setKey(forgeKey(content.getUeId(), content.getVersion()));
 
     PersistenceManager pm = PMF.get().getPersistenceManager();
 

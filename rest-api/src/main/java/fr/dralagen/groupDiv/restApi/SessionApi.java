@@ -35,7 +35,6 @@ public class SessionApi {
 
   @ApiMethod(name = "session.get", httpMethod = ApiMethod.HttpMethod.GET, path = "session/{sessionId}")
   public Session getSession(@Named("sessionId") long id) {
-
     return SessionServices.getInstance().get(id);
   }
   

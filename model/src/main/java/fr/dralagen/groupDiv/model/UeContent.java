@@ -25,7 +25,9 @@ public class UeContent {
   private int version;
 
   @Persistent
-  private long ueId;
+  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
+  @Element(dependent = "true")
+  private Ue ue;
 
   public Key getKey () {
     return key;
@@ -49,13 +51,5 @@ public class UeContent {
 
   public void setVersion (int version) {
     this.version = version;
-  }
-
-  public long getUeId () {
-    return ueId;
-  }
-
-  public void setUeId (long ueId) {
-    this.ueId = ueId;
   }
 }

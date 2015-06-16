@@ -24,7 +24,7 @@ public class LogDivergence {
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
-  private Map<Key, Integer> userDivergence; // key foreign key of user
+  private Map<User, Integer> userDivegence; // key foreign key of user
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
@@ -49,12 +49,12 @@ public class LogDivergence {
     this.GDtot = GDtot;
   }
 
-  public Map<Key, Integer> getUserDivergence () {
-    return userDivergence;
+  public Map<User, Integer> getUserDivegence() {
+    return userDivegence;
   }
 
-  public void setUserDivergence (Map<Key, Integer> userDivergence) {
-    this.userDivergence = userDivergence;
+  public void setUserDivegence(Map<User, Integer> userDivegence) {
+    this.userDivegence = userDivegence;
   }
 
   public Date getTime() {

@@ -67,7 +67,6 @@ public class UeServices {
     UeContent content = new UeContent();
     content.setContent(ueBean.getContent());
     content.setVersion(userPersisted.getVersionUE().get(ueBean.getKey().getId()) + 1);
-    content.setUeId(ueBean.getKey().getId());
 
     content = UeContentRepository.getInstance().create(content);
 

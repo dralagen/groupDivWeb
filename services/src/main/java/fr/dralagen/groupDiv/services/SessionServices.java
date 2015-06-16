@@ -43,10 +43,6 @@ public class SessionServices {
 
     newSession = SessionRepository.getInstance().create(newSession);
 
-    for (Ue ue: session.getUes()) {
-      ue.setSessionId(newSession.getKey().getId());
-      UeRepository.getInstance().create(ue);
-    }
 
     return newSession;
   }

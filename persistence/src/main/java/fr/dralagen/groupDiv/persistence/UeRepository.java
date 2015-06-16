@@ -2,11 +2,11 @@ package fr.dralagen.groupDiv.persistence;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import fr.dralagen.groupDiv.model.Session;
 import fr.dralagen.groupDiv.model.Ue;
 
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import java.util.Collection;
 
 /**
@@ -30,19 +30,16 @@ public class UeRepository {
     return repo;
   }
 
+
   public Collection<Ue> findAll(long sessionId) {
-    PersistenceManager pm = PMF.get().getPersistenceManager();
 
-    Query q = pm.newQuery(Ue.class);
-    q.setFilter("sessionId == sessionIdParam");
-    q.declareParameters("long sessionIdParam");
+    Session session = SessionRepository.getInstance().findOne(sessionId);
 
-    try {
-      return (Collection<Ue>) q.execute(sessionId);
-    } catch (JDOObjectNotFoundException e) {
+    if (session == null) {
       return null;
     }
 
+    return session.getUes();
   }
 
   public Ue findOne(long ueId) {
@@ -61,17 +58,5 @@ public class UeRepository {
 
   static Key forgeKey(long ueId) {
     return new KeyFactory.Builder(Ue.class.getSimpleName(), ueId).getKey();
-  }
-
-  public Ue create (Ue ue) {
-    PersistenceManager pm = PMF.get().getPersistenceManager();
-
-    try {
-      pm.makePersistent(ue);
-    } finally {
-      pm.close();
-    }
-
-    return ue;
   }
 }
