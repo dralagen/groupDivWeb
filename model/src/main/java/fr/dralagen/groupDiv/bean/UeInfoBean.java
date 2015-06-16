@@ -5,15 +5,11 @@ package fr.dralagen.groupDiv.bean;
  *
  * @author dralagen
  */
-public class UeBean {
+public class UeInfoBean {
 
   private long id;
 
   private String title;
-
-  private String content;
-
-  private int version;
 
   public long getId() {
     return id;
@@ -29,21 +25,5 @@ public class UeBean {
 
   public void setTitle(String title) {
     this.title = title;
-  }
-
-  public String getContent() {
-    return content;
-  }
-
-  public void setContent(String content) {
-    this.content = content;
-  }
-
-  public int getVersion() {
-    return version;
-  }
-
-  public void setVersion(int version) {
-    this.version = version;
   }
 }

@@ -1,8 +1,5 @@
 package fr.dralagen.groupDiv.bean;
 
-import com.google.appengine.api.datastore.Key;
-import fr.dralagen.groupDiv.model.Ue;
-
 import java.util.Date;
 import java.util.List;
 
@@ -13,73 +10,63 @@ import java.util.List;
  */
 public class SessionBean {
 
-  private Key key;
+  private long id;
 
   private String name;
 
-  private Date beginDate;
-
-  private Date lastLog;
-
-  private int GDtot;
+  private Date createDate;
 
   private Boolean withGroupDiv;
 
-  private List<Ue> ues;
+  private List<UeInfoBean> ue;
 
-  public Key getKey () {
-    return key;
+  private List<UserBean> user;
+
+  public long getId() {
+    return id;
   }
 
-  public void setKey (Key key) {
-    this.key = key;
+  public void setId(long id) {
+    this.id = id;
   }
 
-  public String getName () {
+  public String getName() {
     return name;
   }
 
-  public void setName (String name) {
+  public void setName(String name) {
     this.name = name;
   }
 
-  public Date getBeginDate () {
-    return beginDate;
+  public Date getCreateDate() {
+    return createDate;
   }
 
-  public void setBeginDate (Date beginDate) {
-    this.beginDate = beginDate;
+  public void setCreateDate(Date createDate) {
+    this.createDate = createDate;
   }
 
-  public Date getLastLog () {
-    return lastLog;
-  }
-
-  public void setLastLog (Date lastLog) {
-    this.lastLog = lastLog;
-  }
-
-  public int getGDtot () {
-    return GDtot;
-  }
-
-  public void setGDtot (int GDtot) {
-    this.GDtot = GDtot;
-  }
-
-  public Boolean getWithGroupDiv () {
+  public Boolean getWithGroupDiv() {
     return withGroupDiv;
   }
 
-  public void setWithGroupDiv (Boolean withGroupDiv) {
+  public void setWithGroupDiv(Boolean withGroupDiv) {
     this.withGroupDiv = withGroupDiv;
   }
 
-  public List<Ue> getUes () {
-    return ues;
+  public List<UeInfoBean> getUe() {
+    return ue;
   }
 
-  public void setUes (List<Ue> ues) {
-    this.ues = ues;
+  public void setUe(List<UeInfoBean> ue) {
+    this.ue = ue;
+  }
+
+  public List<UserBean> getUser() {
+    return user;
+  }
+
+  public void setUser(List<UserBean> user) {
+    this.user = user;
   }
 }
