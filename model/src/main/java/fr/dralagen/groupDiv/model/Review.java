@@ -21,7 +21,7 @@ public class Review  {
   private User author;
 
   @Persistent
-  private Key ueId;
+  private long ueId;
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
@@ -47,11 +47,11 @@ public class Review  {
     this.author = author;
   }
 
-  public Key getUeId () {
+  public long getUeId () {
     return ueId;
   }
 
-  public void setUeId (Key ueId) {
+  public void setUeId (long ueId) {
     this.ueId = ueId;
   }
 
