@@ -1,6 +1,6 @@
 var app = angular.module("groupDiv.userController", []);
 
-app.controller("userController", ['$scope', 'GApi', function myCC($scope, GApi){
+app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 
 		$scope.tab = 1;
 		

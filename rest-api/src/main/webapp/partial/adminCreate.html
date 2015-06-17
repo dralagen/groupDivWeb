@@ -48,7 +48,15 @@
 		<div class="text-center">
 			<button class="btn btn-info" ng-click="createSession(session);"><!--ng-click="newFavoriteList()--> <span class=" glyphicon glyphicon-ok"></span>&nbsp; {{ 'CREATE_THE_SESSION' | translate }}</button>
 		</div>
-	</div>
 
+
+		<div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			{{alert.msg}}
+		</div>
+	</div>
+	
 </div>
 
