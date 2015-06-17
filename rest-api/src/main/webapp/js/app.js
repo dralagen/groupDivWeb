@@ -12,6 +12,7 @@ app.run(['GApi', 'GAuth',
 	function(GApi, GAuth) {
 
 		var BASE;
+		console.log(window.location.hostname);
 		if(window.location.hostname == 'localhost') {
 			BASE = '//localhost:8080/_ah/api';
 		} else {
