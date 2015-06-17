@@ -22,7 +22,7 @@ var app = angular.module("groupDiv.adminController", []);
 			function(data){
 				console.log("list sessions ok ");
 				angular.forEach(data.items, function(item){
-					temp = {name: item.name, id: item.key.id};
+					temp = {name: item.name, id: item.id};
 					$scope.sessions.push(temp);
 				});
 			},
