@@ -42,4 +42,5 @@ app.config(function($translateProvider) {
 	$translateProvider.useSanitizeValueStrategy(null);
 	$translateProvider.preferredLanguage('fr');
     $translateProvider.translations('fr', translateFr);	
+	$translateProvider.translations('en', translateEn);	
 });
