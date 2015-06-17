@@ -73,10 +73,6 @@ public class ActionServices {
     User fromUser = UserRepository.getInstance().findOne(sessionId, fromUserId);
     User toUser = UserRepository.getInstance().findOne(sessionId, toUserId);
 
-    Session session = SessionRepository.getInstance().findOne(sessionId);
-
-
-
     {
       Map<Long, Integer> toUserVersion = toUser.getVersionUE();
       for (Map.Entry<Long, Integer> one : fromUser.getVersionUE().entrySet()) {
@@ -96,6 +92,10 @@ public class ActionServices {
         }
       }
     }
+
+    UserRepository.getInstance().save(fromUser);
+
+    Session session = SessionRepository.getInstance().findOne(sessionId);
 
     List<UeBean> ueList = new ArrayList<>();
     {

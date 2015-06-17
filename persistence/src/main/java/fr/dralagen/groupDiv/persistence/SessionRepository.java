@@ -59,7 +59,7 @@ public class SessionRepository {
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
     try {
-      pm.makePersistent(session);
+      session = pm.makePersistent(session);
     } finally {
       pm.close();
     }
