@@ -4,12 +4,6 @@ var app = angular.module("groupDiv.choicesController", ['LocalStorageModule','pa
 app.controller("choicesController", ['$scope','$translate','localStorageService', function($scope,$translate,localStorageService){
 	$scope.lang = 'Français (fr)';
 	$scope.choice = true;
-	if(localStorageService.get('language') == null)
-		{$translate.use('fr'); }
-	else
-		{$translate.use(localStorageService.get('language'));}
-	
-	
 	
 	$scope.loadUserInterface = function(){
 		$scope.choice = false;
