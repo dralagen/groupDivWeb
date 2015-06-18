@@ -5,7 +5,8 @@ var app = angular.module("groupDiv", [
 	'groupDiv.createUeUser',
 	'ngRoute',
 	'angular-google-gapi',
-	'pascalprecht.translate'
+	'pascalprecht.translate',
+	'LocalStorageModule'
 ]);
 
 app.run(['GApi', 'GAuth',
@@ -39,9 +40,27 @@ app.config(['$routeProvider',
 	}
 ]);
 
+//localstorage config
+app.config(function (localStorageServiceProvider) {
+	localStorageServiceProvider.setPrefix('groupDivWeb');
+});
+
+//language config
 app.config(function($translateProvider) {
 	$translateProvider.useSanitizeValueStrategy(null);
-	$translateProvider.preferredLanguage('fr');
-    $translateProvider.translations('fr', translateFr);	
+	$translateProvider.translations('fr', translateFr);	
 	$translateProvider.translations('en', translateEn);	
+	$translateProvider.preferredLanguage('fr');
+	
 });
+
+app.controller("mainController", [ 'localStorageService','$translate' , function(localStorageService,$translate){
+	if(localStorageService.get('language') == null)
+		{$translate.use('fr'); }
+	else
+		{$translate.use(localStorageService.get('language'));}	
+}]);
+
+
+
+
