@@ -8,7 +8,9 @@ import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created on 6/5/15.
@@ -77,14 +79,27 @@ public class ReviewRepository {
 
   public Review add(Review review) {
 
+    Review persistedReview;
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
     try {
-      pm.makePersistent(review);
+      persistedReview = pm.makePersistent(review);
     } finally {
       pm.close();
     }
 
-    return review;
+    return persistedReview;
+  }
+
+  public Set<Review> findAll(Set<Key> ids) {
+
+    PersistenceManager pm = PMF.get().getPersistenceManager();
+
+    HashSet<Review> allReview = new HashSet<>();
+    for (Key oneId:ids) {
+      allReview.add(pm.getObjectById(Review.class, oneId));
+    }
+
+    return allReview;
   }
 }

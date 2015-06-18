@@ -28,7 +28,7 @@ public class User {
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
-  private Set<Review> review; // key foreign key of user
+  private Set<Key> review; // key foreign key of user
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
@@ -59,11 +59,11 @@ public class User {
     this.versionUE = versionUE;
   }
 
-  public Set<Review> getReview() {
+  public Set<Key> getReview() {
     return review;
   }
 
-  public void setReview(Set<Review> review) {
+  public void setReview(Set<Key> review) {
     this.review = review;
   }
 }
