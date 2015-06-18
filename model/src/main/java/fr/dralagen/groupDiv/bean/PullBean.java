@@ -1,6 +1,9 @@
 package fr.dralagen.groupDiv.bean;
 
+import fr.dralagen.groupDiv.model.Review;
+
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created on 6/16/15.
@@ -11,7 +14,7 @@ public class PullBean {
 
   private List<UeBean> ue;
 
-  private List<ReviewBean> review;
+  private Set<Review> review;
 
   public List<UeBean> getUe() {
     return ue;
@@ -21,11 +24,11 @@ public class PullBean {
     this.ue = ue;
   }
 
-  public List<ReviewBean> getReview() {
+  public Set<Review> getReview() {
     return review;
   }
 
-  public void setReview(List<ReviewBean> review) {
+  public void setReview(Set<Review> review) {
     this.review = review;
   }
 }

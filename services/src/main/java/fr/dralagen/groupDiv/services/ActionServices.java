@@ -84,14 +84,7 @@ public class ActionServices {
       }
     }
 
-    {
-      Map<Long,Integer> toUserVersion = toUser.getVersionReview();
-      for (Map.Entry<Long, Integer> one : fromUser.getVersionReview().entrySet()) {
-        if (one.getValue().compareTo(toUserVersion.get(one.getKey())) < 0) {
-          one.setValue(toUserVersion.get(one.getKey()));
-        }
-      }
-    }
+    fromUser.getReview().addAll(toUser.getReview());
 
     UserRepository.getInstance().save(fromUser);
 
@@ -112,7 +105,7 @@ public class ActionServices {
       }
     }
 
-    List<ReviewBean> reviewList = new ArrayList<>();
+    Set<Review> reviewList = fromUser.getReview();
 
     PullBean result = new PullBean();
     result.setUe(ueList);

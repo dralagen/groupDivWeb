@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.Key;
 
 import javax.jdo.annotations.*;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created on 6/2/15.
@@ -27,7 +28,7 @@ public class User {
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
-  private Map<Long, Integer> versionReview; // key foreign key of user
+  private Set<Review> review; // key foreign key of user
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
@@ -58,11 +59,11 @@ public class User {
     this.versionUE = versionUE;
   }
 
-  public Map<Long, Integer> getVersionReview () {
-    return versionReview;
+  public Set<Review> getReview() {
+    return review;
   }
 
-  public void setVersionReview (Map<Long, Integer> versionReview) {
-    this.versionReview = versionReview;
+  public void setReview(Set<Review> review) {
+    this.review = review;
   }
 }
