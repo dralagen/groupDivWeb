@@ -46,7 +46,7 @@ app.config(function (localStorageServiceProvider) {
 });
 
 //language config
-app.config(function($translateProvider,localStorageServiceProvider) {
+app.config(function($translateProvider) {
 	$translateProvider.useSanitizeValueStrategy(null);
 	$translateProvider.translations('fr', translateFr);	
 	$translateProvider.translations('en', translateEn);	
