@@ -1,7 +1,7 @@
 var app = angular.module("groupDiv.userController", []);
 
 app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
-
+		
 		$scope.tab = 1;
 		
 		$scope.sessionId = "123456789";

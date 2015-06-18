@@ -27,7 +27,7 @@
   </head>
 
   <body>
-	<div ng-view></div>
+	<div ng-view ng-controller="mainController"></div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -59,6 +59,8 @@
 	<script src="vendors/angular-translate.min.js"></script>
 	<script src="i18n/translate_fr.js"></script>
 	<script src="i18n/translate_en.js"></script>
+	
+	<script src="vendors/angular-local-storage.min.js"></script>
 			
   </body>
 </html>
