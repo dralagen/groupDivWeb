@@ -109,6 +109,15 @@ textarea{
 }
 
 .bodycontainer {
-	max-height: 120px;
+	max-height: 50px;
 	overflow-y: auto;
+}
+
+#test thead {
+	display:block;
+}
+.bla {
+	display:block;
+	height:5em; /* 5 times the equivalent of a text "size". */
+	overflow-y:scroll;
 }

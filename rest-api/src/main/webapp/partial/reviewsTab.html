@@ -1,4 +1,4 @@
-<select class="form-control" id="selectedUE" ng-init="selectedUE = ues[0]" ng-model="selectedUE" ng-change="changerUE(selectedUE.id)" ng-options="ue as ue.name for ue in ues">
+<select class="form-control" id="selectedUE" ng-init="selectedUE = ues[0]" ng-model="selectedUE" ng-change="changerUE(selectedUE.id)" ng-options="ue as ue.title for ue in ues">
 </select>
 
 <h2 class="text-center page-header">{{ 'UE_REVIEWS' | translate }} : {{selectedUE.name}}</h2>
