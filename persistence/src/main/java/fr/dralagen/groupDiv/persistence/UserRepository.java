@@ -5,6 +5,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import fr.dralagen.groupDiv.model.Session;
 import fr.dralagen.groupDiv.model.User;
 
+import javax.jdo.JDOHelper;
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 
@@ -34,6 +35,19 @@ public class UserRepository {
     } catch (JDOObjectNotFoundException e) {
       return null;
     }
+  }
+
+  public User save(User user) {
+
+    PersistenceManager pm = JDOHelper.getPersistenceManager(user);
+
+    try {
+      user = pm.makePersistent(user);
+    } finally {
+      pm.close();
+    }
+
+    return user;
   }
 
   private Key forgeKey(long sessionId, long userId) {

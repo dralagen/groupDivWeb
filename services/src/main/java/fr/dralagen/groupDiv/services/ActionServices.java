@@ -2,6 +2,7 @@ package fr.dralagen.groupDiv.services;
 
 import fr.dralagen.groupDiv.bean.*;
 import fr.dralagen.groupDiv.model.*;
+import fr.dralagen.groupDiv.persistence.ReviewRepository;
 import fr.dralagen.groupDiv.persistence.SessionRepository;
 import fr.dralagen.groupDiv.persistence.UeRepository;
 import fr.dralagen.groupDiv.persistence.UserRepository;
@@ -41,6 +42,9 @@ public class ActionServices {
     User user = UserRepository.getInstance().findOne(sessionId, ue.getUserId());
     user.getVersionUE().put(ue.getUeId(), content.getVersion());
 
+    //TODO dralagen 6/4/15 : Update divergence
+
+    //TODO dralagen 6/4/15 : Log Commit UE
     LogBean result = new LogBean();
     result.setAction(Action.COMMIT);
     result.setMessage("Commit UE on " + ue.getUeId() + " at version " + content.getVersion() + ":"+content.getKey().getId());
@@ -69,13 +73,56 @@ public class ActionServices {
     }
   }
 
+  public LogBean commitReview(long sessionId, CommitReviewBean review) throws InvalidFormException {
+
+    checkCommitReview(review);
+
+    User user = UserRepository.getInstance().findOne(sessionId, review.getUserId());
+
+    Review rev = new Review();
+    rev.setAuthor(user.getKey());
+    rev.setUe(UeRepository.getInstance().findOne(sessionId, review.getUeId()).getKey());
+    rev.setContent(review.getContent());
+    rev.setTime(new Date());
+
+    ReviewRepository.getInstance().add(rev);
+
+    user.getReview().add(rev.getKey());
+
+    //TODO dralagen 6/4/15 : Update divergence
+
+    //TODO dralagen 6/4/15 : Log Commit review
+    LogBean result = new LogBean();
+    result.setAction(Action.COMMIT);
+    result.setMessage("Commit Review ");
+    result.setUserId(review.getUserId());
+    result.setDate(new Date());
+    return result;
+  }
+
+  private void checkCommitReview(CommitReviewBean review) throws InvalidFormException {
+    Map<String, String> errors = new HashMap<>();
+
+    if (review.getContent() == null || review.getContent().equals("")) {
+      errors.put("content", "Content is mandatory for an ue");
+    }
+
+    if (review.getUeId() == null) {
+      errors.put("ueId", "UE id is mandatory for an ue");
+    }
+
+    if (review.getUserId() == null) {
+      errors.put("userId", "User id is mandatory for an ue");
+    }
+
+    if (!errors.isEmpty()) {
+      throw new InvalidFormException(errors);
+    }
+  }
+
   public PullBean pull(long sessionId, long fromUserId, long toUserId) {
     User fromUser = UserRepository.getInstance().findOne(sessionId, fromUserId);
     User toUser = UserRepository.getInstance().findOne(sessionId, toUserId);
-
-    Session session = SessionRepository.getInstance().findOne(sessionId);
-
-
 
     {
       Map<Long, Integer> toUserVersion = toUser.getVersionUE();
@@ -83,19 +130,14 @@ public class ActionServices {
         if (one.getValue().compareTo(toUserVersion.get(one.getKey())) < 0) {
           one.setValue(toUserVersion.get(one.getKey()));
         }
-
-
       }
     }
 
-    {
-      Map<Long,Integer> toUserVersion = toUser.getVersionReview();
-      for (Map.Entry<Long, Integer> one : fromUser.getVersionReview().entrySet()) {
-        if (one.getValue().compareTo(toUserVersion.get(one.getKey())) < 0) {
-          one.setValue(toUserVersion.get(one.getKey()));
-        }
-      }
-    }
+    fromUser.getReview().addAll(toUser.getReview());
+
+    UserRepository.getInstance().save(fromUser);
+
+    Session session = SessionRepository.getInstance().findOne(sessionId);
 
     List<UeBean> ueList = new ArrayList<>();
     {
@@ -112,11 +154,15 @@ public class ActionServices {
       }
     }
 
-    List<ReviewBean> reviewList = new ArrayList<>();
+    Set<Review> allReview = ReviewRepository.getInstance().findAll(fromUser.getReview());
+    Set<ReviewBean> allReviewBean = new HashSet<>();
+    for(Review rev:allReview) {
+      allReviewBean.add(ReviewBean.toBean(rev));
+    }
 
     PullBean result = new PullBean();
     result.setUe(ueList);
-    result.setReview(reviewList);
+    result.setReview(allReviewBean);
 
     return result;
   }

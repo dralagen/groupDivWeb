@@ -1,12 +1,26 @@
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#/">GroupDiv</a>
-        </div>
-      </div>
-    </nav>
-
 <div ng-controller="choicesController">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">GroupDiv</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ lang }}
+          <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#" ng-click="changeLanguageFr();">Français (fr)</a></li>
+            <li><a href="#" ng-click="changeLanguageEn();">English (en)</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
 	<a ng-href="#/user">
 		<button class="btn btn-primary btn-lg btn-block" ng-href="#/user" ng-click="loadUserInterface();" ng-show="choice"> {{ 'USER' | translate }} </button>
 	</a>
@@ -14,6 +28,5 @@
 		<button class="btn btn-primary btn-lg btn-block" ng-href="#/admin" ng-click="loadAdminInterface();" ng-show="choice">{{ 'ADMIN' | translate }}</button>
 	</a>
 
-    
-
+   
 </div>

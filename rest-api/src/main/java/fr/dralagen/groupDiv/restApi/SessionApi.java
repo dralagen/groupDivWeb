@@ -46,6 +46,8 @@ public class SessionApi {
 
     } catch (InvalidFormException e) {
       throw new BadRequestException(e);
+    } catch (NullPointerException e) {
+      throw new BadRequestException("JSON malformed");
     }
   }
 }

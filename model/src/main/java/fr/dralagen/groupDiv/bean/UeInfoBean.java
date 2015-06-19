@@ -13,6 +13,8 @@ public class UeInfoBean {
 
   private String title;
 
+  private long userId;
+
   public long getId() {
     return id;
   }
@@ -29,6 +31,14 @@ public class UeInfoBean {
     this.title = title;
   }
 
+  public long getUserId () {
+    return userId;
+  }
+
+  public void setUserId (long userId) {
+    this.userId = userId;
+  }
+
   public static UeInfoBean toBean(Ue one) {
     UeInfoBean bean = new UeInfoBean();
 
@@ -37,6 +47,10 @@ public class UeInfoBean {
     }
 
     bean.setTitle(one.getTitle());
+
+    if (one.getAuthor() != null && one.getAuthor().getKey() != null) {
+      bean.setUserId(one.getAuthor().getKey().getId());
+    }
 
     return bean;
   }

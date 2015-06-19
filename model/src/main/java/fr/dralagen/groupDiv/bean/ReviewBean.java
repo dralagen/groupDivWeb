@@ -1,5 +1,7 @@
 package fr.dralagen.groupDiv.bean;
 
+import fr.dralagen.groupDiv.model.Review;
+
 import java.util.Date;
 
 /**
@@ -56,5 +58,20 @@ public class ReviewBean {
 
   public void setPostDate(Date postDate) {
     this.postDate = postDate;
+  }
+
+  public static ReviewBean toBean(Review one) {
+    ReviewBean bean = new ReviewBean();
+
+    if (one.getKey() != null) {
+      bean.setId(one.getKey().getId());
+    }
+
+    bean.setContent(one.getContent());
+    bean.setUeId(one.getUe().getId());
+    bean.setUserId(one.getAuthor().getId());
+    bean.setPostDate(one.getTime());
+
+    return bean;
   }
 }
