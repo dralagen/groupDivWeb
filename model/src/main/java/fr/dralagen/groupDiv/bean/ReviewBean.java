@@ -12,7 +12,7 @@ public class ReviewBean {
 
   private long ueId;
 
-  private long userId;
+  private long authorId;
 
   private String content;
 
@@ -34,12 +34,12 @@ public class ReviewBean {
     this.ueId = ueId;
   }
 
-  public long getUserId() {
-    return userId;
+  public long getAuthorId () {
+    return authorId;
   }
 
-  public void setUserId(long userId) {
-    this.userId = userId;
+  public void setAuthorId (long authorId) {
+    this.authorId = authorId;
   }
 
   public String getContent() {

@@ -53,7 +53,7 @@ public class ActionApi {
     LogBean result = new LogBean();
     result.setAction(Action.COMMIT);
     result.setMessage("Commit Review ");
-    result.setUserId(review.getUserId());
+    result.setUserId(review.getAuthorId());
     result.setDate(new Date());
     return result;
   }
