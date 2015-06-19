@@ -141,7 +141,6 @@ var app = angular.module("groupDiv.adminController", []);
 		$scope.getData = function(u){
 			var a=-1;
 			data = $scope.plotStep.getData();
-			console.log(u + "     kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
 			console.log(data);
 			for(i in data){
 				console.log(data[i].label);

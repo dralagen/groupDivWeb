@@ -1,14 +1,14 @@
-<select class="form-control" id="selectedUE" ng-init="selectedUE = ues[0]" ng-model="selectedUE" ng-change="changerUE(selectedUE.id)" ng-options="ue as ue.title for ue in ues">
+<select class="form-control" ng-model="selectedUE" ng-change="changerUE(selectedUE.id)" ng-options="ue as ue.title for ue in ues">
 </select>
 
-<h2 class="text-center page-header">{{ 'UE_REVIEWS' | translate }} : {{selectedUE.name}}</h2>
+<h2 class="text-center page-header">{{ 'UE_REVIEWS' | translate }} : {{selectedUE.title}}</h2>
 
 
 <div class="jumbotron">
 	<div class="servive-block servive-block-grey">
 		<h3 class="sub-header">{{ 'UE_DESCRIPTION' | translate }}</h3>
 		<form name="reviewForm">
-			<textarea class="form-control" ng-model="selectedUE.content" rows="20"></textarea>
+			<textarea class="form-control" ng-model="selectedUE.content" rows="20" readonly="readonly"></textarea>
 		</form>
 		<div ng-include="'partial/reviews.html'"></div>
 	</div>
@@ -16,8 +16,8 @@
 
 <h3 class="sub-header">{{ 'YOUR_REVIEW' | translate }}</h3>
 <form class="input-group input-group-lg">
-	<input type="text" class="form-control" />
+	<input type="text" class="form-control" ng-model="review.reviewToPost"/>
 	<span class="input-group-btn">
-		<button type="button" class="btn btn-primary btn-lg" ng-click="postReview()">{{ 'POST' | translate }}</button>
+		<button type="submit" class="btn btn-primary btn-lg" ng-click="postReview()">{{ 'POST' | translate }}</button>
 	</span>
 </form>

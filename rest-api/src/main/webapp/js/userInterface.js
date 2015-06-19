@@ -7,6 +7,7 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 		$scope.sessionId = "5629499534213120";
 		
 		$scope.selectedUE;
+		$scope.review = {};
 		
 		$scope.selectTab = function(setTab){
 			$scope.tab = setTab;
@@ -18,9 +19,10 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 		
 		$scope.GDtot = 0;
 		$scope.currentUsr = {id: "5066549580791808", name: ""};
+		$scope.currentUE = {};
+		
 		$scope.users = [];
 
-		$scope.UEOfCurrentUser = {};
 		$scope.ues = [];
 		$scope.echelle = 50;
 
@@ -28,7 +30,6 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 		GApi.execute('groupDivWeb', 'session.get', {sessionId: $scope.sessionId}).then(
 			function(resp) {
 				console.log("we get the session");
-				$scope.ues = resp.ue;
 				angular.forEach(resp.user, function(u){
 					if(u.id == $scope.currentUsr.id){
 						$scope.currentUsr[name] = u.name;
@@ -37,6 +38,19 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 						$scope.users.push(u);
 					}
 				});
+
+				angular.forEach(resp.ue, function(e){
+					temp = e;
+					temp.content = "bla";
+					if(e.userId == $scope.currentUsr.id){
+						$scope.currentUE = temp;
+						console.log($scope.currentUE);
+					}
+					else{
+						$scope.ues.push(temp);
+					}
+					$scope.selectedUE = $scope.ues[0];
+				});
 			}, function() {
 				console.log("We can't get the session");
 			}
@@ -44,7 +58,7 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 
 		//here we get divergences values
 		$scope.majDivergences = function(){
-			GApi.execute('groupDivWeb', 'divergence', {sessionId: $scope.sessionId}).then(
+			/*GApi.execute('groupDivWeb', 'divergence', {sessionId: $scope.sessionId}).then(
 				function(resp) {
 					$scope.GDtot = resp.globalDivergence;
 					angular.forEach(data.items, function(item){
@@ -53,7 +67,7 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 				}, function() {
 
 				}
-			);
+			);*/
 		}
 		
 		$scope.majDivergences();
@@ -123,20 +137,44 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 		$scope.pullUsr = function(userId){		
 			GApi.execute('groupDivWeb', 'action.pull', {sessionId: $scope.sessionId, fromUserId: $scope.currentUsr.id, toUserId: userId}).then(
 				function(resp) {
-					console.log("pull sur : " + userId + "reussi");
+					console.log("pull sur : " + userId + " reussi");
+					angular.forEach(resp.ue, function(item){
+						angular.forEach($scope.ues, function(ue){
+							if(ue.id == item.id){
+								ue.content = item.content;
+							}
+							else if($scope.currentUE.id == item.id){
+								$scope.currentUE.content = item.content;
+							}
+						});
+					});
 				}, function() {
 					console.log("error you can't pull : " + userId);
 				}
 			);
 		}
 
-		$scope.postReview = function(){
-			console.log("post sur : " );
-			//TODO add rest call
+		$scope.postReview = function(b){
+			GApi.execute('groupDivWeb', 'action.commit.review', {sessionId: $scope.sessionId, userId: $scope.currentUsr.id, ueId: $scope.selectedUE.id, content: $scope.review.reviewToPost}).then(
+				function(resp) {
+					console.log("post review reussi");
+					$scope.review.reviewToPost = "";
+				}, function(err) {
+					console.log(err);
+					console.log($scope.reviewToPost);
+					console.log("error you can't post your review .. ");
+				}
+			);
 		}
 
 		$scope.postUE = function(){
-			console.log("post UE : " );
-			//TODO add rest call
+
+			GApi.execute('groupDivWeb', 'action.commit.ue', {sessionId: $scope.sessionId, userId: $scope.currentUsr.id, ueId: $scope.currentUE.id, content: $scope.currentUE.content}).then(
+				function(resp) {
+					console.log("post ue reussi");
+				}, function(err) {
+					console.log("error you can't post your ue ");
+				}
+			);
 		}
 	}]);
