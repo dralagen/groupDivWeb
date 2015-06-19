@@ -6,6 +6,7 @@ var translateEn = {
 	
 	CANDR_UE_SESSION: 'Course\'s card and review of the session',
 	CHANGELOG: 'Changelog',
+	CHOOSE_SESSION_MODIFY: 'Choose one session to modify',
 	CHOOSE_SESSION_WATCH: 'Choose one session to watch',
 	CHOOSE_UE_WATCH: 'Choose one UE to watch',
 	COURSE_NAME: 'Course\'s name',
@@ -17,11 +18,15 @@ var translateEn = {
 	DIV_STATS_AND_VALUES:  'Statistics and values of divergence',
 	DO_PULL: 'Pull from',
 	
+	MODIFY: 'Modify',
+	MODIFY_SESSION: 'Modify session',
+	
 	POST: 'post',
 	
 	REVIEWS: 'Reviews',
 	
 	SELECT_OPTION: 'Select a session',
+	SESSION_NAME: 'Session\'s name',
 	SC: 'Smoothed curve',
 	SG: 'Step graph',	
 	SHOW_SC: 'Show the smoothed curve',

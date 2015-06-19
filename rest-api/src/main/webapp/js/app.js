@@ -3,6 +3,7 @@ var app = angular.module("groupDiv", [
 	'groupDiv.userController',
 	'groupDiv.adminController',
 	'groupDiv.createUeUser',
+	'groupDiv.modifySession',
 	'ngRoute',
 	'angular-google-gapi',
 	'pascalprecht.translate',
@@ -29,6 +30,8 @@ app.config(['$routeProvider',
 		$routeProvider.
 			when('/adminCreate', {
 				templateUrl: 'partial/adminCreate.html',
+			}).when('/adminModify', {
+				templateUrl: 'partial/adminModify.html',
 			}).when('/adminView', {
 				templateUrl: 'partial/admin.html',
 				controller: 'adminController',

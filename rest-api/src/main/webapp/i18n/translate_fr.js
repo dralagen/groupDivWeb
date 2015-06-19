@@ -6,6 +6,7 @@ var translateFr = {
 	
 	CANDR_UE_SESSION: 'Fiches UE et review de la session',
 	CHANGELOG: 'Historique des modifications',
+	CHOOSE_SESSION_MODIFY: 'Choisir une session à modifier',
 	CHOOSE_SESSION_WATCH: 'Choisir une session à surveiller',
 	CHOOSE_UE_WATCH: 'Choisir une UE à surveiller',
 	COURSE_NAME: 'Nom de l\'UE',
@@ -17,11 +18,15 @@ var translateFr = {
 	DIV_STATS_AND_VALUES: 'Statistiques et valeures de divergence',
 	DO_PULL: 'Récupérer de',
 	
+	MODIFY: 'Modifier',
+	MODIFY_SESSION: 'Modifier la session',
+	
 	POST: 'Poster',
 	
 	REVIEWS: 'Reviews',
 	
 	SELECT_OPTION: 'Selectionner une session',
+	SESSION_NAME: 'Nom de la session',
 	SC: 'Courbe lissée',
 	SG: 'Step graph',
 	SHOW_SC: 'Afficher la courbe lissée',
