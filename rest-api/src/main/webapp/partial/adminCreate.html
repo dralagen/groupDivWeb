@@ -27,14 +27,14 @@
 				<th> {{ 'COURSE_NAME' | translate }} </th>
 				<th class="action"> </th>
 			</tr>
-			<tr ng-repeat="ue in session.ues">
+			<tr ng-repeat="oneUE in session.ue">
 				<td>
-					<input type="text"  class="form-control" value="{{ue.title}}" ng-model="ue.title"/> 
+					<input type="text"  class="form-control" value="{{oneUE.user}}" ng-model="oneUE.user"/> 
 				</td>
 				<td>
-					<input type="text"  class="form-control" value="{{ue.author.name}}" ng-model="ue.author.name"/> 
+					<input type="text"  class="form-control" value="{{oneUE.title}}" ng-model="oneUE.title"/> 
 				</td>
-				<td class="action"><button class="btn btn-danger" ng-click="deleteUe(ue);"><span class="glyphicon glyphicon-trash" ></span></button></td> 
+				<td class="action"><button class="btn btn-danger" ng-click="deleteUe(oneUE);"><span class="glyphicon glyphicon-trash" ></span></button></td> 
 			</tr>
 			<tr>
 				<th class="cell-lg" colspan="3">

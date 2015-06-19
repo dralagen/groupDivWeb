@@ -18,10 +18,10 @@ public class Review  {
   private Key key;
 
   @Persistent
-  private User author;
+  private Key author;
 
   @Persistent
-  private Ue ue;
+  private Key ue;
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
@@ -39,19 +39,19 @@ public class Review  {
     this.key = key;
   }
 
-  public User getAuthor () {
+  public Key getAuthor() {
     return author;
   }
 
-  public void setAuthor (User author) {
+  public void setAuthor (Key author) {
     this.author = author;
   }
 
-  public Ue getUe () {
+  public Key getUe() {
     return ue;
   }
 
-  public void setUe (Ue ue) {
+  public void setUe (Key ue) {
     this.ue = ue;
   }
 

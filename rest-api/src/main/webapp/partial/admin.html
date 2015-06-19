@@ -62,25 +62,31 @@
 					<div class="col-md-12">
 							<h2 class="text-center page-header">{{ 'DIV_STATS_AND_VALUES' | translate }}</h2>
 							<center>
-								<table class="table-bordered">
-									<thead><tr >
-										<th ng-repeat="x in users" class="check-element animate-show" ng-show=x.s> {{ x.name }}</th>
-									</tr></thead>
+								<table class="table-bordered" id="test">
+									<thead>
+										<tr >
+											<th ng-repeat="user in users" class="check-element animate-show" ng-show=user.s style="width:5em;"> {{ user.name }}</th>
+										</tr>
+									</thead>
 
-									<tr>
-										<td ng-repeat="x in users" class="check-element animate-show" ng-show=x.s>
-											<div class="bodycontainer scrollable">
-											<table id="tableParams" class="table table-hover table-striped table-condensed table-scrollable">
-												<tbody>
-													<tr ng-repeat="y in admin.getData(x.name)">
-														<td>{{ y[1] }}</td>
-													</tr>
-												</tbody>
-											</table>
-											</div>
-										</td>
-									</tr>
-								</table> 
+									<tbody class="bla">
+										<tr>
+											<td ng-repeat="user in users" class="check-element animate-show" ng-show=user.s>
+												
+												<table>
+													<td>
+														<tr ng-repeat="div in getData(user.name)" >
+															<td style="width:5em;">{{ div[1] }}</td>
+														</tr>
+													</td>
+												</table>
+												
+											</td>
+										</tr>
+									</tbody>
+									</div>
+
+								</table>
 							</center>	
 					</div>
 				</div>

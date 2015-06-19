@@ -6,25 +6,25 @@ package fr.dralagen.groupDiv.bean;
  * @author dralagen
  */
 public class CommitReviewBean {
-  private long ueId;
+  private Long ueId;
 
-  private long authorId;
+  private Long authorId;
 
   private String content;
 
-  public long getUeId() {
+  public Long getUeId() {
     return ueId;
   }
 
-  public void setUeId(long ueId) {
+  public void setUeId(Long ueId) {
     this.ueId = ueId;
   }
 
-  public long getAuthorId () {
+  public Long getAuthorId () {
     return authorId;
   }
 
-  public void setAuthorId (long authorId) {
+  public void setAuthorId (Long authorId) {
     this.authorId = authorId;
   }
 

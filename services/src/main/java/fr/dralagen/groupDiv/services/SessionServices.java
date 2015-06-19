@@ -70,14 +70,9 @@ public class SessionServices {
     for (Ue oneUe: newSession.getUes()) {
       versionUE.put(oneUe.getKey().getId(), 0);
     }
-    Map<Long, Integer> versionReview = new HashMap<>();
-    for (User oneUser: newSession.getUsers()) {
-      versionReview.put(oneUser.getKey().getId(), 0);
-    }
 
     for (User oneUser: newSession.getUsers()) {
       oneUser.setVersionUE(versionUE);
-      oneUser.setVersionReview(versionReview);
     }
 
     SessionRepository.getInstance().save(newSession);

@@ -10,6 +10,7 @@ var app = angular.module("groupDiv.adminController", []);
 		$scope.sessions = [];
 
 		$scope.users = [];
+		$scope.ues = [];
 		
 		$scope.divergencesValues = [
 			{data: [[Date.parse("2015-12-12T12:12:12"), 20],[Date.parse("2015-12-12T12:14:12"), 50], [Date.parse("2015-12-12T12:15:12"), 70], [Date.parse("2015-12-12T12:16:12"), 30]], label: "GDTot"},
@@ -17,7 +18,6 @@ var app = angular.module("groupDiv.adminController", []);
 			{data: [[Date.parse("2015-12-12T12:12:12"), 100],[Date.parse("2015-12-12T12:14:12"), 200], [Date.parse("2015-12-12T12:15:12"), 300], [Date.parse("2015-12-12T12:16:12"), 400]],  label: "usr2"}
 		];
 
-		console.log("je suis ici");
 		GApi.execute('groupDivWeb', 'session.list').then(
 			function(data){
 				console.log("list sessions ok ");
@@ -125,14 +125,11 @@ var app = angular.module("groupDiv.adminController", []);
 				
 				GApi.execute('groupDivWeb', 'session.get', {sessionId: $scope.selectedSession}).then(
 					function(data){
+						console.log("session loaded");
+						console.log(data);
 						$scope.useGroupDiv = data.withGroupDiv;
-						temp = {name: "GDTot", ue: "no ue", div: data.gdtot, s:"GDTot"};
-						$scope.users.push(temp);
-
-						angular.forEach(data.ues, function(info){
-							temp = {name: info.author.name, ue: info.title, div:0, s:info.author.name};
-							$scope.users.push(temp);
-						});
+						$scope.users = data.user;
+						$scope.ues = data.ue;
 					}, function(){
 						console.log("error : we can't load the session");
 					}
@@ -144,7 +141,10 @@ var app = angular.module("groupDiv.adminController", []);
 		$scope.getData = function(u){
 			var a=-1;
 			data = $scope.plotStep.getData();
+			console.log(u + "     kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+			console.log(data);
 			for(i in data){
+				console.log(data[i].label);
 				if(data[i].label == u){
 					a = i;
 				}

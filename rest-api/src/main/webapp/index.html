@@ -27,7 +27,7 @@
   </head>
 
   <body>
-	<div ng-view></div>
+	<div ng-view ng-controller="mainController"></div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -48,17 +48,19 @@
 	<script src="vendors/xcharts.min.js"></script>
 	<script src="vendors/rainbow.min.js"></script>
 	<script src="vendors/angular-google-gapi.min.js"></script>
+	<script src="vendors/angular-local-storage.min.js"></script>
+	<script src="vendors/angular-translate.min.js"></script>
 	
 	<script type="text/javascript" src="js/app.js"></script>
 	<script type="text/javascript" src="js/indexChoices.js"></script>
 	<script type="text/javascript" src="js/adminInterface.js"></script>
 	<script type="text/javascript" src="js/userInterface.js"></script>
-	<script type="text/javascript" src="js/adminCreate.js"></script>
+	<script type="text/javascript" src="js/adminCreate.js"></script>	
 
-	
-	<script src="vendors/angular-translate.min.js"></script>
 	<script src="i18n/translate_fr.js"></script>
 	<script src="i18n/translate_en.js"></script>
+	
+
 			
   </body>
 </html>

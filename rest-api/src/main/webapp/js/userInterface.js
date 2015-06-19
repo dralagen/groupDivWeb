@@ -1,12 +1,13 @@
 var app = angular.module("groupDiv.userController", []);
 
 app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
-
+		
 		$scope.tab = 1;
 		
-		$scope.sessionId = "123456789";
+		$scope.sessionId = "5629499534213120";
 		
 		$scope.selectedUE;
+		
 		$scope.selectTab = function(setTab){
 			$scope.tab = setTab;
 		};
@@ -15,13 +16,49 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 			return $scope.tab === checkTab;
 		};
 		
-		$scope.GDtot = 56;
-		$scope.currentUsr = {name: "me", id: 10, GD:"10"};
-		$scope.users = [{name: "user1", id:20, GD:"10"}, {name :"user2", id:0, GD:"20"}, {name:"user3", id:30, GD:"50"}, {name:"user4", id:40, GD:"0"}, {name:"user5", id:50, GD:"5"}];
+		$scope.GDtot = 0;
+		$scope.currentUsr = {id: "5066549580791808", name: ""};
+		$scope.users = [];
 
-		$scope.UEOfCurrentUser = {name: "une ue", id: "uespe", content: "blablabla"};
-		$scope.ues = [{name: "ue1", id:"u1", content: "je suis ue1"}, {name:"ue2", id:"u2", content: "je suis ue 2"}, {name:"ue3", id:"u3", content: "je suis ue 3"}];
+		$scope.UEOfCurrentUser = {};
+		$scope.ues = [];
 		$scope.echelle = 50;
+
+		//here we get the id and the name of all the users. The same for ues
+		GApi.execute('groupDivWeb', 'session.get', {sessionId: $scope.sessionId}).then(
+			function(resp) {
+				console.log("we get the session");
+				$scope.ues = resp.ue;
+				angular.forEach(resp.user, function(u){
+					if(u.id == $scope.currentUsr.id){
+						$scope.currentUsr[name] = u.name;
+					}
+					else{
+						$scope.users.push(u);
+					}
+				});
+			}, function() {
+				console.log("We can't get the session");
+			}
+		);
+
+		//here we get divergences values
+		$scope.majDivergences = function(){
+			GApi.execute('groupDivWeb', 'divergence', {sessionId: $scope.sessionId}).then(
+				function(resp) {
+					$scope.GDtot = resp.globalDivergence;
+					angular.forEach(data.items, function(item){
+						
+					});
+				}, function() {
+
+				}
+			);
+		}
+		
+		$scope.majDivergences();
+		
+		
 
 		$scope.canvas = document.getElementById("mon_canvas");
 		$scope.context = $scope.canvas.getContext("2d");
@@ -50,13 +87,11 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 			else{
 				$scope.context.drawImage($scope.edlm, $scope.canvas.width/2 - $scope.edlm.width/2, $scope.canvas.height - $scope.edlm.height);	
 			}
-			$scope.divMinHeightPosition = $scope.canvas.height - $scope.edlm.height - $scope.xWingUser.height
+			$scope.divMinHeightPosition = $scope.canvas.height - $scope.edlm.height - $scope.xWingUser.height;
 			
 			j = 5;
 			k = 0;
 			
-			$scope.context.drawImage($scope.xWingUser, 15 + k + j, $scope.divMinHeightPosition * $scope.currentUsr.GD / $scope.echelle);	
-
 			for(x of $scope.users){
 				if( k === 0){
 					j += 5;
@@ -65,9 +100,14 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 					}
 				}
 				console.log(x);
-				console.log("   "+ k + "   "+ j);
-
-				$scope.context.drawImage($scope.xWing, 15 + k + j, $scope.divMinHeightPosition - ($scope.divMinHeightPosition * x.GD / $scope.echelle));	
+				console.log(x.id + "    " + $scope.currentUsr + "   " );
+				console.log(x.id == $scope.currentUsr);
+				if(x.id == $scope.currentUsr){
+					$scope.context.drawImage($scope.xWingUser, 15 + k + j, $scope.divMinHeightPosition - ($scope.divMinHeightPosition * x.GD / $scope.echelle));
+				}
+				else{
+					$scope.context.drawImage($scope.xWing, 15 + k + j, $scope.divMinHeightPosition - ($scope.divMinHeightPosition * x.GD / $scope.echelle));
+				}
 				k = (k+40)%160;
 			}
 		}
@@ -80,13 +120,10 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 
 		$scope.putPicturesOnCanvas();
 
-		$scope.pullUsr = function(userId){
-			console.log("pull sur : " + userId);
-		
-			GApi.execute('groupDivWeb', 'action.pull', {userId: userId}).then(
+		$scope.pullUsr = function(userId){		
+			GApi.execute('groupDivWeb', 'action.pull', {sessionId: $scope.sessionId, fromUserId: $scope.currentUsr.id, toUserId: userId}).then(
 				function(resp) {
-					console.log(resp);
-					//TODO use resp to update local data
+					console.log("pull sur : " + userId + "reussi");
 				}, function() {
 					console.log("error you can't pull : " + userId);
 				}
