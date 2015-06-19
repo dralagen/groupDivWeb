@@ -9,7 +9,7 @@ public class CommitUeBean {
 
   private Long ueId;
 
-  private Long userId;
+  private Long authorId;
 
   private String content;
 
@@ -21,12 +21,12 @@ public class CommitUeBean {
     this.ueId = ueId;
   }
 
-  public Long getUserId() {
-    return userId;
+  public Long getAuthorId () {
+    return authorId;
   }
 
-  public void setUserId(Long userId) {
-    this.userId = userId;
+  public void setAuthorId (Long authorId) {
+    this.authorId = authorId;
   }
 
   public String getContent() {

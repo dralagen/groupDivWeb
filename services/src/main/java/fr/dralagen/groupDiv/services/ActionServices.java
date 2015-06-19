@@ -39,7 +39,7 @@ public class ActionServices {
 
     persistedUe.getContents().add(content);
 
-    User user = UserRepository.getInstance().findOne(sessionId, ue.getUserId());
+    User user = UserRepository.getInstance().findOne(sessionId, ue.getAuthorId());
     user.getVersionUE().put(ue.getUeId(), content.getVersion());
 
     //TODO dralagen 6/4/15 : Update divergence
@@ -48,7 +48,7 @@ public class ActionServices {
     LogBean result = new LogBean();
     result.setAction(Action.COMMIT);
     result.setMessage("Commit UE on " + ue.getUeId() + " at version " + content.getVersion() + ":"+content.getKey().getId());
-    result.setUserId(ue.getUserId());
+    result.setUserId(ue.getAuthorId());
     result.setDate(new Date());
     return result;
   }
@@ -60,7 +60,7 @@ public class ActionServices {
       errors.put("ueId", "UE id is mandatory for an ue");
     }
 
-    if (ue.getUserId() == null) {
+    if (ue.getAuthorId() == null) {
       errors.put("userId", "User id is mandatory for an ue");
     }
 
@@ -77,7 +77,7 @@ public class ActionServices {
 
     checkCommitReview(review);
 
-    User user = UserRepository.getInstance().findOne(sessionId, review.getUserId());
+    User user = UserRepository.getInstance().findOne(sessionId, review.getAuthorId());
 
     Review rev = new Review();
     rev.setAuthor(user.getKey());
@@ -95,7 +95,7 @@ public class ActionServices {
     LogBean result = new LogBean();
     result.setAction(Action.COMMIT);
     result.setMessage("Commit Review ");
-    result.setUserId(review.getUserId());
+    result.setUserId(review.getAuthorId());
     result.setDate(new Date());
     return result;
   }
@@ -111,7 +111,7 @@ public class ActionServices {
       errors.put("ueId", "UE id is mandatory for an ue");
     }
 
-    if (review.getUserId() == null) {
+    if (review.getAuthorId() == null) {
       errors.put("userId", "User id is mandatory for an ue");
     }
 

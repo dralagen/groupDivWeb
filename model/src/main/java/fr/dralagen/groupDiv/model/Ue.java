@@ -24,6 +24,7 @@ public class Ue {
 
   @Persistent(mappedBy = "ue")
   @Element(dependent = "true")
+  @Order(extensions = @Extension(vendorName="datanucleus",key="list-ordering", value="version asc"))
   private List<UeContent> contents;
 
   @Persistent

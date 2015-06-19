@@ -10,17 +10,17 @@ import java.util.Date;
  * @author dralagen
  */
 public class ReviewBean {
-  private long id;
+  private Long id;
 
-  private long ueId;
+  private Long ueId;
 
-  private long userId;
+  private Long authorId;
 
   private String content;
 
   private Date postDate;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
@@ -28,20 +28,20 @@ public class ReviewBean {
     this.id = id;
   }
 
-  public long getUeId() {
+  public Long getUeId() {
     return ueId;
   }
 
-  public void setUeId(long ueId) {
+  public void setUeId(Long ueId) {
     this.ueId = ueId;
   }
 
-  public long getUserId() {
-    return userId;
+  public Long getAuthorId () {
+    return authorId;
   }
 
-  public void setUserId(long userId) {
-    this.userId = userId;
+  public void setAuthorId (Long authorId) {
+    this.authorId = authorId;
   }
 
   public String getContent() {
@@ -69,7 +69,7 @@ public class ReviewBean {
 
     bean.setContent(one.getContent());
     bean.setUeId(one.getUe().getId());
-    bean.setUserId(one.getAuthor().getId());
+    bean.setAuthorId(one.getAuthor().getId());
     bean.setPostDate(one.getTime());
 
     return bean;
