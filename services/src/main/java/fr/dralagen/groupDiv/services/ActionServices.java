@@ -164,8 +164,7 @@ public class ActionServices {
 
       UserRepository.getInstance().save(fromUser);
 
-
-
+      //TODO dralagen 6/4/15 : Update divergence
     }
 
     Session session = SessionRepository.getInstance().findOne(sessionId);
@@ -193,6 +192,8 @@ public class ActionServices {
     PullBean result = new PullBean();
     result.setUe(ueList);
     result.setReview(reviewList);
+
+    //TODO dralagen 6/4/15 : Log Pull
 
     return result;
   }

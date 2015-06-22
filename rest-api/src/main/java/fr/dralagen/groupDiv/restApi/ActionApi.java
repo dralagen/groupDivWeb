@@ -54,10 +54,6 @@ public class ActionApi {
   @ApiMethod(name = "action.pull", httpMethod = ApiMethod.HttpMethod.GET, path = "session/{sessionId}/{fromUserId}/pull/{toUserId}/")
   public PullBean pull(@Named("sessionId") long sessionId, @Named("fromUserId") long fromUserId, @Named("toUserId") long toUserId) {
 
-    //TODO dralagen 6/4/15 : Update position of user
-    //TODO dralagen 6/4/15 : Log Pull
-    //TODO dralagen 6/4/15 : Update divergence
-
     return ActionServices.getInstance().pull(sessionId, fromUserId, toUserId);
   }
 
