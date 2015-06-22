@@ -1,5 +1,6 @@
 package fr.dralagen.groupDiv.services;
 
+import com.google.appengine.api.datastore.Key;
 import fr.dralagen.groupDiv.bean.*;
 import fr.dralagen.groupDiv.model.*;
 import fr.dralagen.groupDiv.persistence.ReviewRepository;
@@ -121,21 +122,41 @@ public class ActionServices {
   }
 
   public PullBean pull(long sessionId, long fromUserId, long toUserId) {
-    User fromUser = UserRepository.getInstance().findOne(sessionId, fromUserId);
-    User toUser = UserRepository.getInstance().findOne(sessionId, toUserId);
 
-    {
-      Map<Long, Integer> toUserVersion = toUser.getVersionUE();
-      for (Map.Entry<Long, Integer> one : fromUser.getVersionUE().entrySet()) {
-        if (one.getValue().compareTo(toUserVersion.get(one.getKey())) < 0) {
-          one.setValue(toUserVersion.get(one.getKey()));
+    User toUser;
+    User fromUser = UserRepository.getInstance().findOne(sessionId, fromUserId);
+
+
+    Set<Key> newReviewId;
+
+    if (fromUserId == toUserId) {
+
+      newReviewId = fromUser.getReview();
+
+    } else {
+      toUser = UserRepository.getInstance().findOne(sessionId, toUserId);
+
+      { // update UE version
+        Map<Long, Integer> toUserVersion = toUser.getVersionUE();
+        for ( Map.Entry<Long, Integer> one : fromUser.getVersionUE().entrySet() ) {
+          if ( one.getValue().compareTo(toUserVersion.get(one.getKey())) < 0 ) {
+            one.setValue(toUserVersion.get(one.getKey()));
+          }
         }
       }
+
+      // find new review
+      newReviewId = new HashSet<>(toUser.getReview());
+      newReviewId.removeAll(fromUser.getReview());
+
+      // merge Review
+      fromUser.getReview().addAll(toUser.getReview());
+
+      UserRepository.getInstance().save(fromUser);
+
+
+
     }
-
-    fromUser.getReview().addAll(toUser.getReview());
-
-    UserRepository.getInstance().save(fromUser);
 
     Session session = SessionRepository.getInstance().findOne(sessionId);
 
@@ -154,15 +175,14 @@ public class ActionServices {
       }
     }
 
-    Set<Review> allReview = ReviewRepository.getInstance().findAll(fromUser.getReview());
-    Set<ReviewBean> allReviewBean = new HashSet<>();
+    Set<Review> allReview = ReviewRepository.getInstance().findAll(newReviewId);
+    Set<ReviewBean> reviewList = new HashSet<>();
     for(Review rev:allReview) {
-      allReviewBean.add(ReviewBean.toBean(rev));
+      reviewList.add(ReviewBean.toBean(rev));
     }
-
     PullBean result = new PullBean();
     result.setUe(ueList);
-    result.setReview(allReviewBean);
+    result.setReview(reviewList);
 
     return result;
   }
