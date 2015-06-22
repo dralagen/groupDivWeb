@@ -1,4 +1,4 @@
-<div ng-controller="userController">
+<div ng-controller="userController" >
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -12,7 +12,8 @@
       </div>
     </nav>
 
-    <div class="container-fluid">
+    <div class="container-fluid" >
+	<fieldset ng-disabled="waitForPull">
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
@@ -68,5 +69,6 @@
 			</div>
 
 		</div>
+		</fieldset>
 	</div>
 </div>

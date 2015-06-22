@@ -3,6 +3,7 @@ var app = angular.module("groupDiv.userController", []);
 app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 		
 		$scope.tab = 1;
+		$scope.waitForPull = false;
 		
 		$scope.sessionId = "5629499534213120";
 		
@@ -134,7 +135,8 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 
 		$scope.putPicturesOnCanvas();
 
-		$scope.pullUsr = function(userId){		
+		$scope.pullUsr = function(userId){
+			$scope.waitForPull = true;		
 			GApi.execute('groupDivWeb', 'action.pull', {sessionId: $scope.sessionId, fromUserId: $scope.currentUsr.id, toUserId: userId}).then(
 				function(resp) {
 					console.log("pull sur : " + userId + " reussi");
@@ -152,6 +154,7 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 					console.log("error you can't pull : " + userId);
 				}
 			);
+			$scope.waitForPull = false;
 		}
 
 		$scope.postReview = function(b){
