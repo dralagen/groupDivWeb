@@ -28,11 +28,15 @@ public class ActionServices {
     return service;
   }
 
-  public LogBean commitUe(long sessionId, CommitUeBean ue) throws InvalidFormException {
+  public LogBean commitUe(long sessionId, CommitUeBean ue) throws InvalidFormException, IllegalAccessException {
 
     checkCommitUe(ue);
 
     Ue persistedUe = UeRepository.getInstance().findOne(sessionId, ue.getUeId());
+
+    if (persistedUe.getAuthor().getKey().getId() != ue.getAuthorId()) {
+      throw new IllegalAccessException("User must be the UE's author");
+    }
 
     UeContent content = new UeContent();
     content.setContent(ue.getContent());
@@ -74,15 +78,21 @@ public class ActionServices {
     }
   }
 
-  public LogBean commitReview(long sessionId, CommitReviewBean review) throws InvalidFormException {
+  public LogBean commitReview(long sessionId, CommitReviewBean review) throws InvalidFormException, IllegalAccessException {
 
     checkCommitReview(review);
+
+    Ue ue = UeRepository.getInstance().findOne(sessionId, review.getUeId());
+
+    if (ue.getAuthor().getKey().getId() == review.getAuthorId()) {
+      throw new IllegalAccessException("User can't write review on his ue");
+    }
 
     User user = UserRepository.getInstance().findOne(sessionId, review.getAuthorId());
 
     Review rev = new Review();
     rev.setAuthor(user.getKey());
-    rev.setUe(UeRepository.getInstance().findOne(sessionId, review.getUeId()).getKey());
+    rev.setUe(ue.getKey());
     rev.setContent(review.getContent());
     rev.setTime(new Date());
 
@@ -101,7 +111,7 @@ public class ActionServices {
     return result;
   }
 
-  private void checkCommitReview(CommitReviewBean review) throws InvalidFormException {
+  private void checkCommitReview (CommitReviewBean review) throws InvalidFormException {
     Map<String, String> errors = new HashMap<>();
 
     if (review.getContent() == null || review.getContent().equals("")) {
