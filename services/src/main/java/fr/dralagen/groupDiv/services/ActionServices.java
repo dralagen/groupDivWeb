@@ -1,5 +1,6 @@
 package fr.dralagen.groupDiv.services;
 
+import com.google.appengine.api.datastore.Key;
 import fr.dralagen.groupDiv.bean.*;
 import fr.dralagen.groupDiv.model.*;
 import fr.dralagen.groupDiv.persistence.ReviewRepository;
@@ -27,11 +28,15 @@ public class ActionServices {
     return service;
   }
 
-  public LogBean commitUe(long sessionId, CommitUeBean ue) throws InvalidFormException {
+  public LogBean commitUe(long sessionId, CommitUeBean ue) throws InvalidFormException, IllegalAccessException {
 
     checkCommitUe(ue);
 
     Ue persistedUe = UeRepository.getInstance().findOne(sessionId, ue.getUeId());
+
+    if (persistedUe.getAuthor().getKey().getId() != ue.getAuthorId()) {
+      throw new IllegalAccessException("User must be the UE's author");
+    }
 
     UeContent content = new UeContent();
     content.setContent(ue.getContent());
@@ -73,15 +78,21 @@ public class ActionServices {
     }
   }
 
-  public LogBean commitReview(long sessionId, CommitReviewBean review) throws InvalidFormException {
+  public LogBean commitReview(long sessionId, CommitReviewBean review) throws InvalidFormException, IllegalAccessException {
 
     checkCommitReview(review);
+
+    Ue ue = UeRepository.getInstance().findOne(sessionId, review.getUeId());
+
+    if (ue.getAuthor().getKey().getId() == review.getAuthorId()) {
+      throw new IllegalAccessException("User can't write review on his ue");
+    }
 
     User user = UserRepository.getInstance().findOne(sessionId, review.getAuthorId());
 
     Review rev = new Review();
     rev.setAuthor(user.getKey());
-    rev.setUe(UeRepository.getInstance().findOne(sessionId, review.getUeId()).getKey());
+    rev.setUe(ue.getKey());
     rev.setContent(review.getContent());
     rev.setTime(new Date());
 
@@ -100,7 +111,7 @@ public class ActionServices {
     return result;
   }
 
-  private void checkCommitReview(CommitReviewBean review) throws InvalidFormException {
+  private void checkCommitReview (CommitReviewBean review) throws InvalidFormException {
     Map<String, String> errors = new HashMap<>();
 
     if (review.getContent() == null || review.getContent().equals("")) {
@@ -121,21 +132,40 @@ public class ActionServices {
   }
 
   public PullBean pull(long sessionId, long fromUserId, long toUserId) {
-    User fromUser = UserRepository.getInstance().findOne(sessionId, fromUserId);
-    User toUser = UserRepository.getInstance().findOne(sessionId, toUserId);
 
-    {
-      Map<Long, Integer> toUserVersion = toUser.getVersionUE();
-      for (Map.Entry<Long, Integer> one : fromUser.getVersionUE().entrySet()) {
-        if (one.getValue().compareTo(toUserVersion.get(one.getKey())) < 0) {
-          one.setValue(toUserVersion.get(one.getKey()));
+    User toUser;
+    User fromUser = UserRepository.getInstance().findOne(sessionId, fromUserId);
+
+
+    Set<Key> newReviewId;
+
+    if (fromUserId == toUserId) {
+
+      newReviewId = fromUser.getReview();
+
+    } else {
+      toUser = UserRepository.getInstance().findOne(sessionId, toUserId);
+
+      { // update UE version
+        Map<Long, Integer> toUserVersion = toUser.getVersionUE();
+        for ( Map.Entry<Long, Integer> one : fromUser.getVersionUE().entrySet() ) {
+          if ( one.getValue().compareTo(toUserVersion.get(one.getKey())) < 0 ) {
+            one.setValue(toUserVersion.get(one.getKey()));
+          }
         }
       }
+
+      // find new review
+      newReviewId = new HashSet<>(toUser.getReview());
+      newReviewId.removeAll(fromUser.getReview());
+
+      // merge Review
+      fromUser.getReview().addAll(toUser.getReview());
+
+      UserRepository.getInstance().save(fromUser);
+
+      //TODO dralagen 6/4/15 : Update divergence
     }
-
-    fromUser.getReview().addAll(toUser.getReview());
-
-    UserRepository.getInstance().save(fromUser);
 
     Session session = SessionRepository.getInstance().findOne(sessionId);
 
@@ -154,15 +184,16 @@ public class ActionServices {
       }
     }
 
-    Set<Review> allReview = ReviewRepository.getInstance().findAll(fromUser.getReview());
-    Set<ReviewBean> allReviewBean = new HashSet<>();
+    Set<Review> allReview = ReviewRepository.getInstance().findAll(newReviewId);
+    Set<ReviewBean> reviewList = new HashSet<>();
     for(Review rev:allReview) {
-      allReviewBean.add(ReviewBean.toBean(rev));
+      reviewList.add(ReviewBean.toBean(rev));
     }
-
     PullBean result = new PullBean();
     result.setUe(ueList);
-    result.setReview(allReviewBean);
+    result.setReview(reviewList);
+
+    //TODO dralagen 6/4/15 : Log Pull
 
     return result;
   }

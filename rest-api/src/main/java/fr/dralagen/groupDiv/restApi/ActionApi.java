@@ -4,6 +4,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.ForbiddenException;
 import fr.dralagen.groupDiv.bean.CommitReviewBean;
 import fr.dralagen.groupDiv.bean.CommitUeBean;
 import fr.dralagen.groupDiv.bean.LogBean;
@@ -27,31 +28,31 @@ import fr.dralagen.groupDiv.services.exception.InvalidFormException;
 public class ActionApi {
 
   @ApiMethod(name = "action.commit.ue", httpMethod = ApiMethod.HttpMethod.POST, path = "session/{sessionId}/commit/ue")
-  public LogBean commitUe(@Named("sessionId") long sessionId, CommitUeBean ue) throws BadRequestException {
+  public LogBean commitUe(@Named("sessionId") long sessionId, CommitUeBean ue) throws BadRequestException, ForbiddenException {
 
     try {
       return ActionServices.getInstance().commitUe(sessionId, ue);
     } catch (InvalidFormException e) {
-        throw new BadRequestException(e);
+      throw new BadRequestException(e);
+    } catch (IllegalAccessException e) {
+      throw new ForbiddenException(e.getMessage());
     }
   }
 
   @ApiMethod(name = "action.commit.review", httpMethod = ApiMethod.HttpMethod.POST, path = "session/{sessionId}/commit/review")
-  public LogBean commitReview(@Named("sessionId") long sessionId, CommitReviewBean review) throws BadRequestException {
+  public LogBean commitReview(@Named("sessionId") long sessionId, CommitReviewBean review) throws BadRequestException, ForbiddenException {
 
     try {
       return ActionServices.getInstance().commitReview(sessionId, review);
     } catch (InvalidFormException e) {
       throw new BadRequestException(e);
+    } catch (IllegalAccessException e) {
+      throw new ForbiddenException(e.getMessage());
     }
   }
 
   @ApiMethod(name = "action.pull", httpMethod = ApiMethod.HttpMethod.GET, path = "session/{sessionId}/{fromUserId}/pull/{toUserId}/")
   public PullBean pull(@Named("sessionId") long sessionId, @Named("fromUserId") long fromUserId, @Named("toUserId") long toUserId) {
-
-    //TODO dralagen 6/4/15 : Update position of user
-    //TODO dralagen 6/4/15 : Log Pull
-    //TODO dralagen 6/4/15 : Update divergence
 
     return ActionServices.getInstance().pull(sessionId, fromUserId, toUserId);
   }

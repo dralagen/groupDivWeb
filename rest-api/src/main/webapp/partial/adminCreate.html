@@ -9,9 +9,9 @@
 				<th colspan="2"><!-- ng-class="{'has-success':data.favoriteList.id && !data.favoriteList.restError, 'has-error':data.favoriteList.restError.name}"-->
 				  <input type="text"
 						 name="group"
-						 placeholder="Session name"
+						 placeholder="{{ 'SESSION_NAME' | translate }}"
 						 class="form-control"
-						 ng-model="session.name"/>
+						 ng-model="session.name"/> 
 				</th>
 				<th class="action"> </th>
 			</tr>

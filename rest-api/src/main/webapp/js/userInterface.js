@@ -59,8 +59,8 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 		);
 		
 		$scope.pullUsr = function(userId){
-					$scope.waitForPull = true;
-	
+			$scope.waitForPull = true;
+
 			GApi.execute('groupDivWeb', 'action.pull', {sessionId: $scope.sessionId, fromUserId: $scope.currentUsr.id, toUserId: userId}).then(
 				function(resp) {
 					console.log("pull sur : " + userId + " reussi");
@@ -87,7 +87,7 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 					console.log("error you can't pull : " + userId);
 				}
 			);
-					$scope.waitForPull = false;
+			$scope.waitForPull = false;
 
 		}
 
