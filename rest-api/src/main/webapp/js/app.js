@@ -3,6 +3,7 @@ var app = angular.module("groupDiv", [
 	'groupDiv.userController',
 	'groupDiv.adminController',
 	'groupDiv.createUeUser',
+	'groupDiv.groupDivController', 
 	'ngRoute',
 	'angular-google-gapi',
 	'pascalprecht.translate',

@@ -11,4 +11,21 @@
 	</p>
 </div>
 </form>
-<div ng-include="'partial/reviews.html'"></div>
+<h3 class="sub-header">{{ 'REVIEWS' | translate }}</h3>
+<div class="table-responsive">
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>N° User</th>
+				<th>Review</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="review in reviews[currentUE.id] | orderBy:'postDate'">
+				<td>{{users[review.authorId].name}}</td>
+				<td>{{review.content}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
