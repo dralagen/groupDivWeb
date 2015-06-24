@@ -1,13 +1,12 @@
 package fr.dralagen.groupDiv.services;
 
-import fr.dralagen.groupDiv.bean.NewSessionBean;
-import fr.dralagen.groupDiv.bean.NewUeBean;
-import fr.dralagen.groupDiv.bean.SessionBean;
+import fr.dralagen.groupDiv.bean.*;
 import fr.dralagen.groupDiv.model.Session;
 import fr.dralagen.groupDiv.model.Ue;
 import fr.dralagen.groupDiv.model.UeContent;
 import fr.dralagen.groupDiv.model.User;
 import fr.dralagen.groupDiv.persistence.SessionRepository;
+import fr.dralagen.groupDiv.persistence.UeRepository;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
 
 import java.util.*;
@@ -122,5 +121,33 @@ public class SessionServices {
     if (!errors.isEmpty()) {
       throw new InvalidFormException(errors);
     }
+  }
+
+  public SessionBean updateSessionName (Long sessionId, NewSessionBean session) {
+
+    Session persistedSession = SessionRepository.getInstance().findOne(sessionId);
+
+    persistedSession.setName(session.getName());
+    persistedSession.setWithGroupDiv(session.getWithGroupDiv());
+
+    return SessionBean.toBean(persistedSession);
+
+  }
+
+  public UeInfoBean updateUe (Long sessionId, Long ueId, NewUeBean ue) {
+
+    Ue persistedUe = UeRepository.getInstance().findOne(sessionId, ueId);
+
+    User persistedUser = persistedUe.getAuthor();
+
+    if (ue.getTitle() != null && !"".equals(ue.getTitle())) {
+      persistedUe.setTitle(ue.getTitle());
+    }
+
+    if (ue.getUser() != null && !"".equals(ue.getUser())) {
+      persistedUser.setName(ue.getUser());
+    }
+
+    return UeInfoBean.toBean(persistedUe);
   }
 }
