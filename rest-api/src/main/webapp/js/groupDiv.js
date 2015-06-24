@@ -3,7 +3,7 @@ var app = angular.module("groupDiv.groupDivController", []);
 app.controller("groupDivController", ['$scope', 'GApi', function($scope, GApi){
 
 	$scope.GDtot = 0;
-	
+
 	$scope.echelle = 50;
 
 	$scope.canvas = document.getElementById("mon_canvas");
@@ -30,10 +30,10 @@ app.controller("groupDivController", ['$scope', 'GApi', function($scope, GApi){
 			$scope.context.drawImage($scope.yoda, $scope.canvas.width/2 - $scope.yoda.width/2, $scope.canvas.height - $scope.yoda.height);
 		}
 		else{
-			$scope.context.drawImage($scope.edlm, $scope.canvas.width/2 - $scope.edlm.width/2, $scope.canvas.height - $scope.edlm.height);	
+			$scope.context.drawImage($scope.edlm, $scope.canvas.width/2 - $scope.edlm.width/2, $scope.canvas.height - $scope.edlm.height);
 		}
 		$scope.divMinHeightPosition = $scope.canvas.height - $scope.edlm.height - $scope.xWingUser.height;
-		
+
 		j = 5;
 		k = 0;
 
@@ -73,7 +73,7 @@ app.controller("groupDivController", ['$scope', 'GApi', function($scope, GApi){
 			function(resp) {
 				$scope.GDtot = resp.globalDivergence;
 				angular.forEach(data.items, function(item){
-					
+
 				});
 			}, function() {
 

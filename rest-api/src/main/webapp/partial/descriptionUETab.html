@@ -5,7 +5,7 @@
 <h3 class="sub-header">{{ 'UE_DESCRIPTION' | translate }}</h3>
 <form name="reviewForm">
 	<div class="jumbotron">
-	<textarea class="form-control" ng-model="currentUE.content" rows="20"></textarea>
+	<textarea class="form-control" ng-model="current.ue.content" rows="20"></textarea>
 	<p>
 		<button class="btn btn-primary btn-lg pull-right" type="submit" style="margin-top:5px;" ng-click="postUE()">{{ 'POST' | translate }}</button>
 	</p>
@@ -21,7 +21,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="review in reviews[currentUE.id] | orderBy:'postDate'">
+			<tr ng-repeat="review in reviews[current.ue.id] | orderBy:'postDate'">
 				<td>{{users[review.authorId].name}}</td>
 				<td>{{review.content}}</td>
 			</tr>

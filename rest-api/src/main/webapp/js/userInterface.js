@@ -1,122 +1,130 @@
 var app = angular.module("groupDiv.userController", []);
 
 app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
-		
-		$scope.tab = 1;
-		$scope.waitForPull = false;
-		
-		$scope.sessionId = "5629499534213120";
 
-		$scope.selectedUE = {};
-		$scope.selectedUE.sel = [];
-		$scope.reviews = {};
-		
-		$scope.selectTab = function(setTab){
-			$scope.tab = setTab;
-		};
-		
-		$scope.isSelected = function(checkTab){
-			return $scope.tab === checkTab;
-		};
-		
-		$scope.currentUsr = {id: "5066549580791808", name: ""};
-		$scope.currentUE = {};
-		
-		$scope.users = {};
+	$scope.tab = 1;
+	$scope.waitForPull = false;
 
-		$scope.ues = [];
+	$scope.sessionId = "5629499534213120";
 
-		//here we get the id and the name of all the users. The same for ues
-		GApi.execute('groupDivWeb', 'session.get', {sessionId: $scope.sessionId}).then(
+	$scope.selectedUE = {};
+	$scope.selectedUE.sel = [];
+	$scope.reviews = {};
+
+	$scope.current = {};
+	$scope.current.usr = {id: "5066549580791808", name: ""};
+	$scope.current.ue = {};
+
+	$scope.users = {};
+	$scope.ues = [];
+
+	//here we get the id and the name of all the users. The same for ues. It is an initialisation
+	GApi.execute('groupDivWeb', 'session.get', {sessionId: $scope.sessionId}).then(
+		function(resp) {
+			console.log("we get the session");
+			//get users
+			angular.forEach(resp.user, function(usr){
+				if(usr.id == $scope.current.usr.id){
+					$scope.current.usr.name = usr.name;
+				}
+				$scope.users[usr.id] = usr;
+			});
+			console.log("we get the users");
+
+			//get ues
+			angular.forEach(resp.ue, function(oneUe){
+				temp = oneUe;
+				if(oneUe.authorId == $scope.current.usr.id){
+					$scope.current.ue = temp;
+				}
+				else{
+					$scope.ues.push(temp);
+				}
+				$scope.reviews[temp.id] = [];
+			});
+			$scope.selectedUE.sel = $scope.ues[0];
+			console.log("we get the ues");
+
+		}, function() {
+			console.log("We can't get the session");
+		}
+	);
+
+	//to pull one user and get new informations
+	$scope.pullUsr = function(userId){
+		$scope.waitForPull = true;
+
+		GApi.execute('groupDivWeb', 'action.pull', {sessionId: $scope.sessionId, fromUserId: $scope.current.usr.id, toUserId: userId}).then(
 			function(resp) {
-				console.log("we get the session");
 
-				//get users
-				angular.forEach(resp.user, function(usr){
-					if(usr.id == $scope.currentUsr.id){
-						$scope.currentUsr.name = usr.name;
-					}
-					$scope.users[usr.id] = usr;
-				});
+				console.log("pull on : " + userId + " successful");
 
-				//get ues
-				angular.forEach(resp.ue, function(oneUe){
-					temp = oneUe;
-					if(oneUe.userId == $scope.currentUsr.id){
-						$scope.currentUE = temp;
-						console.log($scope.currentUE);
-					}
-					else{
-						$scope.ues.push(temp);
-					}
-					$scope.reviews[temp.id] = [];
+				//get ues content
+				angular.forEach(resp.ue, function(item){
+					angular.forEach($scope.ues, function(ue){
+						if(ue.id == item.id){
+							ue.content = item.content;
+						}
+						else if($scope.current.ue.id == item.id){
+							$scope.current.ue.content = item.content;
+						}
+					});
 				});
-				$scope.selectedUE.sel = $scope.ues[0];
-				
+				console.log("we get the versions of ues");
+
+				//get reviews
+				angular.forEach(resp.review, function(rev){
+					$scope.reviews[rev.ueId].push(rev);
+				});
+				console.log("we get the new reviews");
 			}, function() {
-				console.log("We can't get the session");
+				console.log("error you can't pull : " + userId);
 			}
 		);
-		
-		$scope.pullUsr = function(userId){
-			$scope.waitForPull = true;
+		$scope.waitForPull = false;
+	}
 
-			GApi.execute('groupDivWeb', 'action.pull', {sessionId: $scope.sessionId, fromUserId: $scope.currentUsr.id, toUserId: userId}).then(
-				function(resp) {
-					console.log("pull sur : " + userId + " reussi");
-					angular.forEach(resp.ue, function(item){
-						angular.forEach($scope.ues, function(ue){
-							if(ue.id == item.id){
-								ue.content = item.content;
-							}
-							else if($scope.currentUE.id == item.id){
-								$scope.currentUE.content = item.content;
-							}
-						});
-					});
-					//get reviews
-					angular.forEach($scope.reviews, function(rev){
-						rev.splice(0, rev.length);
-					});
-					console.log($scope.reviews);
-					angular.forEach(resp.review, function(rev){
-						$scope.reviews[rev.ueId].push(rev);
-					});
-			
-				}, function() {
-					console.log("error you can't pull : " + userId);
-				}
-			);
-			$scope.waitForPull = false;
+	//initialisation of information for the current user.
+	$scope.pullUsr($scope.current.usr.id);
 
-		}
+	//to make available the review for all the users
+	$scope.postReview = function(){
+		GApi.execute('groupDivWeb', 'action.commit.review', {sessionId: $scope.sessionId, authorId: $scope.current.usr.id, ueId: $scope.selectedUE.sel.id, content: $scope.reviews.reviewToPost}).then(
+			function(resp) {
+				console.log("review post successful");
+				newReview = {content:$scope.reviews.reviewToPost, authorId: $scope.current.usr.id, postDate: resp.date, ueId: $scope.selectedUE.sel.id};
+				$scope.reviews[$scope.selectedUE.sel.id].push(newReview);
+				$scope.reviews.reviewToPost = "";
+			}, function(err) {
+				console.log("error you can't post your review .. ");
+			}
+		);
+	}
 
-		$scope.postReview = function(b){
-			GApi.execute('groupDivWeb', 'action.commit.review', {sessionId: $scope.sessionId, authorId: $scope.currentUsr.id, ueId: $scope.selectedUE.sel.id, content: $scope.reviews.reviewToPost}).then(
-				function(resp) {
-					console.log("post review reussi");
-					$scope.review.reviewToPost = "";
-				}, function(err) {
-					console.log(err);
-					console.log($scope.reviewToPost);
-					console.log("error you can't post your review .. ");
-				}
-			);
-		}
+	//to make available the version of the ue for all the users
+	$scope.postUE = function(){
+		GApi.execute('groupDivWeb', 'action.commit.ue', {sessionId: $scope.sessionId, authorId: $scope.current.usr.id, ueId: $scope.current.ue.id, content: $scope.current.ue.content}).then(
+			function(resp) {
+				console.log("post ue successful");
+			}, function(err) {
+				console.log("error you can't post your ue ");
+			}
+		);
+	}
 
-		$scope.postUE = function(){
+	//to set the selected tab
+	$scope.selectTab = function(setTab){
+		$scope.tab = setTab;
+	};
 
-			GApi.execute('groupDivWeb', 'action.commit.ue', {sessionId: $scope.sessionId, authorId: $scope.currentUsr.id, ueId: $scope.currentUE.id, content: $scope.currentUE.content}).then(
-				function(resp) {
-					console.log("post ue reussi");
-				}, function(err) {
-					console.log("error you can't post your ue ");
-				}
-			);
-		}
+	//to see if a tab is selected
+	$scope.isSelected = function(checkTab){
+		return $scope.tab === checkTab;
+	};
 
-	}]);
+}]);
 
+//to convert an object of objects into an array of objects
 app.filter('toArray', function () {
 	return function (obj, addKey) {
 		if (!obj) return obj;

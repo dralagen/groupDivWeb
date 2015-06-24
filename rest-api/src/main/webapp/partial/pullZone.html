@@ -1,4 +1,4 @@
 <p> {{ 'DO_PULL' | translate }} : </p>
-<div ng-repeat="user in users | toArray | orderBy:'name' | filter:'!'+currentUsr.name">
+<div ng-repeat="user in users | toArray | orderBy:'name' | filter:'!'+current.usr.name">
 	<button type="button" class="btn btn-primary btn-lg btn-block" ng-click="pullUsr(user.id)">{{user.name}}</button>
 </div>
