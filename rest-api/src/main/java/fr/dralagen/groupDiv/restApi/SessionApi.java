@@ -66,4 +66,11 @@ public class SessionApi {
     return SessionServices.getInstance().updateUe(sessionId, ueId, ue);
 
   }
+
+  @ApiMethod(name = "session.ue.delete", httpMethod = ApiMethod.HttpMethod.DELETE, path = "session/{sessionId}/ue/{ueId}")
+  public SessionBean deleteUe(@Named("sessionId") Long sessionId, @Named("ueId") Long ueId) {
+
+    return SessionServices.getInstance().deleteUe(sessionId, ueId);
+
+  }
 }

@@ -150,4 +150,22 @@ public class SessionServices {
 
     return UeInfoBean.toBean(persistedUe);
   }
+
+  public SessionBean deleteUe (Long sessionId, Long ueId) {
+    Session session = SessionRepository.getInstance().findOne(sessionId);
+
+    Ue deleteUe = null;
+    for (Ue ue : session.getUes()) {
+      if (ue.getKey().getId() == ueId) {
+        deleteUe = ue;
+        break;
+      }
+    }
+
+    if (deleteUe != null) {
+      session.getUes().remove(deleteUe);
+    }
+
+    return SessionBean.toBean(session);
+  }
 }
