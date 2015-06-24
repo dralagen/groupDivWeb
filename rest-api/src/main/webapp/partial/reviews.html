@@ -1,29 +1,17 @@
 <h3 class="sub-header">{{ 'REVIEWS' | translate }}</h3>
-		<div class="table-responsive">
-			<table class="table table-striped">
-				<thead>
-				<tr>
-					<th>N° User</th>
-					<th>Review</th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr>
-					<td>User 1</td>
-					<td>Coucou! arrete de regarder mon gros review houlalalalallalalalalallalalala</td>
-				</tr>
-				<tr>
-					<td>User 2</td>
-					<td>C'est pas mal !</td>
-				</tr>
-				<tr>
-					<td>User 5</td>
-					<td>1 VS 1!</td>
-				</tr>
-				<tr>
-					<td>User 2</td>
-					<td>Arretez de troller !</td>
-				</tr>
-				</tbody>
-			</table>
-		</div>
+<div class="table-responsive">
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>N° User</th>
+				<th>Review</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="review in reviews[selectedUE.sel.id] | orderBy:'postDate'">
+				<td>{{users[review.authorId].name}}</td>
+				<td>{{review.content}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

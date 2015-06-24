@@ -3,6 +3,7 @@ var app = angular.module("groupDiv", [
 	'groupDiv.userController',
 	'groupDiv.adminController',
 	'groupDiv.createUeUser',
+	'groupDiv.groupDivController',
 	'groupDiv.modifySession',
 	'ngRoute',
 	'angular-google-gapi',
@@ -12,16 +13,13 @@ var app = angular.module("groupDiv", [
 
 app.run(['GApi', 'GAuth',
 	function(GApi, GAuth) {
-
 		var BASE;
-		console.log(window.location.hostname);
 		if(window.location.hostname == 'localhost') {
 			BASE = '//localhost:8080/_ah/api';
 		} else {
 			BASE = 'https://groupdivxp.appspot.com/_ah/api';
 		}
 		GApi.load('groupDivWeb','v1',BASE);
-		
 	}
 ]);
 
@@ -51,17 +49,17 @@ app.config(function (localStorageServiceProvider) {
 //language config
 app.config(function($translateProvider) {
 	$translateProvider.useSanitizeValueStrategy(null);
-	$translateProvider.translations('fr', translateFr);	
-	$translateProvider.translations('en', translateEn);	
+	$translateProvider.translations('fr', translateFr);
+	$translateProvider.translations('en', translateEn);
 	$translateProvider.preferredLanguage('fr');
-	
+
 });
 
 app.controller("mainController", [ 'localStorageService','$translate' , function(localStorageService,$translate){
 	if(localStorageService.get('language') == null)
 		{$translate.use('fr'); }
 	else
-		{$translate.use(localStorageService.get('language'));}	
+		{$translate.use(localStorageService.get('language'));}
 }]);
 
 

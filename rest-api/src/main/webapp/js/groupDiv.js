@@ -1,60 +1,86 @@
-this.GDtot = 56;
-this.GDUser = 10;
-this.users = [{name: "user1", value:20}, {name :"user2", value:0}, {value:"user3", value:30}];
-this.echelle = 20;
+var app = angular.module("groupDiv.groupDivController", []);
 
-this.canvas = document.getElementById("mon_canvas");
-this.context = canvas.getContext("2d");
+app.controller("groupDivController", ['$scope', 'GApi', function($scope, GApi){
 
-this.xWing = new Image();
-this.xWing.src = 'img/xwing.gif';
+	$scope.GDtot = 0;
 
-this.edlm = new Image();
-this.edlm.src = 'img/edlm.gif';
+	$scope.echelle = 50;
 
-this.yoda = new Image();
-this.yoda.src = 'img/yoda.gif';
+	$scope.canvas = document.getElementById("mon_canvas");
+	$scope.context = $scope.canvas.getContext("2d");
 
-this.xWingUser = new Image();
-this.xWingUser.src = 'img/xwingUSER.gif';
+	$scope.xWing = new Image();
+	$scope.xWing.src = 'img/xwing.gif';
 
+	$scope.edlm = new Image();
+	$scope.edlm.src = 'img/edlm.gif';
 
-this.eraseCanvas = function(){
-	this.context.clearRect(0, 0, canvas.width, canvas.height);
-}
+	$scope.yoda = new Image();
+	$scope.yoda.src = 'img/yoda.gif';
 
-this.putPicturesOnCanvas = function(){
-	if(this.GDtot === 0){
-		this.context.drawImage(this.yoda, this.canvas.width/2 - this.yoda.width/2, this.canvas.height - this.yoda.height);
+	$scope.xWingUser = new Image();
+	$scope.xWingUser.src = 'img/xwingUSER.gif';
+
+	$scope.eraseCanvas = function(){
+		$scope.context.clearRect(0, 0, $scope.canvas.width, $scope.canvas.height);
 	}
-	else{
-		this.context.drawImage(this.edlm, this.canvas.width/2 - this.edlm.width/2, this.canvas.height - this.edlm.height);	
-	}
-	this.divMinHeightPosition = this.canvas.height - this.edlm.height - this.xWingUser.height
-	
-	j = 5;
-	k = 0;
-	
-	this.context.drawImage(this.xWingUser, 15 + k + j, this.divMinHeightPosition * this.GDUser / this.echelle);	
 
-	for(x of this.users){
-		if( k === 0){
-			j += 5;
-			if(j === 10){
-				j = -5;
-			}
+	$scope.putPicturesOnCanvas = function(){
+		if($scope.GDtot === 0){
+			$scope.context.drawImage($scope.yoda, $scope.canvas.width/2 - $scope.yoda.width/2, $scope.canvas.height - $scope.yoda.height);
 		}
-		this.context.drawImage(this.xWing, 15 + k + j, this.divMinHeightPosition - (this.divMinHeightPosition * x.value / this.echelle));	
-		k = (k+40)%160;
+		else{
+			$scope.context.drawImage($scope.edlm, $scope.canvas.width/2 - $scope.edlm.width/2, $scope.canvas.height - $scope.edlm.height);
+		}
+		$scope.divMinHeightPosition = $scope.canvas.height - $scope.edlm.height - $scope.xWingUser.height;
+
+		j = 5;
+		k = 0;
+
+		//foreach angular hjs
+		console.log($scope.users);
+		angular.forEach($scope.users, function(user){
+			if( k === 0){
+				j += 5;
+				if(j === 10){
+					j = -5;
+				}
+			}
+			console.log(user);
+			console.log(user.id + "    " + $scope.currentUsr + "   " );
+			console.log(user.id == $scope.currentUsr);
+			if(user.id == $scope.currentUsr){
+				$scope.context.drawImage($scope.xWingUser, 15 + k + j, $scope.divMinHeightPosition - ($scope.divMinHeightPosition * user.GD / $scope.echelle));
+			}
+			else{
+				$scope.context.drawImage($scope.xWing, 15 + k + j, $scope.divMinHeightPosition - ($scope.divMinHeightPosition * user.GD / $scope.echelle));
+			}
+			k = (k+40)%160;
+		});
 	}
-}
 
-function refreshCanvas(){
-	eraseCanvas();
-	//TODO get values of group divergences.
-	putPicturesOnCanvas();
-}
+	$scope.refreshCanvas = function(){
+		$scope.eraseCanvas();
+		//TODO get values of group divergences.
+		$scope.putPicturesOnCanvas();
+	}
 
-$(document).ready(function(){
-	putPicturesOnCanvas();
-});
+	$scope.refreshCanvas();
+
+	//here we get divergences values
+	$scope.majDivergences = function(){
+		/*GApi.execute('groupDivWeb', 'divergence', {sessionId: $scope.sessionId}).then(
+			function(resp) {
+				$scope.GDtot = resp.globalDivergence;
+				angular.forEach(data.items, function(item){
+
+				});
+			}, function() {
+
+			}
+		);*/
+	}
+
+	$scope.majDivergences();
+}]);
+
