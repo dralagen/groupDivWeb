@@ -12,16 +12,16 @@ app.controller("adminController",['$scope', 'GApi', function myC($scope, GApi){
 
 	$scope.selectedUE = {};
 	$scope.selectedUE.sel = [];
-	
+
 	$scope.selectedUser = {};
 	$scope.selectedUser.sel = {};
 
-	
+
 	$scope.reviews = {};
 
 	$scope.users = [];
 	$scope.ues = [];
-		
+
 	$scope.divergencesValues = [
 		{data: [[Date.parse("2015-12-12T12:12:12"), 20],[Date.parse("2015-12-12T12:14:12"), 50], [Date.parse("2015-12-12T12:15:12"), 70], [Date.parse("2015-12-12T12:16:12"), 30]], label: "GDTot"},
 		{data: [[Date.parse("2015-12-12T12:12:12"), 1],[Date.parse("2015-12-12T12:14:12"), 2], [Date.parse("2015-12-12T12:15:12"), 3], [Date.parse("2015-12-12T12:16:12"), 4]],  label: "usr1"},
@@ -44,7 +44,7 @@ app.controller("adminController",['$scope', 'GApi', function myC($scope, GApi){
 	$scope.chooseSession = function(){
 		if(!angular.isUndefined($scope.selectedSession)){
 			$scope.sessionChoosen = true;
-			
+
 			GApi.execute('groupDivWeb', 'session.get', {sessionId: $scope.selectedSession}).then(
 				function(data){
 					console.log("session loaded");

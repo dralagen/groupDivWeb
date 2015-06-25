@@ -33,7 +33,7 @@ app.config(['$routeProvider',
 			}).when('/adminView', {
 				templateUrl: 'partial/admin.html',
 				controller: 'adminController',
-			}).when('/user', {
+			}).when('/user/:userId/:sessionId', {
 				templateUrl: 'partial/userInterface.html',
 			}).otherwise({
 				templateUrl: 'partial/indexChoices.html',
@@ -66,8 +66,8 @@ app.factory('Users', function(){
 
 	var usersType = {};
 	usersType.users = {};
-	usersType.currentUser = {id: "5066549580791808", name: ""};
-	
+	usersType.currentUser = {id: "", name: ""};
+
 	return usersType;
 });
 

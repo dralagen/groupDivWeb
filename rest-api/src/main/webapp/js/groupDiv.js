@@ -1,12 +1,14 @@
 var app = angular.module("groupDiv.groupDivController", []);
 
-app.controller("groupDivController", ['$scope', 'GApi', 'Users', function($scope, GApi, Users){
+app.controller("groupDivController", ['$scope', '$routeParams', 'GApi', 'Users', function($scope, $routeParams, GApi, Users){
 
 	$scope.GDtot = 0;
 	$scope.users = Users.users;
 	$scope.currentUsr = Users.currentUser;
 
-	$scope.echelle = 50;
+	$scope.sessionId = $routeParams.sessionId;
+
+	$scope.echelle = 20;
 
 	$scope.canvas = document.getElementById("mon_canvas");
 	$scope.context = $scope.canvas.getContext("2d");
@@ -39,7 +41,6 @@ app.controller("groupDivController", ['$scope', 'GApi', 'Users', function($scope
 		j = 5;
 		k = 0;
 
-		//foreach angular hjs
 		angular.forEach($scope.users, function(user){
 			if( k === 0){
 				j += 5;
@@ -47,41 +48,46 @@ app.controller("groupDivController", ['$scope', 'GApi', 'Users', function($scope
 					j = -5;
 				}
 			}
-			console.log(15 + k + j);
-				console.log($scope.divMinHeightPosition - ($scope.divMinHeightPosition * user.GD / $scope.echelle));
-				
+
 			if(user.id == $scope.currentUsr.id){
-				$scope.context.drawImage($scope.xWingUser, 15 + k + j, $scope.divMinHeightPosition - ($scope.divMinHeightPosition * user.GD / $scope.echelle));
+				$scope.context.drawImage($scope.xWingUser, 15 + k + j, $scope.divMinHeightPosition - ($scope.divMinHeightPosition * user.groupDivergence / $scope.echelle));
 			}
 			else{
-				$scope.context.drawImage($scope.xWing, 15 + k + j, $scope.divMinHeightPosition - ($scope.divMinHeightPosition * user.GD / $scope.echelle));
+				$scope.context.drawImage($scope.xWing, 15 + k + j, $scope.divMinHeightPosition - ($scope.divMinHeightPosition * user.groupDivergence / $scope.echelle));
 			}
 			k = (k+40)%160;
 		});
 	}
 
+	//here we get divergences values
+	$scope.majDivergences = function(){
+		GApi.execute('groupDivWeb', 'divergence', {sessionId: $scope.sessionId}).then(
+			function(resp) {
+				$scope.GDtot = resp.globalDivergence;
+				angular.forEach(resp.userDivergence, function(div, usrId){
+					console.log(div + "  "  +usrId);
+					if(angular.isUndefined($scope.users[usrId])){
+						console.log("The user : " + usrId + " is unknow.");
+					}
+					else{
+						$scope.users[usrId].groupDivergence = div;
+						$scope.echelle = Math.max($scope.echelle, div);
+					}
+
+				});
+			}, function() {
+				console.log("we can't get the divergence'");
+			}
+		);
+		$scope.echelle = Math.max($scope.echelle, 20);
+	}
+
 	$scope.refreshCanvas = function(){
+		$scope.majDivergences();
 		$scope.eraseCanvas();
-		//TODO get values of group divergences.
 		$scope.putPicturesOnCanvas();
 	}
 
 	$scope.refreshCanvas();
-
-	//here we get divergences values
-	$scope.majDivergences = function(){
-		/*GApi.execute('groupDivWeb', 'divergence', {sessionId: $scope.sessionId}).then(
-			function(resp) {
-				$scope.GDtot = resp.globalDivergence;
-				angular.forEach(data.items, function(item){
-
-				});
-			}, function() {
-
-			}
-		);*/
-	}
-
-	$scope.majDivergences();
 }]);
 

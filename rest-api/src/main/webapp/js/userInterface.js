@@ -1,11 +1,11 @@
 var app = angular.module("groupDiv.userController", []);
 
-app.controller("userController", ['$scope', 'GApi','Users', function($scope, GApi, Users){
+app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', function($scope, $routeParams, GApi, Users){
 
 	$scope.tab = 1;
 	$scope.waitForPull = false;
 
-	$scope.sessionId = "5629499534213120";
+	$scope.sessionId = $routeParams.sessionId;
 
 	$scope.selectedUE = {};
 	$scope.selectedUE.sel = [];
@@ -13,6 +13,8 @@ app.controller("userController", ['$scope', 'GApi','Users', function($scope, GAp
 
 	$scope.current = {};
 	$scope.current.usr = Users.currentUser;
+	$scope.current.usr.id = $routeParams.userId;
+
 	$scope.current.ue = {};
 
 	$scope.users = Users.users;
@@ -28,6 +30,7 @@ app.controller("userController", ['$scope', 'GApi','Users', function($scope, GAp
 					$scope.current.usr.name = usr.name;
 				}
 				$scope.users[usr.id] = usr;
+				$scope.users[usr.id].groupDivergence = 0;
 			});
 			console.log("we get the users");
 
