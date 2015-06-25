@@ -80,11 +80,13 @@ app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', fun
 					$scope.reviews[rev.ueId].push(rev);
 				});
 				console.log("we get the new reviews");
+				$scope.waitForPull = false;
 			}, function() {
 				console.log("error you can't pull : " + userId);
+				$scope.waitForPull = false;
 			}
 		);
-		$scope.waitForPull = false;
+
 	}
 
 	//initialisation of information for the current user.
