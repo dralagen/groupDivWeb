@@ -4,8 +4,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.BadRequestException;
-import fr.dralagen.groupDiv.bean.NewSessionBean;
-import fr.dralagen.groupDiv.bean.SessionBean;
+import fr.dralagen.groupDiv.bean.*;
 import fr.dralagen.groupDiv.services.SessionServices;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
 
@@ -49,5 +48,29 @@ public class SessionApi {
     } catch (NullPointerException e) {
       throw new BadRequestException("JSON malformed");
     }
+  }
+
+  @ApiMethod(name = "session.edit", httpMethod = ApiMethod.HttpMethod.PUT, path = "session/{sessionId}")
+  public SessionBean update(@Named("sessionId") Long sessionId, NewSessionBean session) throws BadRequestException {
+
+    if ( session.getName().equals("") ) {
+      throw new BadRequestException("Session Name can't be null");
+    }
+
+    return SessionServices.getInstance().updateSessionName(sessionId, session);
+  }
+
+  @ApiMethod(name = "session.ue.edit", httpMethod = ApiMethod.HttpMethod.PUT, path = "session/{sessionId}/ue/{ueId}")
+  public UeInfoBean updateUe(@Named("sessionId") Long sessionId, @Named("ueId") Long ueId, NewUeBean ue) {
+
+    return SessionServices.getInstance().updateUe(sessionId, ueId, ue);
+
+  }
+
+  @ApiMethod(name = "session.ue.delete", httpMethod = ApiMethod.HttpMethod.DELETE, path = "session/{sessionId}/ue/{ueId}")
+  public SessionBean deleteUe(@Named("sessionId") Long sessionId, @Named("ueId") Long ueId) {
+
+    return SessionServices.getInstance().deleteUe(sessionId, ueId);
+
   }
 }
