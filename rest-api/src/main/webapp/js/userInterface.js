@@ -1,6 +1,6 @@
 var app = angular.module("groupDiv.userController", []);
 
-app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
+app.controller("userController", ['$scope', 'GApi','Users', function($scope, GApi, Users){
 
 	$scope.tab = 1;
 	$scope.waitForPull = false;
@@ -12,10 +12,10 @@ app.controller("userController", ['$scope', 'GApi', function($scope, GApi){
 	$scope.reviews = {};
 
 	$scope.current = {};
-	$scope.current.usr = {id: "5066549580791808", name: ""};
+	$scope.current.usr = Users.currentUser;
 	$scope.current.ue = {};
 
-	$scope.users = {};
+	$scope.users = Users.users;
 	$scope.ues = [];
 
 	//here we get the id and the name of all the users. The same for ues. It is an initialisation

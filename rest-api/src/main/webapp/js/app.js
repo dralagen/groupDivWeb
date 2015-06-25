@@ -62,6 +62,15 @@ app.controller("mainController", [ 'localStorageService','$translate' , function
 		{$translate.use(localStorageService.get('language'));}
 }]);
 
+app.factory('Users', function(){
+
+	var usersType = {};
+	usersType.users = {};
+	usersType.currentUser = {id: "5066549580791808", name: ""};
+	
+	return usersType;
+});
+
 
 
 

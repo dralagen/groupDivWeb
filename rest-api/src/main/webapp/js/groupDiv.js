@@ -1,8 +1,10 @@
 var app = angular.module("groupDiv.groupDivController", []);
 
-app.controller("groupDivController", ['$scope', 'GApi', function($scope, GApi){
+app.controller("groupDivController", ['$scope', 'GApi', 'Users', function($scope, GApi, Users){
 
 	$scope.GDtot = 0;
+	$scope.users = Users.users;
+	$scope.currentUsr = Users.currentUser;
 
 	$scope.echelle = 50;
 
@@ -38,7 +40,6 @@ app.controller("groupDivController", ['$scope', 'GApi', function($scope, GApi){
 		k = 0;
 
 		//foreach angular hjs
-		console.log($scope.users);
 		angular.forEach($scope.users, function(user){
 			if( k === 0){
 				j += 5;
@@ -46,10 +47,10 @@ app.controller("groupDivController", ['$scope', 'GApi', function($scope, GApi){
 					j = -5;
 				}
 			}
-			console.log(user);
-			console.log(user.id + "    " + $scope.currentUsr + "   " );
-			console.log(user.id == $scope.currentUsr);
-			if(user.id == $scope.currentUsr){
+			console.log(15 + k + j);
+				console.log($scope.divMinHeightPosition - ($scope.divMinHeightPosition * user.GD / $scope.echelle));
+				
+			if(user.id == $scope.currentUsr.id){
 				$scope.context.drawImage($scope.xWingUser, 15 + k + j, $scope.divMinHeightPosition - ($scope.divMinHeightPosition * user.GD / $scope.echelle));
 			}
 			else{

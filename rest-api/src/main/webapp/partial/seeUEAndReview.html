@@ -1,19 +1,18 @@
 
 <h2 class="text-center page-header">{{ 'CHOOSE_UE_WATCH' | translate }} : </h2>
-
-<select class="form-control" id="selectReview">
-	<option value="value1">UE 1</option>
-	<option value="value2">UE 2</option>
-	<option value="value3">UE 3</option>
+<p>Choose a user : </p>
+<select class="form-control" ng-model="selectedUE.sel" ng-options="ue as ue.title for ue in ues">
+</select>
+<p>Choose a UE : </p>
+<select class="form-control" ng-model="selectedUser.sel" ng-options="user as user.name for user in users" ng-change="pullTheUser()">
 </select>
 
-<h2 class="text-center page-header">{{ 'CANDR_UE_SESSION' | translate }} : AZERTY</h2>
-
+<h2 class="text-center page-header">{{ 'CANDR_UE_SESSION' | translate }} : {{selectedUE.sel.title}}</h2>
 <div class="jumbotron">
 	<div class="servive-block servive-block-grey">
 		<h3 class="sub-header">{{ 'UE_DESCRIPTION' | translate }}</h3>
 		<form name="reviewForm">
-			<textarea class="form-control" rows="20" readonly></textarea>
+			<textarea class="form-control" rows="20" ng-model="selectedUE.sel.content" readonly></textarea>
 		</form>
 		<div ng-include="'partial/reviews.html'"></div>
 	</div>
