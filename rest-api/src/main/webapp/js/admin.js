@@ -5,7 +5,6 @@ app.controller("adminController",['$scope', 'GApi', function myC($scope, GApi){
 
 
 	$scope.sessionChoosen = false;
-	$scope.sessionChoosenID = "";
 
 	$scope.useGroupDiv = true;
 	$scope.sessions = [];

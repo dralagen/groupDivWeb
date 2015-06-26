@@ -21,14 +21,14 @@
 				  <input type="text"
 						 name="group"
 						 class="form-control"
-						 ng-model="sessionName"/> 
+						 ng-model="new_.sessionName"/> 
 				</th>
 				<th class="action"> </th>
 			</tr>
 			<tr>
 				<th>
 					<label>
-						<input type="checkbox" ng-model="useGroupDiv"/> {{ 'WITH_GD' | translate }}
+						<input type="checkbox" ng-model="new_.useGroupDiv"/> {{ 'WITH_GD' | translate }}
 					</label>
 				</th>
 			</tr>
@@ -37,12 +37,12 @@
 				<th> {{ 'COURSE_NAME' | translate }} </th>
 				<th class="action"> </th>
 			</tr>
-			<tr ng-repeat="oneUE in list ">
+			<tr ng-repeat="oneUE in ues ">
 				<td>
-					<input type="text"  class="form-control" ng-model="oneUE.user"/> 
+					<input type="text"  class="form-control" ng-model="users[oneUE.authorId].name" ng-change="updateUE(oneUE)"/> 
 				</td>
 				<td>
-					<input type="text"  class="form-control"  ng-model="oneUE.ue"/> 
+					<input type="text"  class="form-control"  ng-model="oneUE.title" ng-change="updateUE(oneUE)"/> 
 				</td>
 				<td class="action"><button class="btn btn-danger" ng-click="deleteUe(oneUE);"><span class="glyphicon glyphicon-trash" ></span></button></td> 
 			</tr>
@@ -55,7 +55,7 @@
 			</tr>
 		</table>
 		<div class="text-center">
-			<button class="btn btn-info" ng-click="modifySession(session);"><span class=" glyphicon glyphicon-ok"></span>&nbsp; {{ 'MODIFY_SESSION' | translate }}</button>
+			<button class="btn btn-info" ng-click="modifySession();"><span class=" glyphicon glyphicon-ok"></span>&nbsp; {{ 'MODIFY_SESSION' | translate }}</button>
 		</div>
 
 	</div>
