@@ -48,8 +48,8 @@ app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', fun
 			$scope.selectedUE.sel = $scope.ues[0];
 			console.log("we get the ues");
 
-		}, function() {
-			console.log("We can't get the session");
+		}, function(err) {
+			console.log("We can't get the session : " + err.error.message);
 		}
 	);
 
@@ -81,8 +81,8 @@ app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', fun
 				});
 				console.log("we get the new reviews");
 				$scope.waitForPull = false;
-			}, function() {
-				console.log("error you can't pull : " + userId);
+			}, function(err) {
+				console.log("error you can't pull : " + userId + " : " + err.error.message);
 				$scope.waitForPull = false;
 			}
 		);
@@ -101,7 +101,7 @@ app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', fun
 				$scope.reviews[$scope.selectedUE.sel.id].push(newReview);
 				$scope.reviews.reviewToPost = "";
 			}, function(err) {
-				console.log("error you can't post your review .. ");
+				console.log("error you can't post your review : " + err.error.message);
 			}
 		);
 	}
@@ -112,7 +112,7 @@ app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', fun
 			function(resp) {
 				console.log("post ue successful");
 			}, function(err) {
-				console.log("error you can't post your ue ");
+				console.log("error you can't post your ue : " + err.error.message);
 			}
 		);
 	}

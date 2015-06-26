@@ -10,14 +10,14 @@ app.controller('modifySession', ['$scope','GApi' , function($scope,GApi){
 	$scope.new_ = {};
 	$scope.new_.useGroupDiv = true;
 	$scope.new_.sessionName = "";
-	
+
 	$scope.sessions = [];
 	$scope.users = {};
-	
+
 	$scope.ues = [];
 	$scope.uesToDelete = [];
 
-	
+
 	GApi.execute('groupDivWeb', 'session.list').then(
 		function(data){
 			console.log("list sessions ok ");
@@ -26,11 +26,11 @@ app.controller('modifySession', ['$scope','GApi' , function($scope,GApi){
 				$scope.sessions.push(temp);
 			});
 		},
-		function(){
-			console.log("error : we can't get the list of sessions");
+		function(err){
+			console.log("error : we can't get the list of sessions : " + err.error.message);
 		}
 	);
-	
+
 	$scope.deleteUe = function (ue) {
 		var index = $scope.ues.indexOf(ue);
 		$scope.ues.splice(index, 1);
@@ -39,15 +39,15 @@ app.controller('modifySession', ['$scope','GApi' , function($scope,GApi){
 			$scope.uesToDelete.push(ue);
 		}
 	};
-	
-	$scope.addUe = function () {	
+
+	$scope.addUe = function () {
 		var ue = {
 			user: '',
 			ue: '',
-		}	
+		}
 		$scope.ues.push(ue);
 	};
-	
+
 	$scope.modifySession = function(){
 		var reload = false;
 		//ues to add
@@ -68,34 +68,34 @@ app.controller('modifySession', ['$scope','GApi' , function($scope,GApi){
 					function(data){
 						console.log("ue : " + ue.id + " is modify");
 					},
-					function(){
-						console.log("ue : " + ue.id + " is not modify");
+					function(err){
+						console.log("ue : " + ue.id + " is not modify : " + err.error.message);
 					}
 				);
 			}
 		});
-		
+
 		//ues to delete
 		angular.forEach($scope.uesToDelete, function(ue){
 			GApi.execute('groupDivWeb', 'session.ue.delete', {sessionId: $scope.selectedSession, ueId: ue.id}).then(
 				function(data){
 					console.log("ue : " + ue.id + " deleted");
 				},
-				function(){
-					console.log("ue : " + ue.id + " not deleted");
+				function(err){
+					console.log("ue : " + ue.id + " not deleted " + err.error.message);
 				}
 			);
 		});
 		$scope.uesToDelete = [];
-		
+
 		//modify session name and withGD
 		if(	$scope.old.useGroupDiv != $scope.new_.useGroupDiv || $scope.old.sessionName != $scope.new_.sessionName){
 			GApi.execute('groupDivWeb', 'session.edit', {sessionId: $scope.selectedSession, name: $scope.new_.sessionName, withGroupDiv: $scope.new_.useGroupDiv}).then(
 				function(data){
 					console.log("modify session name and withGD ok ");
 				},
-				function(){
-					console.log("error : we can't modify session name and withGD");
+				function(err){
+					console.log("error : we can't modify session name and withGD : " + err.error.message);
 				}
 			);
 		}
@@ -105,11 +105,11 @@ app.controller('modifySession', ['$scope','GApi' , function($scope,GApi){
 		}
 	}
 
-	
+
 	$scope.chooseSession = function(){
 		if(!angular.isUndefined($scope.selectedSession)){
 			$scope.sessionChoosen = true;
-			
+
 			GApi.execute('groupDivWeb', 'session.get', {sessionId: $scope.selectedSession}).then(
 				function(data){
 					console.log("session loaded");
@@ -129,22 +129,22 @@ app.controller('modifySession', ['$scope','GApi' , function($scope,GApi){
 					angular.forEach($scope.ues, function(ue){
 						ue.change = false;
 					});
-					
+
 					$scope.sessionName = data.name;
 				}, function(){
-					console.log("error : we can't load the session");
+					console.log("error : we can't load the session : " + err.error.message);
 				}
 			);
 			$scope.sortUeUserList();
 		}
 	};
-	
+
 	//get a list of the users that are assign to the ues
 	$scope.sortUeUserList = function(){
 		angular.forEach($scope.ues, function(ue){
 			angular.forEach($scope.users, function(user){
 				if(ue.authorId == user.id)
-				{ 
+				{
 					temp = {user: user.name, ue: ue.title, ueId: ue.id};
 					$scope.ues.push(temp);
 				}

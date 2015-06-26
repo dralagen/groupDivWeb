@@ -75,8 +75,8 @@ app.controller("groupDivController", ['$scope', '$routeParams', 'GApi', 'Users',
 					}
 
 				});
-			}, function() {
-				console.log("we can't get the divergence'");
+			}, function(err) {
+				console.log("we can't get the divergence : " + err.error.message);
 			}
 		);
 		$scope.echelle = Math.max($scope.echelle, 20);
