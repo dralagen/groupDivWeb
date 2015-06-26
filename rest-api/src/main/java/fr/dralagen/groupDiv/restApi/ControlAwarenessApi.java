@@ -21,7 +21,7 @@ import java.util.Map;
     clientIds = {Constants.API_ID},
     scopes = {}
 )
-public class ControlAwarnessApi {
+public class ControlAwarenessApi {
 
   @ApiMethod(name = "divergence", httpMethod = ApiMethod.HttpMethod.GET, path = "session/{sessionId}/divergence")
   public DivergenceBean getDivergence(@Named("sessionId") long sessionId) {
