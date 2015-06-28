@@ -47,15 +47,37 @@ public class ActionServices {
     User user = UserRepository.getInstance().findOne(sessionId, ue.getAuthorId());
     user.getVersionUE().put(ue.getUeId(), content.getVersion());
 
-    //TODO dralagen 6/4/15 : Update divergence
+    Session session = SessionRepository.getInstance().findOne(sessionId);
+    LogDivergence lastDivergence = session.getLastDivergence();
 
-    //TODO dralagen 6/4/15 : Log Commit UE
-    LogBean result = new LogBean();
-    result.setAction(Action.COMMIT);
-    result.setMessage("Commit UE on " + ue.getUeId() + " at version " + content.getVersion() + ":"+content.getKey().getId());
-    result.setUserId(ue.getAuthorId());
-    result.setDate(new Date());
-    return result;
+    Map<User, Integer> newUsersDivergence = new HashMap<>();
+    for ( Map.Entry<User, Integer> e: lastDivergence.getUserDivegence().entrySet()) {
+      User u = e.getKey();
+      Integer value = (!u.equals(user)) ? e.getValue() + 1 : e.getValue();
+
+      newUsersDivergence.put(u, value);
+    }
+
+    LogDivergence divergence = new LogDivergence();
+    divergence.setSession(session);
+    divergence.setGDtot(lastDivergence.getGDtot() + session.getUsers().size()-1);
+    divergence.setTime(new Date());
+    divergence.setUserDivegence(newUsersDivergence);
+
+    //Update last Divergence
+    session.getDivergences().add(divergence);
+    session.setLastDivergence(divergence);
+
+    LogAction action = new LogAction();
+    action.setAction(Action.COMMIT);
+    action.setAuthor(user);
+    action.setSession(session);
+    action.setTime(new Date());
+    action.setResult("Commit UE on " + ue.getUeId() + " at version " + content.getVersion() + ":"+content.getKey().getId());
+
+    session.getActions().add(action);
+
+    return LogBean.toBean(action);
   }
 
   private void checkCommitUe(CommitUeBean ue) throws InvalidFormException {

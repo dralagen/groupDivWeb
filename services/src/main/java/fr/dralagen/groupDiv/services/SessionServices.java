@@ -37,7 +37,6 @@ public class SessionServices {
     newSession.setName(session.getName());
     newSession.setWithGroupDiv(session.getWithGroupDiv());
     newSession.setCreateDate(new Date());
-    newSession.setGDtot(0);
 
     List<Ue> ueList = new ArrayList<>();
     List<User> userList = new ArrayList<>();

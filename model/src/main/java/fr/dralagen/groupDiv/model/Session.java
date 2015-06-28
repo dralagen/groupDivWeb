@@ -1,6 +1,7 @@
 package fr.dralagen.groupDiv.model;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 
 import javax.jdo.annotations.*;
 import java.util.Date;
@@ -35,12 +36,14 @@ public class Session {
   @Persistent(mappedBy = "session")
   @Element(dependent = "true")
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
+  @Unowned
+  private LogDivergence lastDivergence;
+
+  @Persistent(mappedBy = "session")
+  @Element(dependent = "true")
+  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   @Order(extensions = @Extension(vendorName="datanucleus",key="list-ordering", value="time asc"))
   private List<LogAction> actions;
-
-  @Persistent
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
-  private int GDtot;
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
@@ -78,12 +81,28 @@ public class Session {
     this.createDate = createDate;
   }
 
-  public int getGDtot () {
-    return GDtot;
+  public List<LogDivergence> getDivergences () {
+    return divergences;
   }
 
-  public void setGDtot (int GDtot) {
-    this.GDtot = GDtot;
+  public void setDivergences (List<LogDivergence> divergences) {
+    this.divergences = divergences;
+  }
+
+  public LogDivergence getLastDivergence () {
+    return lastDivergence;
+  }
+
+  public void setLastDivergence (LogDivergence lastDivergence) {
+    this.lastDivergence = lastDivergence;
+  }
+
+  public List<LogAction> getActions () {
+    return actions;
+  }
+
+  public void setActions (List<LogAction> actions) {
+    this.actions = actions;
   }
 
   public Boolean getWithGroupDiv () {
