@@ -3,6 +3,7 @@ package fr.dralagen.groupDiv.model;
 import com.google.appengine.api.datastore.Key;
 
 import javax.jdo.annotations.*;
+import java.util.Date;
 
 /**
  * Created on 6/4/15.
@@ -28,7 +29,11 @@ public class LogAction {
   private String result;
 
   @Persistent
-  private long sessionId;
+  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
+  private Date time;
+
+  @Persistent
+  private Session session;
 
   public Key getKey() {
     return key;
@@ -62,11 +67,19 @@ public class LogAction {
     this.result = result;
   }
 
-  public long getSessionId () {
-    return sessionId;
+  public Date getTime () {
+    return time;
   }
 
-  public void setSessionId (long sessionId) {
-    this.sessionId = sessionId;
+  public void setTime (Date time) {
+    this.time = time;
+  }
+
+  public Session getSession () {
+    return session;
+  }
+
+  public void setSession (Session session) {
+    this.session = session;
   }
 }

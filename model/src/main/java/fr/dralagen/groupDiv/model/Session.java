@@ -26,6 +26,18 @@ public class Session {
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private Date createDate;
 
+  @Persistent(mappedBy = "session")
+  @Element(dependent = "true")
+  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
+  @Order(extensions = @Extension(vendorName="datanucleus",key="list-ordering", value="time asc"))
+  private List<LogDivergence> divergences;
+
+  @Persistent(mappedBy = "session")
+  @Element(dependent = "true")
+  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
+  @Order(extensions = @Extension(vendorName="datanucleus",key="list-ordering", value="time asc"))
+  private List<LogAction> actions;
+
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private int GDtot;
