@@ -1,10 +1,11 @@
 var app = angular.module("groupDiv.userController", []);
 
-app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', function($scope, $routeParams, GApi, Users){
+app.controller("userController", ['$scope','$rootScope', '$routeParams', 'GApi', 'Users', function($scope,$rootScope, $routeParams, GApi, Users){
 
 	$scope.tab = 1;
 	$scope.waitForPull = false;
-
+	$scope.showGroupDiv = true;
+	
 	$scope.sessionId = $routeParams.sessionId;
 
 	$scope.selectedUE = {};
@@ -24,6 +25,7 @@ app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', fun
 	GApi.execute('groupDivWeb', 'session.get', {sessionId: $scope.sessionId}).then(
 		function(resp) {
 			console.log("we get the session");
+			$scope.showGroupDiv = resp.withGroupDiv;
 			//get users
 			angular.forEach(resp.user, function(usr){
 				if(usr.id == $scope.current.usr.id){
@@ -48,15 +50,14 @@ app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', fun
 			$scope.selectedUE.sel = $scope.ues[0];
 			console.log("we get the ues");
 
-		}, function() {
-			console.log("We can't get the session");
+		}, function(err) {
+			console.log("We can't get the session : " + err.error.message);
 		}
 	);
 
 	//to pull one user and get new informations
 	$scope.pullUsr = function(userId){
 		$scope.waitForPull = true;
-
 		GApi.execute('groupDivWeb', 'action.pull', {sessionId: $scope.sessionId, fromUserId: $scope.current.usr.id, toUserId: userId}).then(
 			function(resp) {
 
@@ -81,8 +82,8 @@ app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', fun
 				});
 				console.log("we get the new reviews");
 				$scope.waitForPull = false;
-			}, function() {
-				console.log("error you can't pull : " + userId);
+			}, function(err) {
+				console.log("error you can't pull : " + userId + " : " + err.error.message);
 				$scope.waitForPull = false;
 			}
 		);
@@ -94,25 +95,32 @@ app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', fun
 
 	//to make available the review for all the users
 	$scope.postReview = function(){
+		$scope.waitForPull = true;
 		GApi.execute('groupDivWeb', 'action.commit.review', {sessionId: $scope.sessionId, authorId: $scope.current.usr.id, ueId: $scope.selectedUE.sel.id, content: $scope.reviews.reviewToPost}).then(
 			function(resp) {
 				console.log("review post successful");
 				newReview = {content:$scope.reviews.reviewToPost, authorId: $scope.current.usr.id, postDate: resp.date, ueId: $scope.selectedUE.sel.id};
 				$scope.reviews[$scope.selectedUE.sel.id].push(newReview);
 				$scope.reviews.reviewToPost = "";
+				$scope.waitForPull = false;
 			}, function(err) {
-				console.log("error you can't post your review .. ");
+				console.log("error you can't post your review : " + err.error.message);
+				$scope.waitForPull = false;
 			}
 		);
 	}
 
 	//to make available the version of the ue for all the users
 	$scope.postUE = function(){
+		$scope.waitForPull = true;
+
 		GApi.execute('groupDivWeb', 'action.commit.ue', {sessionId: $scope.sessionId, authorId: $scope.current.usr.id, ueId: $scope.current.ue.id, content: $scope.current.ue.content}).then(
 			function(resp) {
 				console.log("post ue successful");
+				$scope.waitForPull = false;
 			}, function(err) {
-				console.log("error you can't post your ue ");
+				console.log("error you can't post your ue : " + err.error.message);
+				$scope.waitForPull = false;
 			}
 		);
 	}
@@ -126,7 +134,6 @@ app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', fun
 	$scope.isSelected = function(checkTab){
 		return $scope.tab === checkTab;
 	};
-
 }]);
 
 //to convert an object of objects into an array of objects

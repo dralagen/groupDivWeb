@@ -17,6 +17,9 @@ var translateFr = {
 	DESCRIPTION: 'Description',
 	DIV_STATS_AND_VALUES: 'Statistiques et valeures de divergence',
 	DO_PULL: 'Récupérer de',
+
+	LINK_FOR: 'Lien pour',
+	LINKS_TITLE: 'Liens pour les utilisateurs :',
 	
 	MODIFY: 'Modifier',
 	MODIFY_SESSION: 'Modifier la session',

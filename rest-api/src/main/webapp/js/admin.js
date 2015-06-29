@@ -1,11 +1,12 @@
 var app = angular.module("groupDiv.adminController", []);
 
 
-app.controller("adminController",['$scope', 'GApi', function myC($scope, GApi){
+app.controller("adminController",['$scope', 'GApi','$location', function myC($scope, GApi, $location){
 
 
 	$scope.sessionChoosen = false;
-	$scope.sessionChoosenID = "";
+
+	$scope.hostLink = $location.protocol() + '://'+ $location.host() +':'+  $location.port() + "/index.html#/user/";
 
 	$scope.useGroupDiv = true;
 	$scope.sessions = [];
@@ -36,8 +37,8 @@ app.controller("adminController",['$scope', 'GApi', function myC($scope, GApi){
 				$scope.sessions.push(temp);
 			});
 		},
-		function(){
-			console.log("error : we can't get the list of sessions");
+		function(err){
+			console.log("error : we can't get the list of sessions : " + err.error.message);
 		}
 	);
 
@@ -62,8 +63,9 @@ app.controller("adminController",['$scope', 'GApi', function myC($scope, GApi){
 					$scope.selectedUE.sel = $scope.ues[0];
 					$scope.pullTheUser();
 					console.log("we get the ues");
-				}, function(){
-					console.log("error : we can't load the session");
+
+				}, function(err){
+					console.log("error : we can't load the session : " + err.error.message);
 				}
 			);
 		}
@@ -92,8 +94,8 @@ app.controller("adminController",['$scope', 'GApi', function myC($scope, GApi){
 					$scope.reviews[rev.ueId].push(rev);
 				});
 				console.log("we get the new reviews");
-			}, function() {
-				console.log("error you can't pull : " + userId);
+			}, function(err) {
+				console.log("error you can't pull : " + userId + " : " + err.error.message);
 			}
 		);
 	}

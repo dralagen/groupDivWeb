@@ -1,4 +1,4 @@
-<div >
+<div>
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -13,9 +13,10 @@
     </nav>
 
     <div class="container-fluid">
-		<fieldset ng-disabled="waitForPull">
-			<div class="row">
-				<div ng-controller="userController">
+		<div class="row">
+			<div ng-controller="userController" >
+				<fieldset ng-disabled="waitForPull">
+
 					<div class="col-sm-3 col-md-2 sidebar">
 						<ul class="nav nav-sidebar">
 							<div ng-include="'partial/pullZone.html'"></div>
@@ -56,22 +57,21 @@
 							</div>
 						</section>
 					</div>
-				</div>
-				<!-- new controller for this -->
-				<div class="col-md-2 col-xs-10 main" >
-					<ul class="nav nav-sidebar">
-						<div class="container-fluid" style="position: fixed;">
-							<div ng-controller="groupDivController">
-								<canvas id="mon_canvas" width="170" height="500" class="bg-info">
-								</canvas>
-								<div ng-include="'partial/groupDivWidget.html'"></div>
-								<input type="button" ng-click="refreshCanvas()"/>
+					<!-- new controller for this -->
+					<div class="col-md-2 col-xs-10 main" >
+						<ul class="nav nav-sidebar">
+							<div class="container-fluid" style="position: fixed;">
+								<div ng-controller="groupDivController" ng-show="showGroupDiv">
+									<canvas id="mon_canvas" width="170" height="500" class="bg-info">
+									</canvas>
+									<div ng-include="'partial/groupDivWidget.html'"></div>
+									<input type="button" ng-click="refreshCanvas()"/>
+								</div>
 							</div>
-						</div>
-					</ul>
-				</div>
+						</ul>
+					</div>
+				</fieldset>
 			</div>
-
-		</fieldset>
+		</div>
 	</div>
 </div>

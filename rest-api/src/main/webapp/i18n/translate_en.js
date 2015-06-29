@@ -17,7 +17,10 @@ var translateEn = {
 	DESCRIPTION: 'Description',
 	DIV_STATS_AND_VALUES:  'Statistics and values of divergence',
 	DO_PULL: 'Pull from',
-	
+
+	LINK_FOR: 'Link for',
+	LINKS_TITLE: 'Links for users :',
+
 	MODIFY: 'Modify',
 	MODIFY_SESSION: 'Modify session',
 	
