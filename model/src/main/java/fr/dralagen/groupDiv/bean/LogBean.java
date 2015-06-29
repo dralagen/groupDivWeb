@@ -71,7 +71,7 @@ public class LogBean {
     }
 
     bean.setAction(action.getAction());
-    bean.setUserId(action.getAuthor().getKey().getId());
+    bean.setUserId(action.getAuthor());
     bean.setDate(action.getTime());
     bean.setMessage(action.getResult());
 

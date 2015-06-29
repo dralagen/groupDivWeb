@@ -1,6 +1,7 @@
 package fr.dralagen.groupDiv.model;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 
 import javax.jdo.annotations.*;
 import java.util.Date;
@@ -24,13 +25,15 @@ public class LogDivergence {
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
-  private Map<User, Integer> userDivegence; // key foreign key of user
+  @Unowned
+  private Map<User, Long> userDivegence; // key foreign key of user
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private Date time;
 
   @Persistent
+  @Unowned
   private Session session;
 
   public Key getKey() {
@@ -49,11 +52,11 @@ public class LogDivergence {
     this.GDtot = GDtot;
   }
 
-  public Map<User, Integer> getUserDivegence() {
+  public Map<User, Long> getUserDivegence() {
     return userDivegence;
   }
 
-  public void setUserDivegence(Map<User, Integer> userDivegence) {
+  public void setUserDivegence(Map<User, Long> userDivegence) {
     this.userDivegence = userDivegence;
   }
 

@@ -1,7 +1,6 @@
 package fr.dralagen.groupDiv.model;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.datanucleus.annotations.Unowned;
 
 import javax.jdo.annotations.*;
 import java.util.Date;
@@ -32,12 +31,6 @@ public class Session {
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   @Order(extensions = @Extension(vendorName="datanucleus",key="list-ordering", value="time asc"))
   private List<LogDivergence> divergences;
-
-  @Persistent(mappedBy = "session")
-  @Element(dependent = "true")
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
-  @Unowned
-  private LogDivergence lastDivergence;
 
   @Persistent(mappedBy = "session")
   @Element(dependent = "true")
@@ -90,11 +83,7 @@ public class Session {
   }
 
   public LogDivergence getLastDivergence () {
-    return lastDivergence;
-  }
-
-  public void setLastDivergence (LogDivergence lastDivergence) {
-    this.lastDivergence = lastDivergence;
+    return divergences.get(divergences.size() - 1);
   }
 
   public List<LogAction> getActions () {

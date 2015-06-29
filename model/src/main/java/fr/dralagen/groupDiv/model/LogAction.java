@@ -1,6 +1,7 @@
 package fr.dralagen.groupDiv.model;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 
 import javax.jdo.annotations.*;
 import java.util.Date;
@@ -18,7 +19,7 @@ public class LogAction {
   private Key key;
 
   @Persistent
-  private User author;
+  private Long author;
 
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
@@ -33,6 +34,7 @@ public class LogAction {
   private Date time;
 
   @Persistent
+  @Unowned
   private Session session;
 
   public Key getKey() {
@@ -43,11 +45,11 @@ public class LogAction {
     this.key = key;
   }
 
-  public User getAuthor() {
+  public Long getAuthor () {
     return author;
   }
 
-  public void setAuthor(User author) {
+  public void setAuthor(Long author) {
     this.author = author;
   }
 
