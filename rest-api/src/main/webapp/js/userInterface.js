@@ -1,10 +1,16 @@
 var app = angular.module("groupDiv.userController", []);
 
-app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', function($scope, $routeParams, GApi, Users){
+app.controller("userController", ['$scope','$rootScope', '$routeParams', 'GApi', 'Users', function($scope,$rootScope, $routeParams, GApi, Users){
 
 	$scope.tab = 1;
 	$scope.waitForPull = false;
-
+	$scope.showGroupDiv = true;
+	$scope.konami_code = {
+		'indice' : 0,
+		'keymap' : ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"],
+		'cmd': self.toogleDiva
+	};
+	
 	$scope.sessionId = $routeParams.sessionId;
 
 	$scope.selectedUE = {};
@@ -24,6 +30,7 @@ app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', fun
 	GApi.execute('groupDivWeb', 'session.get', {sessionId: $scope.sessionId}).then(
 		function(resp) {
 			console.log("we get the session");
+			$scope.showGroupDiv = resp.withGroupDiv;
 			//get users
 			angular.forEach(resp.user, function(usr){
 				if(usr.id == $scope.current.usr.id){
@@ -56,7 +63,6 @@ app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', fun
 	//to pull one user and get new informations
 	$scope.pullUsr = function(userId){
 		$scope.waitForPull = true;
-
 		GApi.execute('groupDivWeb', 'action.pull', {sessionId: $scope.sessionId, fromUserId: $scope.current.usr.id, toUserId: userId}).then(
 			function(resp) {
 
@@ -127,6 +133,21 @@ app.controller("userController", ['$scope', '$routeParams', 'GApi', 'Users', fun
 		return $scope.tab === checkTab;
 	};
 
+
+	$rootScope.konamiCode = function(e){
+		if(e.key == $scope.konami_code.keymap[$scope.konami_code.indice]){
+			$scope.konami_code.indice += 1;
+		}
+		else{
+			$scope.konami_code.indice = 0;
+		}
+		
+		if($scope.konami_code.indice >= $scope.konami_code.keymap.length){
+			$scope.konami_code.indice = 0;
+			$scope.showGroupDiv = !$scope.showGroupDiv;
+			console.log("konami code ok");
+		}
+	};
 }]);
 
 //to convert an object of objects into an array of objects
