@@ -5,11 +5,6 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams', 'GApi',
 	$scope.tab = 1;
 	$scope.waitForPull = false;
 	$scope.showGroupDiv = true;
-	$scope.konami_code = {
-		'indice' : 0,
-		'keymap' : ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"],
-		'cmd': self.toogleDiva
-	};
 	
 	$scope.sessionId = $routeParams.sessionId;
 
@@ -100,25 +95,32 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams', 'GApi',
 
 	//to make available the review for all the users
 	$scope.postReview = function(){
+		$scope.waitForPull = true;
 		GApi.execute('groupDivWeb', 'action.commit.review', {sessionId: $scope.sessionId, authorId: $scope.current.usr.id, ueId: $scope.selectedUE.sel.id, content: $scope.reviews.reviewToPost}).then(
 			function(resp) {
 				console.log("review post successful");
 				newReview = {content:$scope.reviews.reviewToPost, authorId: $scope.current.usr.id, postDate: resp.date, ueId: $scope.selectedUE.sel.id};
 				$scope.reviews[$scope.selectedUE.sel.id].push(newReview);
 				$scope.reviews.reviewToPost = "";
+				$scope.waitForPull = false;
 			}, function(err) {
 				console.log("error you can't post your review : " + err.error.message);
+				$scope.waitForPull = false;
 			}
 		);
 	}
 
 	//to make available the version of the ue for all the users
 	$scope.postUE = function(){
+		$scope.waitForPull = true;
+
 		GApi.execute('groupDivWeb', 'action.commit.ue', {sessionId: $scope.sessionId, authorId: $scope.current.usr.id, ueId: $scope.current.ue.id, content: $scope.current.ue.content}).then(
 			function(resp) {
 				console.log("post ue successful");
+				$scope.waitForPull = false;
 			}, function(err) {
 				console.log("error you can't post your ue : " + err.error.message);
+				$scope.waitForPull = false;
 			}
 		);
 	}
@@ -131,22 +133,6 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams', 'GApi',
 	//to see if a tab is selected
 	$scope.isSelected = function(checkTab){
 		return $scope.tab === checkTab;
-	};
-
-
-	$rootScope.konamiCode = function(e){
-		if(e.key == $scope.konami_code.keymap[$scope.konami_code.indice]){
-			$scope.konami_code.indice += 1;
-		}
-		else{
-			$scope.konami_code.indice = 0;
-		}
-		
-		if($scope.konami_code.indice >= $scope.konami_code.keymap.length){
-			$scope.konami_code.indice = 0;
-			$scope.showGroupDiv = !$scope.showGroupDiv;
-			console.log("konami code ok");
-		}
 	};
 }]);
 

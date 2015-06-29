@@ -29,7 +29,10 @@ var translateEn = {
     ERROR_NULL_SESSION_NAME: 'Session Name can\'t be null',
     ERROR_REVIEW_UE: 'User can\'t write review on his ue',
     ERROR_USER_UE: 'User must be the UE\'s author',
-	
+
+	LINK_FOR: 'Link for',
+	LINKS_TITLE: 'Links for users :',
+
 	MODIFY: 'Modify',
 	MODIFY_SESSION: 'Modify session',
 	

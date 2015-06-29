@@ -1,10 +1,12 @@
 var app = angular.module("groupDiv.adminController", []);
 
 
-app.controller("adminController",['$scope', 'GApi', function myC($scope, GApi){
+app.controller("adminController",['$scope', 'GApi','$location', function myC($scope, GApi, $location){
 
 
 	$scope.sessionChoosen = false;
+
+	$scope.hostLink = $location.protocol() + '://'+ $location.host() +':'+  $location.port() + "/index.html#/user/";
 
 	$scope.useGroupDiv = true;
 	$scope.sessions = [];
@@ -61,6 +63,7 @@ app.controller("adminController",['$scope', 'GApi', function myC($scope, GApi){
 					$scope.selectedUE.sel = $scope.ues[0];
 					$scope.pullTheUser();
 					console.log("we get the ues");
+
 				}, function(err){
 					console.log("error : we can't load the session : " + err.error.message);
 				}

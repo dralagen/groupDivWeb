@@ -1,10 +1,7 @@
 package fr.dralagen.groupDiv.services;
 
 import fr.dralagen.groupDiv.bean.*;
-import fr.dralagen.groupDiv.model.Session;
-import fr.dralagen.groupDiv.model.Ue;
-import fr.dralagen.groupDiv.model.UeContent;
-import fr.dralagen.groupDiv.model.User;
+import fr.dralagen.groupDiv.model.*;
 import fr.dralagen.groupDiv.persistence.SessionRepository;
 import fr.dralagen.groupDiv.persistence.UeRepository;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
@@ -37,7 +34,6 @@ public class SessionServices {
     newSession.setName(session.getName());
     newSession.setWithGroupDiv(session.getWithGroupDiv());
     newSession.setCreateDate(new Date());
-    newSession.setGDtot(0);
 
     List<Ue> ueList = new ArrayList<>();
     List<User> userList = new ArrayList<>();
@@ -70,9 +66,20 @@ public class SessionServices {
       versionUE.put(oneUe.getKey().getId(), 0);
     }
 
+    Map<User, Long> usersDivergence = new HashMap<>();
+
     for (User oneUser: newSession.getUsers()) {
       oneUser.setVersionUE(versionUE);
+      usersDivergence.put(oneUser, 0l);
     }
+
+    LogDivergence initDivergence = new LogDivergence();
+    initDivergence.setGDtot(0);
+    initDivergence.setUserDivegence(usersDivergence);
+    initDivergence.setTime(new Date());
+    initDivergence.setSession(newSession);
+
+    newSession.getDivergences().add(initDivergence);
 
     SessionRepository.getInstance().save(newSession);
 

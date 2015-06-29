@@ -47,15 +47,20 @@ public class ActionServices {
     User user = UserRepository.getInstance().findOne(sessionId, ue.getAuthorId());
     user.getVersionUE().put(ue.getUeId(), content.getVersion());
 
-    //TODO dralagen 6/4/15 : Update divergence
+    Session session = SessionRepository.getInstance().findOne(sessionId);
 
-    //TODO dralagen 6/4/15 : Log Commit UE
-    LogBean result = new LogBean();
-    result.setAction(Action.COMMIT);
-    result.setMessage("Commit UE on " + ue.getUeId() + " at version " + content.getVersion() + ":"+content.getKey().getId());
-    result.setUserId(ue.getAuthorId());
-    result.setDate(new Date());
-    return result;
+    updateDivergenceOnCommit(user, session);
+
+    LogAction action = new LogAction();
+    action.setAction(Action.COMMIT);
+    action.setAuthor(user.getKey().getId());
+    action.setSession(session);
+    action.setTime(new Date());
+    action.setResult("Commit UE on " + ue.getUeId() + " at version " + content.getVersion() + ":" + content.getKey().getId());
+
+    session.getActions().add(action);
+
+    return LogBean.toBean(action);
   }
 
   private void checkCommitUe(CommitUeBean ue) throws InvalidFormException {
@@ -100,15 +105,20 @@ public class ActionServices {
 
     user.getReview().add(rev.getKey());
 
-    //TODO dralagen 6/4/15 : Update divergence
+    Session session = SessionRepository.getInstance().findOne(sessionId);
 
-    //TODO dralagen 6/4/15 : Log Commit review
-    LogBean result = new LogBean();
-    result.setAction(Action.COMMIT);
-    result.setMessage("Commit Review ");
-    result.setUserId(review.getAuthorId());
-    result.setDate(new Date());
-    return result;
+    updateDivergenceOnCommit(user, session);
+
+    LogAction action = new LogAction();
+    action.setAction(Action.COMMIT);
+    action.setAuthor(user.getKey().getId());
+    action.setSession(session);
+    action.setTime(new Date());
+    action.setResult("Commit review on " + ue.getKey().getId() + " at version :" + rev.getKey().getId());
+
+    session.getActions().add(action);
+
+    return LogBean.toBean(action);
   }
 
   private void checkCommitReview (CommitReviewBean review) throws InvalidFormException {
@@ -136,6 +146,7 @@ public class ActionServices {
     User toUser;
     User fromUser = UserRepository.getInstance().findOne(sessionId, fromUserId);
 
+    Session session = SessionRepository.getInstance().findOne(sessionId);
 
     Set<Key> newReviewId;
 
@@ -146,10 +157,13 @@ public class ActionServices {
     } else {
       toUser = UserRepository.getInstance().findOne(sessionId, toUserId);
 
+      int diffDivergence = 0;
+
       { // update UE version
         Map<Long, Integer> toUserVersion = toUser.getVersionUE();
         for ( Map.Entry<Long, Integer> one : fromUser.getVersionUE().entrySet() ) {
           if ( one.getValue().compareTo(toUserVersion.get(one.getKey())) < 0 ) {
+            diffDivergence += (toUserVersion.get(one.getKey()) - one.getValue());
             one.setValue(toUserVersion.get(one.getKey()));
           }
         }
@@ -159,15 +173,38 @@ public class ActionServices {
       newReviewId = new HashSet<>(toUser.getReview());
       newReviewId.removeAll(fromUser.getReview());
 
+      diffDivergence += newReviewId.size();
+
       // merge Review
       fromUser.getReview().addAll(toUser.getReview());
 
       UserRepository.getInstance().save(fromUser);
 
-      //TODO dralagen 6/4/15 : Update divergence
-    }
+      LogDivergence lastDivergence = session.getLastDivergence();
+      Long userDiv = lastDivergence.getUserDivegence().get(fromUser);
 
-    Session session = SessionRepository.getInstance().findOne(sessionId);
+      assert userDiv >= diffDivergence;
+
+      if (diffDivergence > 0) {
+        Map<User, Long> newUsersDivergence = new HashMap<>();
+        for ( Map.Entry<User, Long> e : lastDivergence.getUserDivegence().entrySet() ) {
+          if ( e.getKey().getKey().equals(fromUser.getKey()) ) {
+            newUsersDivergence.put(e.getKey(), e.getValue() - diffDivergence);
+          } else {
+            newUsersDivergence.put(e.getKey(), e.getValue());
+          }
+        }
+
+        LogDivergence divergence = new LogDivergence();
+        divergence.setSession(session);
+        divergence.setGDtot(lastDivergence.getGDtot() - diffDivergence);
+        divergence.setTime(new Date());
+        divergence.setUserDivegence(newUsersDivergence);
+
+        //Update last Divergence
+        session.getDivergences().add(divergence);
+      }
+    }
 
     List<UeBean> ueList = new ArrayList<>();
     {
@@ -189,12 +226,33 @@ public class ActionServices {
     for(Review rev:allReview) {
       reviewList.add(ReviewBean.toBean(rev));
     }
+
     PullBean result = new PullBean();
     result.setUe(ueList);
     result.setReview(reviewList);
 
-    //TODO dralagen 6/4/15 : Log Pull
+    //TODO dralagen 6/4/15 : Log Action Pull
 
     return result;
+  }
+
+  private void updateDivergenceOnCommit (User user, Session session) {
+    LogDivergence lastDivergence = session.getLastDivergence();
+    Map<User, Long> newUsersDivergence = new HashMap<>();
+    for ( Map.Entry<User, Long> e: lastDivergence.getUserDivegence().entrySet()) {
+      User u = e.getKey();
+      Long value = (!u.getKey().equals(user.getKey())) ? e.getValue() + 1 : e.getValue();
+
+      newUsersDivergence.put(u, value);
+    }
+
+    LogDivergence divergence = new LogDivergence();
+    divergence.setSession(session);
+    divergence.setGDtot(lastDivergence.getGDtot() + session.getUsers().size() - 1);
+    divergence.setTime(new Date());
+    divergence.setUserDivegence(newUsersDivergence);
+
+    //Update last Divergence
+    session.getDivergences().add(divergence);
   }
 }

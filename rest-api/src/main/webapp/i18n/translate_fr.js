@@ -30,6 +30,9 @@ var translateFr = {
 	ERROR_REVIEW_UE: 'Un utilisateur ne peut pas écrire de review sur son UE',
 	ERROR_USER_UE: 'Un utilisateur doit être l\'auteur de l\'UE',
 
+	LINK_FOR: 'Lien pour',
+	LINKS_TITLE: 'Liens pour les utilisateurs :',
+
 	MODIFY: 'Modifier',
 	MODIFY_SESSION: 'Modifier la session',
 	
@@ -58,5 +61,4 @@ var translateFr = {
 	XP_RESULT: 'Résultats de l\'expérience',
 	
 	YOUR_REVIEW: 'Votre review'	
-	
 }
