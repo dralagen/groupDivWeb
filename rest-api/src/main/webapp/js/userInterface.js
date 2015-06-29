@@ -5,11 +5,6 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams', 'GApi',
 	$scope.tab = 1;
 	$scope.waitForPull = false;
 	$scope.showGroupDiv = true;
-	$scope.konami_code = {
-		'indice' : 0,
-		'keymap' : ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"],
-		'cmd': self.toogleDiva
-	};
 	
 	$scope.sessionId = $routeParams.sessionId;
 
@@ -131,22 +126,6 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams', 'GApi',
 	//to see if a tab is selected
 	$scope.isSelected = function(checkTab){
 		return $scope.tab === checkTab;
-	};
-
-
-	$rootScope.konamiCode = function(e){
-		if(e.key == $scope.konami_code.keymap[$scope.konami_code.indice]){
-			$scope.konami_code.indice += 1;
-		}
-		else{
-			$scope.konami_code.indice = 0;
-		}
-		
-		if($scope.konami_code.indice >= $scope.konami_code.keymap.length){
-			$scope.konami_code.indice = 0;
-			$scope.showGroupDiv = !$scope.showGroupDiv;
-			console.log("konami code ok");
-		}
 	};
 }]);
 
