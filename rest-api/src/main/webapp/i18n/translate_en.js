@@ -17,6 +17,18 @@ var translateEn = {
 	DESCRIPTION: 'Description',
 	DIV_STATS_AND_VALUES:  'Statistics and values of divergence',
 	DO_PULL: 'Pull from',
+
+	ERROR_MAL_JSON: 'JSON malformed',
+	ERROR_MAND_CONTENT: 'Content is mandatory for an ue',
+	ERROR_MAND_NAME_SESSION: 'Name is mandatory for a session',
+	ERROR_MAND_UE_SESSION: 'At least one UE is mandatory for a session',
+	ERROR_MAND_UEID: 'UE id is mandatory for an ue',
+	ERROR_MAND_UETITLE: 'UE title is mandatory',
+	ERROR_MAND_USERID: 'User id is mandatory for an ue',
+	ERROR_MAND_USERNAME: 'User name is mandatory',
+    ERROR_NULL_SESSION_NAME: 'Session Name can\'t be null',
+    ERROR_REVIEW_UE: 'User can\'t write review on his ue',
+    ERROR_USER_UE: 'User must be the UE\'s author',
 	
 	MODIFY: 'Modify',
 	MODIFY_SESSION: 'Modify session',

@@ -98,22 +98,22 @@ public class SessionServices {
     Map<String, String> errors = new HashMap<>();
 
     if (session.getName() == null || session.getName().equals("")) {
-      errors.put("name", "Name is mandatory for a session");
+      errors.put("name", "ERROR_MAND_NAME_SESSION");
     }
 
     if (session.getUe().isEmpty()) {
-      errors.put("ue", "At least one UE is mandatory for a session");
+      errors.put("ue", "ERROR_MAND_UE_SESSION");
     }
 
     for (NewUeBean ue : session.getUe()) {
       String ueTitle = ue.getTitle();
       if (ueTitle == null || ueTitle.equals("")) {
-        errors.put("ueTitle", "UE title is mandatory");
+        errors.put("ueTitle", "ERROR_MAND_UETITLE");
       }
 
       String userName = ue.getUser();
       if (userName == null || userName.equals("")) {
-        errors.put("userName", "User name is mandatory");
+        errors.put("userName", "ERROR_MAND_USERNAME");
       }
 
     }

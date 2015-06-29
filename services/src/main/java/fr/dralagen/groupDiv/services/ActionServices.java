@@ -35,7 +35,7 @@ public class ActionServices {
     Ue persistedUe = UeRepository.getInstance().findOne(sessionId, ue.getUeId());
 
     if (persistedUe.getAuthor().getKey().getId() != ue.getAuthorId()) {
-      throw new IllegalAccessException("User must be the UE's author");
+      throw new IllegalAccessException("ERROR_USER_UE");
     }
 
     UeContent content = new UeContent();
@@ -62,15 +62,15 @@ public class ActionServices {
     Map<String, String> errors = new HashMap<>();
 
     if (ue.getUeId() == null) {
-      errors.put("ueId", "UE id is mandatory for an ue");
+      errors.put("ueId", "ERROR_MAND_UEID");
     }
 
     if (ue.getAuthorId() == null) {
-      errors.put("userId", "User id is mandatory for an ue");
+      errors.put("userId", "ERROR_MAND_USERID");
     }
 
     if (ue.getContent() == null || ue.getContent().equals("")) {
-      errors.put("content", "Content is mandatory for an ue");
+      errors.put("content", "ERROR_MAND_CONTENT");
     }
 
     if (!errors.isEmpty()) {
@@ -85,7 +85,7 @@ public class ActionServices {
     Ue ue = UeRepository.getInstance().findOne(sessionId, review.getUeId());
 
     if (ue.getAuthor().getKey().getId() == review.getAuthorId()) {
-      throw new IllegalAccessException("User can't write review on his ue");
+      throw new IllegalAccessException("ERROR_REVIEW_UE");
     }
 
     User user = UserRepository.getInstance().findOne(sessionId, review.getAuthorId());
@@ -115,15 +115,15 @@ public class ActionServices {
     Map<String, String> errors = new HashMap<>();
 
     if (review.getContent() == null || review.getContent().equals("")) {
-      errors.put("content", "Content is mandatory for an ue");
+      errors.put("content", "ERROR_MAND_CONTENT");
     }
 
     if (review.getUeId() == null) {
-      errors.put("ueId", "UE id is mandatory for an ue");
+      errors.put("ueId", "ERROR_MAND_UEID");
     }
 
     if (review.getAuthorId() == null) {
-      errors.put("userId", "User id is mandatory for an ue");
+      errors.put("userId", "ERROR_MAND_USERID");
     }
 
     if (!errors.isEmpty()) {
