@@ -4,6 +4,8 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
 import fr.dralagen.groupDiv.bean.DivergenceBean;
+import fr.dralagen.groupDiv.services.ActionServices;
+import fr.dralagen.groupDiv.services.SessionServices;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,18 +27,7 @@ public class ControlAwarenessApi {
 
   @ApiMethod(name = "divergence", httpMethod = ApiMethod.HttpMethod.GET, path = "session/{sessionId}/divergence")
   public DivergenceBean getDivergence(@Named("sessionId") long sessionId) {
-    DivergenceBean divergence = new DivergenceBean();
 
-    Map<Long, Integer> userDivergence = new HashMap<>();
-    int gdtot = 0;
-    for (int i = 0; i < 5; i++) {
-      int distance = (int) (Math.random()*15);
-      userDivergence.put((long) (i+1), distance);
-      gdtot+=distance;
-    }
-    divergence.setGlobalDivergence(gdtot);
-    divergence.setUserDivergence(userDivergence);
-
-    return divergence;
+    return SessionServices.getInstance().getDivergence(sessionId);
   }
 }

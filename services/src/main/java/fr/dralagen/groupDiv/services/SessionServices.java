@@ -86,7 +86,7 @@ public class SessionServices {
     return SessionBean.toBean(newSession);
   }
 
-  public Collection<SessionBean> getAll () {
+  public Collection<SessionBean> getAll() {
     Collection<Session> allSession = SessionRepository.getInstance().findAll();
 
     Collection<SessionBean> allBean = new ArrayList<>();
@@ -130,7 +130,7 @@ public class SessionServices {
     }
   }
 
-  public SessionBean updateSessionName (Long sessionId, NewSessionBean session) {
+  public SessionBean updateSessionName(Long sessionId, NewSessionBean session) {
 
     Session persistedSession = SessionRepository.getInstance().findOne(sessionId);
 
@@ -141,7 +141,7 @@ public class SessionServices {
 
   }
 
-  public UeInfoBean updateUe (Long sessionId, Long ueId, NewUeBean ue) {
+  public UeInfoBean updateUe(Long sessionId, Long ueId, NewUeBean ue) {
 
     Ue persistedUe = UeRepository.getInstance().findOne(sessionId, ueId);
 
@@ -174,5 +174,12 @@ public class SessionServices {
     }
 
     return SessionBean.toBean(session);
+  }
+
+  public DivergenceBean getDivergence(long sessionId) {
+
+    Session session = SessionRepository.getInstance().findOne(sessionId);
+
+    return DivergenceBean.toBean(session.getLastDivergence());
   }
 }
