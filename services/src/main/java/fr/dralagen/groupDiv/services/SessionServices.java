@@ -182,4 +182,16 @@ public class SessionServices {
 
     return DivergenceBean.toBean(session.getLastDivergence());
   }
+
+  public Collection<DivergenceBean> getAllDivergence(long sessionId) {
+
+    Session session = SessionRepository.getInstance().findOne(sessionId);
+
+    List<DivergenceBean> divergences = new ArrayList<>();
+    for (LogDivergence one : session.getDivergences()) {
+      divergences.add(DivergenceBean.toBean(one));
+    }
+
+    return divergences;
+  }
 }
