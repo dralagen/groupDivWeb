@@ -46,7 +46,7 @@ public class SessionApi {
     } catch (InvalidFormException e) {
       throw new BadRequestException(e);
     } catch (NullPointerException e) {
-      throw new BadRequestException("JSON malformed");
+      throw new BadRequestException("ERROR_MAL_JSON");
     }
   }
 
@@ -54,7 +54,7 @@ public class SessionApi {
   public SessionBean update(@Named("sessionId") Long sessionId, NewSessionBean session) throws BadRequestException {
 
     if ( session.getName().equals("") ) {
-      throw new BadRequestException("Session Name can't be null");
+      throw new BadRequestException("ERROR_NULL_SESSION_NAME");
     }
 
     return SessionServices.getInstance().updateSessionName(sessionId, session);

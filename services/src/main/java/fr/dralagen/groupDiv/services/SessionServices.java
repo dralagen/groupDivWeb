@@ -1,10 +1,7 @@
 package fr.dralagen.groupDiv.services;
 
 import fr.dralagen.groupDiv.bean.*;
-import fr.dralagen.groupDiv.model.Session;
-import fr.dralagen.groupDiv.model.Ue;
-import fr.dralagen.groupDiv.model.UeContent;
-import fr.dralagen.groupDiv.model.User;
+import fr.dralagen.groupDiv.model.*;
 import fr.dralagen.groupDiv.persistence.SessionRepository;
 import fr.dralagen.groupDiv.persistence.UeRepository;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
@@ -37,7 +34,6 @@ public class SessionServices {
     newSession.setName(session.getName());
     newSession.setWithGroupDiv(session.getWithGroupDiv());
     newSession.setCreateDate(new Date());
-    newSession.setGDtot(0);
 
     List<Ue> ueList = new ArrayList<>();
     List<User> userList = new ArrayList<>();
@@ -70,16 +66,27 @@ public class SessionServices {
       versionUE.put(oneUe.getKey().getId(), 0);
     }
 
-    for (User oneUser : newSession.getUsers()) {
+    Map<User, Long> usersDivergence = new HashMap<>();
+
+    for (User oneUser: newSession.getUsers()) {
       oneUser.setVersionUE(versionUE);
+      usersDivergence.put(oneUser, 0l);
     }
+
+    LogDivergence initDivergence = new LogDivergence();
+    initDivergence.setGDtot(0);
+    initDivergence.setUserDivegence(usersDivergence);
+    initDivergence.setTime(new Date());
+    initDivergence.setSession(newSession);
+
+    newSession.getDivergences().add(initDivergence);
 
     SessionRepository.getInstance().save(newSession);
 
     return SessionBean.toBean(newSession);
   }
 
-  public Collection<SessionBean> getAll () {
+  public Collection<SessionBean> getAll() {
     Collection<Session> allSession = SessionRepository.getInstance().findAll();
 
     Collection<SessionBean> allBean = new ArrayList<>();
@@ -98,22 +105,22 @@ public class SessionServices {
     Map<String, String> errors = new HashMap<>();
 
     if (session.getName() == null || session.getName().equals("")) {
-      errors.put("name", "Name is mandatory for a session");
+      errors.put("name", "ERROR_MAND_NAME_SESSION");
     }
 
     if (session.getUe().isEmpty()) {
-      errors.put("ue", "At least one UE is mandatory for a session");
+      errors.put("ue", "ERROR_MAND_UE_SESSION");
     }
 
     for (NewUeBean ue : session.getUe()) {
       String ueTitle = ue.getTitle();
       if (ueTitle == null || ueTitle.equals("")) {
-        errors.put("ueTitle", "UE title is mandatory");
+        errors.put("ueTitle", "ERROR_MAND_UETITLE");
       }
 
       String userName = ue.getUser();
       if (userName == null || userName.equals("")) {
-        errors.put("userName", "User name is mandatory");
+        errors.put("userName", "ERROR_MAND_USERNAME");
       }
 
     }
@@ -123,7 +130,7 @@ public class SessionServices {
     }
   }
 
-  public SessionBean updateSessionName (Long sessionId, NewSessionBean session) {
+  public SessionBean updateSessionName(Long sessionId, NewSessionBean session) {
 
     Session persistedSession = SessionRepository.getInstance().findOne(sessionId);
 
@@ -134,7 +141,7 @@ public class SessionServices {
 
   }
 
-  public UeInfoBean updateUe (Long sessionId, Long ueId, NewUeBean ue) {
+  public UeInfoBean updateUe(Long sessionId, Long ueId, NewUeBean ue) {
 
     Ue persistedUe = UeRepository.getInstance().findOne(sessionId, ueId);
 
@@ -190,5 +197,24 @@ public class SessionServices {
     session.getUes().add(newUe);
 
     return SessionBean.toBean(session);
+  }
+
+  public DivergenceBean getDivergence(long sessionId) {
+
+    Session session = SessionRepository.getInstance().findOne(sessionId);
+
+    return DivergenceBean.toBean(session.getLastDivergence());
+  }
+
+  public Collection<DivergenceBean> getAllDivergence(long sessionId) {
+
+    Session session = SessionRepository.getInstance().findOne(sessionId);
+
+    List<DivergenceBean> divergences = new ArrayList<>();
+    for (LogDivergence one : session.getDivergences()) {
+      divergences.add(DivergenceBean.toBean(one));
+    }
+
+    return divergences;
   }
 }
