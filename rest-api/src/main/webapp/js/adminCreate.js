@@ -31,6 +31,7 @@
 					$scope.session.ue = [];
 				}, function(err) {
 					console.log("error you can't create that session : " + err.error.message);
+					console.log(angular.fromJson(err.error.message));
 					$scope.alerts.push({type: 'warning', msg: "Warning, the session can't be created, check if you don't make some mistakes!"});
 				}
 			);

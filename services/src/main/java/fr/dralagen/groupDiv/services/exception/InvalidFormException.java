@@ -25,7 +25,7 @@ public class InvalidFormException extends Throwable {
       if (hasError) {
         errorsFormat += ",";
       }
-      errorsFormat += error.getKey() + ":\"" + error.getValue() + "\"";
+      errorsFormat += "\"" + error.getKey() + "\":\"" + error.getValue() + "\"";
       hasError = true;
     }
     errorsFormat += "}";
