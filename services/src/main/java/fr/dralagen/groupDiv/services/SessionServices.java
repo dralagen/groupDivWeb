@@ -41,7 +41,7 @@ public class SessionServices {
 
     List<Ue> ueList = new ArrayList<>();
     List<User> userList = new ArrayList<>();
-    for (NewUeBean ue: session.getUe()) {
+    for (NewUeBean ue : session.getUe()) {
       User newUser = new User();
       newUser.setName(ue.getUser());
       userList.add(newUser);
@@ -66,11 +66,11 @@ public class SessionServices {
 
     // init divergence of all user
     Map<Long, Integer> versionUE = new HashMap<>();
-    for (Ue oneUe: newSession.getUes()) {
+    for (Ue oneUe : newSession.getUes()) {
       versionUE.put(oneUe.getKey().getId(), 0);
     }
 
-    for (User oneUser: newSession.getUsers()) {
+    for (User oneUser : newSession.getUsers()) {
       oneUser.setVersionUE(versionUE);
     }
 
@@ -165,6 +165,29 @@ public class SessionServices {
     if (deleteUe != null) {
       session.getUes().remove(deleteUe);
     }
+
+    return SessionBean.toBean(session);
+  }
+
+  public SessionBean addUe(Long sessionId, NewUeBean ue) {
+
+    Session session = SessionRepository.getInstance().findOne(sessionId);
+
+    User newUser = new User();
+    newUser.setName(ue.getUser());
+    session.getUsers().add(newUser);
+
+    UeContent newContent = new UeContent();
+    newContent.setVersion(0);
+    newContent.setContent("");
+    List<UeContent> contents = new ArrayList<>();
+    contents.add(newContent);
+
+    Ue newUe = new Ue();
+    newUe.setAuthor(newUser);
+    newUe.setTitle(ue.getTitle());
+    newUe.setContents(contents);
+    session.getUes().add(newUe);
 
     return SessionBean.toBean(session);
   }
