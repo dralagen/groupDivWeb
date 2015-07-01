@@ -1,6 +1,6 @@
 var app = angular.module("groupDiv.groupDivController", []);
 
-app.controller("groupDivController", ['$scope', '$routeParams', 'GApi', 'Users', function($scope, $routeParams, GApi, Users){
+app.controller("groupDivController", ['$scope', '$routeParams','$filter','$translate', 'GApi', 'Users', function($scope, $routeParams, $filter,$translate, GApi, Users){
 
 	$scope.GDtot = 0;
 	$scope.users = Users.users;
@@ -76,7 +76,7 @@ app.controller("groupDivController", ['$scope', '$routeParams', 'GApi', 'Users',
 
 				});
 			}, function(err) {
-				console.log("we can't get the divergence : " + err.error.message);
+				console.log("we can't get the divergence : " + $translate.instant(err.error.message));
 			}
 		);
 		$scope.echelle = Math.max($scope.echelle, 20);

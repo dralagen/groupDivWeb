@@ -19,7 +19,7 @@ var translateFr = {
 	DO_PULL: 'Récupérer de',
 
 	ERROR_MAL_JSON: 'JSON malformé',
-	ERROR_MAND_CONTENT: 'Le contenu est nécessaire pour l\'UE',
+	ERROR_MAND_CONTENT: 'Le contenu est nécessaire pour une ue',
 	ERROR_MAND_NAME_SESSION: 'Le nom est obligatoire pour une session',
 	ERROR_MAND_UE_SESSION: 'Il faut au moins une UE pour créer la session',
 	ERROR_MAND_UEID: 'L\'id de l\'UE est nécessaire pour l\'UE',
