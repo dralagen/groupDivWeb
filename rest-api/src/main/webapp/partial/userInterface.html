@@ -44,10 +44,22 @@
 
 									<div class="panel" ng-show="isSelected(1)">
 										<div ng-include="'partial/descriptionUETab.html'"></div>
+										<div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.descri" type="alert.type" close="closeAlertDescri($index)">
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="closeAlertDescri(alert)">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											{{alert.msg}}
+										</div>
 									</div>
 
 									<div class="panel" ng-show="isSelected(2)">
 										<div ng-include="'partial/reviewsTab.html'"></div>
+										<div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.review" type="alert.type" close="closeAlertReview($index)">
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="closeAlertReview(alert)">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											{{alert.msg}}
+										</div>
 									</div>
 
 									<div class="panel" ng-show="isSelected(3)">

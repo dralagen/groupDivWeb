@@ -2,14 +2,14 @@
 	var app = angular.module('groupDiv.createUeUser', []);
 
 
-	app.controller('createUeUser', ['$scope', 'GApi', function($scope, GApi){
+	app.controller('createUeUser', ['$scope', 'GApi','$translate', function($scope, GApi,$translate){
 
 		$scope.session = {};
 		$scope.session.ue = [];
 		$scope.alerts = [];
 
 		$scope.deleteUe = function (ue) {
-			var index = $scope.session.ues.indexOf(ue);
+			var index = $scope.session.ue.indexOf(ue);
 			$scope.session.ue.splice(index, 1);
 		};
 
@@ -30,8 +30,15 @@
 					$scope.session = {};
 					$scope.session.ue = [];
 				}, function(err) {
+					$scope.alerts =[];
 					console.log("error you can't create that session : " + err.error.message);
-					$scope.alerts.push({type: 'warning', msg: "Warning, the session can't be created, check if you don't make some mistakes!"});
+					console.log(angular.fromJson(err.error.message));
+					$scope.error = angular.fromJson(err.error.message);
+					angular.forEach($scope.error, function(value, key) {
+						$scope.alerts.push({type: 'warning', msg: $translate.instant(value)});
+					});
+					//console.log($scope.alerts);
+					//$scope.alerts.push({type: 'warning', msg: "Warning, the session can't be created, check if you don't make some mistakes!"});
 				}
 			);
 		};

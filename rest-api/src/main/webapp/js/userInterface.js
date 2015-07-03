@@ -1,6 +1,6 @@
 var app = angular.module("groupDiv.userController", []);
 
-app.controller("userController", ['$scope','$rootScope', '$routeParams', 'GApi', 'Users', function($scope,$rootScope, $routeParams, GApi, Users){
+app.controller("userController", ['$scope','$rootScope', '$routeParams','$translate', 'GApi', 'Users', function($scope,$rootScope, $routeParams,$translate, GApi, Users){
 
 	$scope.tab = 1;
 	$scope.waitForPull = false;
@@ -20,6 +20,10 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams', 'GApi',
 
 	$scope.users = Users.users;
 	$scope.ues = [];
+
+	$scope.alerts = {};
+	$scope.alerts.descri = [];
+	$scope.alerts.review = [];
 
 	//here we get the id and the name of all the users. The same for ues. It is an initialisation
 	GApi.execute('groupDivWeb', 'session.get', {sessionId: $scope.sessionId}).then(
@@ -51,7 +55,7 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams', 'GApi',
 			console.log("we get the ues");
 
 		}, function(err) {
-			console.log("We can't get the session : " + err.error.message);
+			console.log("We can't get the session : " + $translate.instant(err.error.message));
 		}
 	);
 
@@ -83,7 +87,7 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams', 'GApi',
 				console.log("we get the new reviews");
 				$scope.waitForPull = false;
 			}, function(err) {
-				console.log("error you can't pull : " + userId + " : " + err.error.message);
+				console.log("error you can't pull : " + userId + " : " + $translate.instant(err.error.message));
 				$scope.waitForPull = false;
 			}
 		);
@@ -104,7 +108,10 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams', 'GApi',
 				$scope.reviews.reviewToPost = "";
 				$scope.waitForPull = false;
 			}, function(err) {
-				console.log("error you can't post your review : " + err.error.message);
+				$scope.alerts.review = [];
+				$scope.error = JSON.parse(err.error.message);
+				$scope.alerts.review.push({type: 'warning', msg: $translate.instant($scope.error.content)});
+				console.log("error you can't post your review : " + $translate.instant($scope.error.content));
 				$scope.waitForPull = false;
 			}
 		);
@@ -119,7 +126,10 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams', 'GApi',
 				console.log("post ue successful");
 				$scope.waitForPull = false;
 			}, function(err) {
-				console.log("error you can't post your ue : " + err.error.message);
+				$scope.alerts.descri = [];
+				$scope.error = JSON.parse(err.error.message);
+				$scope.alerts.descri.push({type: 'warning', msg: $translate.instant($scope.error.content)});
+				console.log("error you can't post your ue : " + $translate.instant($scope.error.content));
 				$scope.waitForPull = false;
 			}
 		);
@@ -133,6 +143,16 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams', 'GApi',
 	//to see if a tab is selected
 	$scope.isSelected = function(checkTab){
 		return $scope.tab === checkTab;
+	};
+
+	$scope.closeAlertDescri = function(alert) {
+		var index = $scope.alerts.descri.indexOf(alert);
+		$scope.alerts.descri.splice(index, 1);
+	};
+
+	$scope.closeAlertReview = function(alert) {
+		var index = $scope.alerts.review.indexOf(alert);
+		$scope.alerts.review.splice(index, 1);
 	};
 }]);
 
