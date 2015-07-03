@@ -7,16 +7,18 @@ app.controller('modifySession', ['$scope','GApi' , function($scope,GApi){
 	$scope.old.useGroupDiv = true;
 	$scope.old.sessionName = "";
 
+	$scope.numberOfNewUes = 0;
 	$scope.new_ = {};
 	$scope.new_.useGroupDiv = true;
 	$scope.new_.sessionName = "";
 
 	$scope.sessions = [];
-	$scope.users = {};
+	$scope.ueFocus = {};
 
 	$scope.ues = [];
-	$scope.uesToDelete = [];
+	$scope.newUes = [];
 
+	$scope.alerts = [];
 
 	GApi.execute('groupDivWeb', 'session.list').then(
 		function(data){
@@ -32,39 +34,38 @@ app.controller('modifySession', ['$scope','GApi' , function($scope,GApi){
 	);
 
 	$scope.deleteUe = function (ue) {
-		var index = $scope.ues.indexOf(ue);
-		$scope.ues.splice(index, 1);
-		console.log(ue.id);
-		if(ue.id != ""){
-			$scope.uesToDelete.push(ue);
+		if(!angular.isUndefined(ue.id)){
+			var index = $scope.ues.indexOf(ue);
+			$scope.ues.splice(index, 1);
+			GApi.execute('groupDivWeb', 'session.ue.delete', {sessionId: $scope.selectedSession, ueId: ue.id}).then(
+				function(data){
+					console.log("ue : " + ue.id + " deleted");
+				},
+				function(err){
+					console.log("ue : " + ue.id + " not deleted " + err.error.message);
+				}
+			);
+		}
+		else{
+			var index = $scope.newUes.indexOf(ue);
+			$scope.newUes.splice(index, 1);
 		}
 	};
 
 	$scope.addUe = function () {
 		var ue = {
-			user: '',
-			ue: '',
+			userName: '',
+			title: '',
 		}
-		$scope.ues.push(ue);
+		$scope.newUes.push(ue);
 	};
 
 	$scope.modifySession = function(){
-		var reload = false;
-		//ues to add
-		var uesToAdd = [];
-		angular.forEach($scope.ues, function(ue){
-			if(ue.id == ""){
-				uesToAdd.push(ue);
-				reload = true;
-			}
-		});
 
 		//ue to edit
 		angular.forEach($scope.ues, function(ue){
-
-			console.log({sessionId: $scope.selectedSession, ueId: ue.id, title: ue.title, user: $scope.users[ue.authorId].name});
-			if(ue.id != "" && ue.change == true){
-				GApi.execute('groupDivWeb', 'session.ue.edit', {sessionId: $scope.selectedSession, ueId: ue.id, title: ue.title, user: $scope.users[ue.authorId].name}).then(
+			if(!angular.isUndefined(ue.id) && ue.change == true){
+				GApi.execute('groupDivWeb', 'session.ue.edit', {sessionId: $scope.selectedSession, ueId: ue.id, title: ue.title, user: ue.userName}).then(
 					function(data){
 						console.log("ue : " + ue.id + " is modify");
 					},
@@ -74,19 +75,6 @@ app.controller('modifySession', ['$scope','GApi' , function($scope,GApi){
 				);
 			}
 		});
-
-		//ues to delete
-		angular.forEach($scope.uesToDelete, function(ue){
-			GApi.execute('groupDivWeb', 'session.ue.delete', {sessionId: $scope.selectedSession, ueId: ue.id}).then(
-				function(data){
-					console.log("ue : " + ue.id + " deleted");
-				},
-				function(err){
-					console.log("ue : " + ue.id + " not deleted " + err.error.message);
-				}
-			);
-		});
-		$scope.uesToDelete = [];
 
 		//modify session name and withGD
 		if(	$scope.old.useGroupDiv != $scope.new_.useGroupDiv || $scope.old.sessionName != $scope.new_.sessionName){
@@ -100,9 +88,6 @@ app.controller('modifySession', ['$scope','GApi' , function($scope,GApi){
 			);
 		}
 
-		if(reload == true){
-			$scope.chooseSession();
-		}
 	}
 
 
@@ -121,11 +106,16 @@ app.controller('modifySession', ['$scope','GApi' , function($scope,GApi){
 
 					$scope.useGroupDiv = data.withGroupDiv;
 
+					$scope.ues = data.ue;
+
 					angular.forEach(data.user, function(usr){
-						$scope.users[usr.id] = usr;
+						angular.forEach($scope.ues, function(ue){
+							if(usr.id == ue.authorId){
+								ue.userName = usr.name;
+							}
+						});
 					});
 
-					$scope.ues = data.ue;
 					angular.forEach($scope.ues, function(ue){
 						ue.change = false;
 					});
@@ -135,24 +125,29 @@ app.controller('modifySession', ['$scope','GApi' , function($scope,GApi){
 					console.log("error : we can't load the session : " + err.error.message);
 				}
 			);
-			$scope.sortUeUserList();
 		}
 	};
 
-	//get a list of the users that are assign to the ues
-	$scope.sortUeUserList = function(){
-		angular.forEach($scope.ues, function(ue){
-			angular.forEach($scope.users, function(user){
-				if(ue.authorId == user.id)
-				{
-					temp = {user: user.name, ue: ue.title, ueId: ue.id};
-					$scope.ues.push(temp);
-				}
-			});
-		});
-	};
-
 	$scope.updateUE = function(oneUE){
-		oneUE.change = true;
+		if(!angular.isUndefined(oneUE.id)) {
+			oneUE.change = true;
+		}
 	}
+
+	$scope.quitInput = function(ue){
+		if(ue.title != "" && ue.userName!=""){
+			GApi.execute('groupDivWeb', 'session.ue.add', {sessionId: $scope.selectedSession, title:ue.title, user: ue.userName}).then(
+				function(data){
+					console.log("ue : " + ue.title + "  and " + ue.userName + " are not added");
+					$scope.chooseSession();
+					var index = $scope.newUes.indexOf(ue);
+					$scope.newUes.splice(index, 1);
+				},
+				function(err){
+					console.log("ue : " + ue.title + "  and " + ue.userName + " are not added");
+				}
+			);
+		}
+	}
+
 }]);

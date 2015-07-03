@@ -76,6 +76,7 @@ public class SessionApi {
 
   @ApiMethod(name = "session.ue.add", httpMethod = ApiMethod.HttpMethod.PUT, path = "session/{sessionId}/ue")
   public SessionBean addUe(@Named("sessionId") Long sessionId, NewUeBean ue) throws BadRequestException {
+
     if ( ue.getUser().equals("") ) {
       throw new BadRequestException("User can't be null");
     }
