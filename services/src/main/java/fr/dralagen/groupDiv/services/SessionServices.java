@@ -112,8 +112,32 @@ public class SessionServices {
       errors.put("ue", "ERROR_MAND_UE_SESSION");
     }
 
-    for (NewUeBean ue : session.getUe()) {
-      checkUe(errors, ue);
+    List<Ue> existingUe = new ArrayList<>();
+    for (int i = 0; i < session.getUe().size(); ++i) {
+
+      NewUeBean ue = session.getUe().get(i);
+
+      Map<String, String> ueErrors = new HashMap<>();
+
+      checkUe(ueErrors, ue, existingUe);
+
+      if (ueErrors.isEmpty()) {
+
+        User newUsr = new User();
+        newUsr.setName(ue.getUser());
+        Ue newUe = new Ue();
+        newUe.setTitle(ue.getTitle());
+        newUe.setAuthor(newUsr);
+
+        existingUe.add(newUe);
+
+      } else {
+
+        for( Map.Entry<String, String> e: ueErrors.entrySet()) {
+          errors.put(e.getKey() + "_" + i, e.getValue());
+        }
+
+      }
     }
 
     if (!errors.isEmpty()) {
@@ -121,22 +145,42 @@ public class SessionServices {
     }
   }
 
-  private void checkUe(Map<String, String> errors, NewUeBean ue) {
+  private boolean checkUe(Map<String, String> errors, NewUeBean ue, List<Ue> existingUe) {
+    boolean error = false;
+
     String ueTitle = ue.getTitle();
     if (ueTitle == null || ueTitle.equals("")) {
       errors.put("ueTitle", "ERROR_MAND_UETITLE");
+      error = true;
     }
 
-    String userName = ue.getUser();
-    if (userName == null || userName.equals("")) {
+    String username = ue.getUser();
+    if (username == null || username.equals("")) {
       errors.put("userName", "ERROR_MAND_USERNAME");
+      error = true;
     }
+
+    if (!error) {
+      for ( Ue exist : existingUe ) {
+        if ( exist.getTitle().equals(ueTitle) ) {
+          errors.put("ueTitle", "ERROR_UE_TITLE_ALREADY_EXIST");
+          error = true;
+        }
+
+        if ( exist.getAuthor().getName().equals(username) ) {
+          errors.put("ueName", "ERROR_UE_USERNAME_ALREADY_EXIST");
+          error = true;
+        }
+      }
+    }
+
+    return error;
   }
 
-  private void checkUe(NewUeBean ue) throws InvalidFormException {
+  private void checkUe(Session session, NewUeBean ue) throws InvalidFormException {
     Map<String, String> errors = new HashMap<>();
 
-    checkUe(errors, ue);
+    checkUe(errors, ue, session.getUes());
 
     if (!errors.isEmpty()) {
       throw new InvalidFormException(errors);
@@ -156,11 +200,16 @@ public class SessionServices {
 
   public UeInfoBean updateUe(Long sessionId, Long ueId, NewUeBean ue) throws InvalidFormException {
 
+    Session persistedSession = SessionRepository.getInstance().findOne(sessionId);
+
     Ue persistedUe = UeRepository.getInstance().findOne(sessionId, ueId);
 
     User persistedUser = persistedUe.getAuthor();
 
-    checkUe(ue);
+    checkUe(persistedSession, ue);
+
+    persistedUe.setTitle(ue.getTitle());
+    persistedUser.setName(ue.getUser());
 
     return UeInfoBean.toBean(persistedUe);
   }
