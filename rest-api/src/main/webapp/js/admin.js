@@ -54,6 +54,8 @@ app.controller("adminController",['$scope', 'GApi','$location', function myC($sc
 					$scope.users = data.user;
 					$scope.selectedUser.sel = $scope.users[0];
 					console.log("we get the users");
+					console.log($scope.users);
+					console.log(data);
 
 					//get ues
 					angular.forEach(data.ue, function(oneUe){
@@ -95,7 +97,7 @@ app.controller("adminController",['$scope', 'GApi','$location', function myC($sc
 				});
 				console.log("we get the new reviews");
 			}, function(err) {
-				console.log("error you can't pull : " + userId + " : " + err.error.message);
+				console.log("error you can't pull : " + $scope.selectedUser.sel.id + " : " + err.error.message);
 			}
 		);
 	}

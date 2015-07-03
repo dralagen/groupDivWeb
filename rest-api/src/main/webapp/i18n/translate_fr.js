@@ -47,17 +47,17 @@ var translateFr = {
 	SHOW_SC: 'Afficher la courbe lissée',
 	SHOW_SG: 'Afficher le step graph',
 	SHOW_STATS_OF: 'Afficher les stats de',
-	
+
 	UE_DESCRIPTION:'Description de l\'UE',
 	UE_REVIEWS: 'Review de l\'UE',
 	USER: 'Utilisateur',
 	USER_ID: 'ID utilisateur',
 	USER_NAME: 'Nom de l\'utilisateur',
-	
+
 	VIEW: 'Observer',
-	
+
 	WITH_GD: 'Avec groupDiv',
-	
+
 	XP_RESULT: 'Résultats de l\'expérience',
 	
 	YOUR_REVIEW: 'Votre review'

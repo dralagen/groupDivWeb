@@ -108,6 +108,7 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams','$transl
 				$scope.reviews.reviewToPost = "";
 				$scope.waitForPull = false;
 			}, function(err) {
+				$scope.alerts.review = [];
 				$scope.error = JSON.parse(err.error.message);
 				$scope.alerts.review.push({type: 'warning', msg: $translate.instant($scope.error.content)});
 				console.log("error you can't post your review : " + $translate.instant($scope.error.content));
@@ -125,6 +126,7 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams','$transl
 				console.log("post ue successful");
 				$scope.waitForPull = false;
 			}, function(err) {
+				$scope.alerts.descri = [];
 				$scope.error = JSON.parse(err.error.message);
 				$scope.alerts.descri.push({type: 'warning', msg: $translate.instant($scope.error.content)});
 				console.log("error you can't post your ue : " + $translate.instant($scope.error.content));

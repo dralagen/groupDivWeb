@@ -39,12 +39,21 @@
 			</tr>
 			<tr ng-repeat="oneUE in ues ">
 				<td>
-					<input type="text"  class="form-control" ng-model="users[oneUE.authorId].name" ng-change="updateUE(oneUE)"/> 
+					<input type="text"  class="form-control" ng-model="oneUE.userName" ng-change="updateUE(oneUE)"/>
 				</td>
 				<td>
-					<input type="text"  class="form-control"  ng-model="oneUE.title" ng-change="updateUE(oneUE)"/> 
+					<input type="text"  class="form-control"  ng-model="oneUE.title" ng-change="updateUE(oneUE)"/>
 				</td>
-				<td class="action"><button class="btn btn-danger" ng-click="deleteUe(oneUE);"><span class="glyphicon glyphicon-trash" ></span></button></td> 
+				<td class="action"><button class="btn btn-danger" ng-click="deleteUe(oneUE);"><span class="glyphicon glyphicon-trash" ></span></button></td>
+			</tr>
+			<tr ng-repeat="oneUE in newUes ">
+				<td>
+					<input type="text"  class="form-control" ng-model="oneUE.userName" ng-change="updateUE(oneUE)" ng-blur="quitInput(oneUE)"/>
+				</td>
+				<td>
+					<input type="text"  class="form-control"  ng-model="oneUE.title" ng-change="updateUE(oneUE)" ng-blur="quitInput(oneUE)"/>
+				</td>
+				<td class="action"><button class="btn btn-danger" ng-click="deleteUe(oneUE);"><span class="glyphicon glyphicon-trash" ></span></button></td>
 			</tr>
 			<tr>
 				<th class="cell-lg" colspan="3">

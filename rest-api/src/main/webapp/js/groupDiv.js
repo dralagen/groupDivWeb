@@ -83,7 +83,7 @@ app.controller("groupDivController", ['$scope', '$routeParams','$filter','$trans
 	}
 
 	$scope.refreshCanvas = function(){
-		$scope.majDivergences();
+		//$scope.majDivergences();
 		$scope.eraseCanvas();
 		$scope.putPicturesOnCanvas();
 	}
