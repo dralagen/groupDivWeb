@@ -113,17 +113,30 @@ public class SessionServices {
     }
 
     for (NewUeBean ue : session.getUe()) {
-      String ueTitle = ue.getTitle();
-      if (ueTitle == null || ueTitle.equals("")) {
-        errors.put("ueTitle", "ERROR_MAND_UETITLE");
-      }
-
-      String userName = ue.getUser();
-      if (userName == null || userName.equals("")) {
-        errors.put("userName", "ERROR_MAND_USERNAME");
-      }
-
+      checkUe(errors, ue);
     }
+
+    if (!errors.isEmpty()) {
+      throw new InvalidFormException(errors);
+    }
+  }
+
+  private void checkUe(Map<String, String> errors, NewUeBean ue) {
+    String ueTitle = ue.getTitle();
+    if (ueTitle == null || ueTitle.equals("")) {
+      errors.put("ueTitle", "ERROR_MAND_UETITLE");
+    }
+
+    String userName = ue.getUser();
+    if (userName == null || userName.equals("")) {
+      errors.put("userName", "ERROR_MAND_USERNAME");
+    }
+  }
+
+  private void checkUe(NewUeBean ue) throws InvalidFormException {
+    Map<String, String> errors = new HashMap<>();
+
+    checkUe(errors, ue);
 
     if (!errors.isEmpty()) {
       throw new InvalidFormException(errors);
@@ -141,19 +154,13 @@ public class SessionServices {
 
   }
 
-  public UeInfoBean updateUe(Long sessionId, Long ueId, NewUeBean ue) {
+  public UeInfoBean updateUe(Long sessionId, Long ueId, NewUeBean ue) throws InvalidFormException {
 
     Ue persistedUe = UeRepository.getInstance().findOne(sessionId, ueId);
 
     User persistedUser = persistedUe.getAuthor();
 
-    if (ue.getTitle() != null && !"".equals(ue.getTitle())) {
-      persistedUe.setTitle(ue.getTitle());
-    }
-
-    if (ue.getUser() != null && !"".equals(ue.getUser())) {
-      persistedUser.setName(ue.getUser());
-    }
+    checkUe(ue);
 
     return UeInfoBean.toBean(persistedUe);
   }

@@ -61,9 +61,13 @@ public class SessionApi {
   }
 
   @ApiMethod(name = "session.ue.edit", httpMethod = ApiMethod.HttpMethod.PUT, path = "session/{sessionId}/ue/{ueId}")
-  public UeInfoBean updateUe(@Named("sessionId") Long sessionId, @Named("ueId") Long ueId, NewUeBean ue) {
+  public UeInfoBean updateUe(@Named("sessionId") Long sessionId, @Named("ueId") Long ueId, NewUeBean ue) throws BadRequestException {
 
-    return SessionServices.getInstance().updateUe(sessionId, ueId, ue);
+    try {
+      return SessionServices.getInstance().updateUe(sessionId, ueId, ue);
+    } catch (InvalidFormException e) {
+      throw new BadRequestException(e);
+    }
 
   }
 
