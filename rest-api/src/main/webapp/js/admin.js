@@ -21,16 +21,14 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 	$scope.users = [];
 	$scope.ues = [];
 
+	$scope.maxDate = 0;
+
 	$scope.refresh = {};
 	$scope.refresh.manualRefreshLog = false;
 
 	var interval = null;
 
-	$scope.divergencesValues = [
-		{data: [[Date.parse("2015-12-12T12:12:12"), 20],[Date.parse("2015-12-12T12:14:12"), 50], [Date.parse("2015-12-12T12:15:12"), 70], [Date.parse("2015-12-12T12:16:12"), 30]], label: "GDTot"},
-		{data: [[Date.parse("2015-12-12T12:14:12"), 2], [Date.parse("2015-12-12T12:15:12"), 3], [Date.parse("2015-12-12T12:16:12"), 4], [Date.parse("2015-12-12T12:12:12"), 1]],  label: "usr1"},
-		{data: [[Date.parse("2015-12-12T12:12:12"), 100],[Date.parse("2015-12-12T12:14:12"), 200], [Date.parse("2015-12-12T12:15:12"), 300], [Date.parse("2015-12-12T12:16:12"), 400]],  label: "usr2"}
-	];
+	$scope.dataAndLabelForGraph = [];
 
 	GApi.execute('groupDivWeb', 'session.list').then(
 		function(data){
@@ -45,6 +43,7 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 		}
 	);
 
+
 	$scope.chooseSession = function(){
 		if(!angular.isUndefined($scope.selectedSession)){
 			$scope.sessionChoosen = true;
@@ -55,6 +54,14 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 					$scope.useGroupDiv = data.withGroupDiv;
 					//get users
 					$scope.users = data.user;
+					$scope.users.push({name: "GDTot", id:"GDTot"});
+
+					angular.forEach($scope.users, function(user){
+						temp = {data: [], label: user.id,  lines: {show: true}};
+						$scope.dataAndLabelForGraph.push(temp);
+
+					});
+
 					$scope.selectedUser.sel = $scope.users[0];
 					console.log("we get the users");
 
@@ -71,6 +78,28 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 
 				}, function(err){
 					console.log("error : we can't load the session : " + err.error.message);
+				}
+			);
+
+			GApi.execute('groupDivWeb', 'divergence.list', {sessionId: $scope.selectedSession}).then(
+				function(data){
+					console.log("list divergences ok ");
+					angular.forEach(data.items, function(item){
+						angular.forEach($scope.dataAndLabelForGraph, function(divValue){
+							if(angular.isUndefined(item.userDivergence[divValue.label])){
+								temp = [Date.parse(item.time), parseInt(item.globalDivergence)];
+								$scope.maxDate = Math.max($scope.maxDate, Date.parse(item.time));
+								divValue.data.push(temp);
+							}
+							else {
+								temp = [Date.parse(item.time), parseInt(item.userDivergence[divValue.label])];
+								divValue.data.push(temp);
+							}
+						});
+					});
+				},
+				function(err){
+					console.log("error : we can't get the list of divergences : " + err.error.message);
 				}
 			);
 		}
@@ -107,7 +136,7 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 	$scope.init_plot = function(){
 		$scope.plotStep = $.plot(
 			"#stepGraph",
-			$scope.divergencesValues,
+			$scope.dataAndLabelForGraph,
 			{
 				xaxis: {
 					mode: "time",
@@ -118,6 +147,16 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 					position: "ne",
 					margin:[-60, 0],
 					noColumns: 1,
+					labelFormatter: function(label, series) {
+						// series is the series object for the label
+						var result = "";
+						for(i in $scope.users){
+							if($scope.users[i].id == label){
+								result = $scope.users[i].name;
+							}
+						}
+						return result;
+					},
 				},
 				series: {
 					lines: {
@@ -130,7 +169,7 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 
 		$scope.plotCurve = $.plot(
 			"#curve",
-			$scope.divergencesValues,
+			$scope.dataAndLabelForGraph,
 			{
 				xaxis: {
 					mode: "time",
@@ -141,25 +180,66 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 					position: "ne",
 					margin:[-60, 0],
 					noColumns: 1,
+					labelFormatter: function(label, series) {
+						// series is the series object for the label
+						var result = "";
+						for(i in $scope.users){
+							if($scope.users[i].id == label){
+								result = $scope.users[i].name;
+							}
+						}
+						return result;
+					},
+				},
+				series: {
+					lines: {
+						show: true,
+						steps:false,
+					}
 				}
 			}
 		);
 		$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
 	}
 
-	$scope.addDivergenceForUsers = function(){
-		//TODO get the group divergence for all the users
-	};
-
-	$scope.updateGraph = function(){
-		//TODO put in dataAndLabelForGraph the data of all users
-		$scope.plotStep.setData(dataAndLabelForGraph);
+	$scope.reloadDataInGraph = function(){
+		$scope.plotStep.setData($scope.dataAndLabelForGraph);
+		$scope.plotCurve.resize();
 		$scope.plotStep.setupGrid();
 		$scope.plotStep.draw();
 
-		$scope.plotCurve.setData(dataAndLabelForGraph);
+		$scope.plotCurve.setData($scope.dataAndLabelForGraph);
+		$scope.plotCurve.resize();
 		$scope.plotCurve.setupGrid();
 		$scope.plotCurve.draw();
+	}
+
+	$scope.updateGraph = function(){
+		GApi.execute('groupDivWeb', 'divergence.list', {sessionId: $scope.selectedSession}).then(
+			function(data){
+				var newMaxDate = 0;
+				angular.forEach(data.items, function(item){
+					if(Date.parse(item.time)>$scope.maxDate) {
+						newMaxDate = Math.max(newMaxDate,item.time );
+						angular.forEach($scope.dataAndLabelForGraph, function (divValue) {
+							if (angular.isUndefined(item.userDivergence[divValue.label])) {
+								temp = [Date.parse(item.time), parseInt(item.globalDivergence)];
+								divValue.data.push(temp);
+							}
+							else {
+								temp = [Date.parse(item.time), parseInt(item.userDivergence[divValue.label])];
+								divValue.data.push(temp);
+							}
+						});
+					}
+					$scope.reloadDataInGraph();
+				});
+				$scope.maxDate = Math.max(newMaxDate, $scope.maxDate);
+			},
+			function(err){
+				console.log("error : we can't get the list of divergences : " + err.error.message);
+			}
+		);
 	};
 
 	$scope.visibilityStepGraph = function(bool){
@@ -174,20 +254,13 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 		$scope.plotCurve.draw();
 	};
 
-	$scope.watchDivergence = function(n){
-		for(i in $scope.plotStep.getData()){
-			data = $scope.plotStep.getData();
-			if(data[i].label == n){
-				data[i].lines.show = !data[i].lines.show;
-				$scope.plotStep.setData(data);
-				($scope.plotCurve.getData())[i].lines.show = !($scope.plotCurve.getData())[i].lines.show;
+	$scope.watchDivergence = function(userId){
+		for(i in $scope.dataAndLabelForGraph){
+			if($scope.dataAndLabelForGraph[i].label == userId){
+				$scope.dataAndLabelForGraph[i].lines.show = !$scope.dataAndLabelForGraph[i].lines.show;
 			}
 		}
-		$scope.plotStep.setupGrid();
-		$scope.plotStep.draw();
-
-		$scope.plotCurve.setupGrid();
-		$scope.plotCurve.draw();
+		$scope.reloadDataInGraph();
 	};
 
 
@@ -208,7 +281,7 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 	};
 
 	$scope.updateLog = function() {
-		console.log("get log");
+		$scope.updateGraph();
 	}
 
 	$scope.setManualRefresh = function(){

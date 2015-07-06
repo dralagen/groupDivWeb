@@ -16,7 +16,7 @@
 			<div class="col-md-6">
 				<h2 class="text-center page-header"> {{ 'LINKS_TITLE' | translate }}</h2>
 					<center>
-						<div ng-repeat="user in users">
+						<div ng-repeat="user in users | filter:'!GDTot'">
 							<a href="{{hostLink}}{{user.id}}/{{selectedSession}}"> {{ 'LINK_FOR' | translate }} {{user.name}} : {{hostLink}}{{user.id}}/{{selectedSession}} </a>
 						</div>
 					</center>
@@ -56,7 +56,7 @@
 						<h4>{{ 'SHOW_STATS_OF' | translate }} :</h4>
 						<div class="checkbox" >
 							<label ng-repeat="user in users">
-								<input type="checkbox" ng-model="user.select" ng-init="user.select=true" ng-click="admin.watchDivergence(user.name)" ng-checked="true" />{{user.name}}
+								<input type="checkbox" ng-model="user.select" ng-init="user.select=true" ng-click="watchDivergence(user.id)" ng-checked="true" />{{user.name}}
 							</label>
 						</div>
 					</form>
@@ -91,6 +91,9 @@
 									<tr >
 										<th ng-repeat="user in users" class="check-element animate-show" ng-show=user.select style="width:5em;"> {{ user.name }}</th>
 									</tr>
+									<tr>
+										<th class="check-element animate-show" ng-show=user.select style="width:5em;"> GDTot</th>
+									</tr>
 								</thead>
 
 								<tbody class="scrollArray">
@@ -99,8 +102,11 @@
 
 											<table>
 												<td>
-													<tr ng-repeat="div in getData(user.name)" >
+													<tr ng-repeat="div in getData(user.id)" >
 														<td style="width:5em;">{{ div[1] }}</td>
+													</tr>
+													<tr>
+														<td></td>
 													</tr>
 												</td>
 											</table>
