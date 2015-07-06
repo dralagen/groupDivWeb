@@ -1,16 +1,18 @@
 <div>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" >GroupDiv</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a >Name</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" >GroupDiv</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a >Name</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 
     <div class="container-fluid">
 		<div class="row">
@@ -74,10 +76,8 @@
 						<ul class="nav nav-sidebar">
 							<div class="container-fluid" style="position: fixed;">
 								<div ng-controller="groupDivController" ng-show="showGroupDiv">
-									<canvas id="mon_canvas" width="170" height="500" class="bg-info">
-									</canvas>
+									<canvas id="mon_canvas" width="170" height="500" class="bg-info"></canvas>
 									<div ng-include="'partial/groupDivWidget.html'"></div>
-									<input type="button" ng-click="refreshCanvas()"/>
 								</div>
 							</div>
 						</ul>

@@ -108,15 +108,15 @@ textarea{
 	resize:none;
 }
 
-.bodycontainer {
+.divergenceGroupDiv {
 	max-height: 50px;
 	overflow-y: auto;
 }
 
-#test thead {
+#divergenceArray thead {
 	display:block;
 }
-.bla {
+.scrollArray {
 	display:block;
 	height:5em; /* 5 times the equivalent of a text "size". */
 	overflow-y:scroll;

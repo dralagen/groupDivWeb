@@ -15,6 +15,7 @@ var translateEn = {
 	CREATE_THE_SESSION: 'Create the session',
 	
 	DESCRIPTION: 'Description',
+	DIVERGENCE_OF: 'Divergence of',
 	DIV_STATS_AND_VALUES:  'Statistics and values of divergence',
 	DO_PULL: 'Pull from',
 
@@ -35,7 +36,8 @@ var translateEn = {
 
 	MODIFY: 'Modify',
 	MODIFY_SESSION: 'Modify session',
-	
+	MY_DIVERGENCE : 'My divergence',
+
 	POST: 'post',
 	
 	REVIEWS: 'Reviews',

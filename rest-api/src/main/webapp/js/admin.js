@@ -1,8 +1,7 @@
 var app = angular.module("groupDiv.adminController", []);
 
 
-app.controller("adminController",['$scope', 'GApi','$location', function myC($scope, GApi, $location){
-
+app.controller("adminController",['$scope', 'GApi', '$location', '$interval', function myC($scope, GApi, $location, $interval){
 
 	$scope.sessionChoosen = false;
 
@@ -17,11 +16,15 @@ app.controller("adminController",['$scope', 'GApi','$location', function myC($sc
 	$scope.selectedUser = {};
 	$scope.selectedUser.sel = {};
 
-
 	$scope.reviews = {};
 
 	$scope.users = [];
 	$scope.ues = [];
+
+	$scope.refresh = {};
+	$scope.refresh.manualRefreshLog = false;
+
+	var interval = null;
 
 	$scope.divergencesValues = [
 		{data: [[Date.parse("2015-12-12T12:12:12"), 20],[Date.parse("2015-12-12T12:14:12"), 50], [Date.parse("2015-12-12T12:15:12"), 70], [Date.parse("2015-12-12T12:16:12"), 30]], label: "GDTot"},
@@ -54,8 +57,6 @@ app.controller("adminController",['$scope', 'GApi','$location', function myC($sc
 					$scope.users = data.user;
 					$scope.selectedUser.sel = $scope.users[0];
 					console.log("we get the users");
-					console.log($scope.users);
-					console.log(data);
 
 					//get ues
 					angular.forEach(data.ue, function(oneUe){
@@ -65,6 +66,8 @@ app.controller("adminController",['$scope', 'GApi','$location', function myC($sc
 					$scope.selectedUE.sel = $scope.ues[0];
 					$scope.pullTheUser();
 					console.log("we get the ues");
+
+					interval = $interval( function(){$scope.updateLog(); }, 3000);
 
 				}, function(err){
 					console.log("error : we can't load the session : " + err.error.message);
@@ -80,7 +83,6 @@ app.controller("adminController",['$scope', 'GApi','$location', function myC($sc
 				//get ues content
 				angular.forEach(resp.ue, function(item){
 					angular.forEach($scope.ues, function(ue){
-						console.log(ue.id == item.id);
 						if(ue.id == item.id){
 							ue.content = item.content;
 						}
@@ -110,7 +112,6 @@ app.controller("adminController",['$scope', 'GApi','$location', function myC($sc
 				xaxis: {
 					mode: "time",
 					timeformat: "%Y-%m-%d %H:%M:%S"
-
 				},
 				legend: {
 					show: true,
@@ -143,7 +144,6 @@ app.controller("adminController",['$scope', 'GApi','$location', function myC($sc
 				}
 			}
 		);
-
 		$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
 	}
 
@@ -151,15 +151,15 @@ app.controller("adminController",['$scope', 'GApi','$location', function myC($sc
 		//TODO get the group divergence for all the users
 	};
 
-	$scope.getUsers = function(){
-		//TODO ask server to know the name of all the users
-	};
-
 	$scope.updateGraph = function(){
 		//TODO put in dataAndLabelForGraph the data of all users
-		plotStep.setData(dataAndLabelForGraph);
-		plotStep.setupGrid();
-		plotStep.draw();
+		$scope.plotStep.setData(dataAndLabelForGraph);
+		$scope.plotStep.setupGrid();
+		$scope.plotStep.draw();
+
+		$scope.plotCurve.setData(dataAndLabelForGraph);
+		$scope.plotCurve.setupGrid();
+		$scope.plotCurve.draw();
 	};
 
 	$scope.visibilityStepGraph = function(bool){
@@ -191,11 +191,11 @@ app.controller("adminController",['$scope', 'GApi','$location', function myC($sc
 	};
 
 
-	$scope.getData = function(u){
+	$scope.getData = function(user){
 		var a=-1;
 		data = $scope.plotStep.getData();
 		for(i in data){
-			if(data[i].label == u){
+			if(data[i].label == user){
 				a = i;
 			}
 		}
@@ -207,4 +207,16 @@ app.controller("adminController",['$scope', 'GApi','$location', function myC($sc
 		}
 	};
 
+	$scope.updateLog = function() {
+		console.log("get log");
+	}
+
+	$scope.setManualRefresh = function(){
+		$scope.refresh.manualRefreshLog = !$scope.refresh.manualRefreshLog;
+		if($scope.refresh.manualRefreshLog == false){
+			interval = $interval( function(){$scope.updateLog(); }, 3000);
+		}else{
+			$interval.cancel(interval);
+		}
+	}
 }]);

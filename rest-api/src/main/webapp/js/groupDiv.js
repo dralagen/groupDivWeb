@@ -1,6 +1,6 @@
 var app = angular.module("groupDiv.groupDivController", []);
 
-app.controller("groupDivController", ['$scope', '$routeParams','$filter','$translate', 'GApi', 'Users', function($scope, $routeParams, $filter,$translate, GApi, Users){
+app.controller("groupDivController", ['$scope', '$routeParams','$filter','$translate', 'GApi', 'Users', '$interval', function($scope, $routeParams, $filter,$translate, GApi, Users, $interval){
 
 	$scope.GDtot = 0;
 	$scope.users = Users.users;
@@ -88,6 +88,8 @@ app.controller("groupDivController", ['$scope', '$routeParams','$filter','$trans
 		$scope.putPicturesOnCanvas();
 	}
 
-	$scope.refreshCanvas();
+	if($scope.showGroupDiv == true){
+		$interval( function(){$scope.refreshCanvas(); }, 3000);
+	}
 }]);
 

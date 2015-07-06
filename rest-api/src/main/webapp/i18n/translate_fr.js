@@ -15,6 +15,7 @@ var translateFr = {
 	CREATE_THE_SESSION: 'Creer la session',
 	
 	DESCRIPTION: 'Description',
+	DIVERGENCE_OF: 'Divergence de',
 	DIV_STATS_AND_VALUES: 'Statistiques et valeures de divergence',
 	DO_PULL: 'Récupérer de',
 
@@ -35,6 +36,7 @@ var translateFr = {
 
 	MODIFY: 'Modifier',
 	MODIFY_SESSION: 'Modifier la session',
+	MY_DIVERGENCE : 'Ma divergence',
 	
 	POST: 'Poster',
 	

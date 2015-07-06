@@ -1,11 +1,9 @@
 
 <h2 class="text-center page-header">{{ 'CHOOSE_UE_WATCH' | translate }} : </h2>
 <p>Choose a user : </p>
-<select class="form-control" ng-model="selectedUE.sel" ng-options="ue as ue.title for ue in ues">
-</select>
+<select class="form-control" ng-model="selectedUE.sel" ng-options="ue as ue.title for ue in ues"></select>
 <p>Choose a UE : </p>
-<select class="form-control" ng-model="selectedUser.sel" ng-options="user as user.name for user in users" ng-change="pullTheUser()">
-</select>
+<select class="form-control" ng-model="selectedUser.sel" ng-options="user as user.name for user in users" ng-change="pullTheUser()"></select>
 
 <h2 class="text-center page-header">{{ 'CANDR_UE_SESSION' | translate }} : {{selectedUE.sel.title}}</h2>
 <div class="jumbotron">

@@ -20,7 +20,7 @@
 			}
 			$scope.session.ue.push(ue);
 		};
-		//it don't work, pattern to follow: {"name": "un nom","ue": [{"title": "nom","user": "u1"}],"withGroupDiv": true}
+
 		$scope.createSession = function () {
 			console.log($scope.session);
 			GApi.execute('groupDivWeb', 'session.post', $scope.session).then(
@@ -31,14 +31,12 @@
 					$scope.session.ue = [];
 				}, function(err) {
 					$scope.alerts =[];
-					console.log("error you can't create that session : " + err.error.message);
+					console.log("error you can't create that session : ");
 					console.log(angular.fromJson(err.error.message));
 					$scope.error = angular.fromJson(err.error.message);
 					angular.forEach($scope.error, function(value, key) {
 						$scope.alerts.push({type: 'warning', msg: $translate.instant(value)});
 					});
-					//console.log($scope.alerts);
-					//$scope.alerts.push({type: 'warning', msg: "Warning, the session can't be created, check if you don't make some mistakes!"});
 				}
 			);
 		};

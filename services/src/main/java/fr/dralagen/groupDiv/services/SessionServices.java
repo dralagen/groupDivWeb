@@ -176,7 +176,7 @@ public class SessionServices {
     return SessionBean.toBean(session);
   }
 
-  public SessionBean addUe(Long sessionId, NewUeBean ue) {
+  public UeInfoBean addUe(Long sessionId, NewUeBean ue) {
 
     Session session = SessionRepository.getInstance().findOne(sessionId);
 
@@ -196,7 +196,9 @@ public class SessionServices {
     newUe.setContents(contents);
     session.getUes().add(newUe);
 
-    return SessionBean.toBean(session);
+
+
+    return UeInfoBean.toBean(newUe);
   }
 
   public DivergenceBean getDivergence(long sessionId) {

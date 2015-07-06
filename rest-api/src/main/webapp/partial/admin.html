@@ -2,7 +2,6 @@
 <div ng-hide="sessionChoosen">
 	<center>
 		<h2 class="text-center page-header">{{ 'CHOOSE_SESSION_WATCH' | translate }} : </h2>
-
 			<form>
 				<select ng-selected="sessions[0]" ng-model="selectedSession" ng-options="session.id as session.name for session in sessions">
 					<option value="">-- {{ 'SELECT_OPTION' | translate }}--</option>
@@ -24,20 +23,41 @@
 				<h2 class="text-center page-header">{{ 'XP_RESULT' | translate }}</h2>
 
 				<center>
+
+					<table>
+						<tr>
+							<td>
+								<p>Refresh auto : </p>
+							</td>
+							<td>
+								<div class="onoffswitch">
+									<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="autoRefresh" ng-model="onOff" ng-init="onOff=true" ng-click="setManualRefresh()" checked/>
+									<label class="onoffswitch-label" for="autoRefresh">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</td>
+							<td>
+								<input type="button" value="Refresh" ng-show="refresh.manualRefreshLog" ng-click="updateLog()"/>
+							</td>
+						</tr>
+					</table>
+
 					<form>
 						<div class="checkbox">
 							<label>
-								<input type="checkbox" ng-model="checked1" ng-click="admin.visibilityStepGraph(checked1)" /> {{ 'SHOW_SG' | translate }}
+								<input type="checkbox" ng-model="checkedStepGraph" ng-click="visibilityStepGraph(checkedStepGraph)" /> {{ 'SHOW_SG' | translate }}
 							</label>
 							<label>
-								<input type="checkbox" ng-model="checked2" ng-click="admin.visibilityCurve(checked2)" /> {{ 'SHOW_SC' | translate }}
+								<input type="checkbox" ng-model="checkedCurve" ng-click="visibilityCurve(checkedCurve)" /> {{ 'SHOW_SC' | translate }}
 							</label>
 						</div>
 						<h4>{{ 'SHOW_STATS_OF' | translate }} :</h4>
 						<div class="checkbox" >
-								<label ng-repeat="user in users">
-									<input type="checkbox" ng-model="user.s" ng-init="user.s=true" ng-click="admin.watchDivergence(user.name)" ng-checked="true" />{{user.name}}
-								</label>
+							<label ng-repeat="user in users">
+								<input type="checkbox" ng-model="user.select" ng-init="user.select=true" ng-click="admin.watchDivergence(user.name)" ng-checked="true" />{{user.name}}
+							</label>
 						</div>
 					</form>
 				</center>
@@ -45,7 +65,7 @@
 				<div ng-init="init_plot()">
 					<div class="row">
 						<div class="col-md-12">
-							<div class="check-element animate-show" ng-show="checked1">
+							<div class="check-element animate-show" ng-show="checkedStepGraph">
 								<h2 class="text-center page-header">{{ 'SG' | translate }}</h2>
 								<div id="stepGraph" style="width:95%; height:300px" ></div>
 							</div>
@@ -53,10 +73,8 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12">
-							<div class="check-element animate-show" ng-show="checked2">
-
+							<div class="check-element animate-show" ng-show="checkedCurve">
 								<h2 class="text-center page-header">{{ 'SC' | translate }}</h2>
-
 								<div id="curve" style="width:95%; height:300px"></div>
 							</div>
 						</div>
@@ -66,34 +84,32 @@
 
 				<div class="row">
 					<div class="col-md-12">
-							<h2 class="text-center page-header">{{ 'DIV_STATS_AND_VALUES' | translate }}</h2>
-							<center>
-								<table class="table-bordered" id="test">
-									<thead>
-										<tr >
-											<th ng-repeat="user in users" class="check-element animate-show" ng-show=user.s style="width:5em;"> {{ user.name }}</th>
-										</tr>
-									</thead>
+						<h2 class="text-center page-header">{{ 'DIV_STATS_AND_VALUES' | translate }}</h2>
+						<center>
+							<table class="table-bordered" id="divergenceArray">
+								<thead>
+									<tr >
+										<th ng-repeat="user in users" class="check-element animate-show" ng-show=user.select style="width:5em;"> {{ user.name }}</th>
+									</tr>
+								</thead>
 
-									<tbody class="bla">
-										<tr>
-											<td ng-repeat="user in users" class="check-element animate-show" ng-show=user.s>
+								<tbody class="scrollArray">
+									<tr>
+										<td ng-repeat="user in users" class="check-element animate-show" ng-show=user.select>
 
-												<table>
-													<td>
-														<tr ng-repeat="div in getData(user.name)" >
-															<td style="width:5em;">{{ div[1] }}</td>
-														</tr>
-													</td>
-												</table>
+											<table>
+												<td>
+													<tr ng-repeat="div in getData(user.name)" >
+														<td style="width:5em;">{{ div[1] }}</td>
+													</tr>
+												</td>
+											</table>
 
-											</td>
-										</tr>
-									</tbody>
-									</div>
-
-								</table>
-							</center>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</center>
 					</div>
 				</div>
 			</div>
