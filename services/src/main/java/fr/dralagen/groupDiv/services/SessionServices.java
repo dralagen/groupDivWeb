@@ -2,6 +2,7 @@ package fr.dralagen.groupDiv.services;
 
 import fr.dralagen.groupDiv.bean.*;
 import fr.dralagen.groupDiv.model.*;
+import fr.dralagen.groupDiv.persistence.LogRepository;
 import fr.dralagen.groupDiv.persistence.SessionRepository;
 import fr.dralagen.groupDiv.persistence.UeRepository;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
@@ -36,9 +37,9 @@ public class SessionServices {
     newSession.setCreateDate(new Date());
 
     List<Ue> ueList = new ArrayList<>();
-    List<User> userList = new ArrayList<>();
+    List<GroupDivUser> userList = new ArrayList<>();
     for (NewUeBean ue : session.getUe()) {
-      User newUser = new User();
+      GroupDivUser newUser = new GroupDivUser();
       newUser.setName(ue.getUser());
       userList.add(newUser);
 
@@ -66,11 +67,11 @@ public class SessionServices {
       versionUE.put(oneUe.getKey().getId(), 0);
     }
 
-    Map<User, Long> usersDivergence = new HashMap<>();
+    Map<Long, Long> usersDivergence = new HashMap<>();
 
-    for (User oneUser: newSession.getUsers()) {
+    for (GroupDivUser oneUser: newSession.getUsers()) {
       oneUser.setVersionUE(versionUE);
-      usersDivergence.put(oneUser, 0l);
+      usersDivergence.put(oneUser.getKey().getId(), 0l);
     }
 
     LogDivergence initDivergence = new LogDivergence();
@@ -123,7 +124,7 @@ public class SessionServices {
 
       if (ueErrors.isEmpty()) {
 
-        User newUsr = new User();
+        GroupDivUser newUsr = new GroupDivUser();
         newUsr.setName(ue.getUser());
         Ue newUe = new Ue();
         newUe.setTitle(ue.getTitle());
@@ -204,7 +205,7 @@ public class SessionServices {
 
     Ue persistedUe = UeRepository.getInstance().findOne(sessionId, ueId);
 
-    User persistedUser = persistedUe.getAuthor();
+    GroupDivUser persistedUser = persistedUe.getAuthor();
 
     checkUe(persistedSession, ue);
 
@@ -236,7 +237,7 @@ public class SessionServices {
 
     Session session = SessionRepository.getInstance().findOne(sessionId);
 
-    User newUser = new User();
+    GroupDivUser newUser = new GroupDivUser();
     newUser.setName(ue.getUser());
     session.getUsers().add(newUser);
 
@@ -251,8 +252,6 @@ public class SessionServices {
     newUe.setTitle(ue.getTitle());
     newUe.setContents(contents);
     session.getUes().add(newUe);
-
-
 
     return UeInfoBean.toBean(newUe);
   }
@@ -274,5 +273,16 @@ public class SessionServices {
     }
 
     return divergences;
+  }
+
+  public Collection<LogBean> getAllAction(long sessionId, String action) {
+
+    Collection<LogAction> persistedLog = LogRepository.getInstance().findAll(sessionId, action);
+    List<LogBean> logs = new ArrayList<>();
+    for (LogAction one : persistedLog) {
+      logs.add(LogBean.toBean(one));
+    }
+
+    return logs;
   }
 }

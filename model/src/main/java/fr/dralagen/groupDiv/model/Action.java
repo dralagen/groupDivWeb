@@ -6,6 +6,7 @@ package fr.dralagen.groupDiv.model;
  * @author dralagen
  */
 public enum Action {
+  USELESS_PULL,
   PULL,
   COMMIT,
   OTHER

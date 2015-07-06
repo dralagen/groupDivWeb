@@ -35,7 +35,7 @@ public class Ue {
   @Persistent
   @Unowned
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
-  private User author;
+  private GroupDivUser author;
 
 
   public Key getKey () {
@@ -62,11 +62,11 @@ public class Ue {
     this.contents = contents;
   }
 
-  public User getAuthor () {
+  public GroupDivUser getAuthor () {
     return author;
   }
 
-  public void setAuthor (User author) {
+  public void setAuthor (GroupDivUser author) {
     this.author = author;
   }
 }

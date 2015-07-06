@@ -1,11 +1,10 @@
 package fr.dralagen.groupDiv.bean;
 
 import fr.dralagen.groupDiv.model.LogDivergence;
-import fr.dralagen.groupDiv.model.User;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Date;
 
 /**
  * Created on 6/16/15.
@@ -50,8 +49,8 @@ public class DivergenceBean {
     DivergenceBean bean = new DivergenceBean();
 
     Map<Long, Long> userDivergence = new HashMap<>();
-    for( Map.Entry<User, Long> e: divergence.getUserDivegence().entrySet()) {
-      userDivergence.put(e.getKey().getKey().getId(), e.getValue());
+    for( Map.Entry<Long, Long> e: divergence.getUserDivegence().entrySet()) {
+      userDivergence.put(e.getKey(), e.getValue());
     }
     bean.setUserDivergence(userDivergence);
     bean.setGlobalDivergence(divergence.getGDtot());

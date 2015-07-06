@@ -3,10 +3,7 @@ package fr.dralagen.groupDiv.services;
 import com.google.appengine.api.datastore.Key;
 import fr.dralagen.groupDiv.bean.*;
 import fr.dralagen.groupDiv.model.*;
-import fr.dralagen.groupDiv.persistence.ReviewRepository;
-import fr.dralagen.groupDiv.persistence.SessionRepository;
-import fr.dralagen.groupDiv.persistence.UeRepository;
-import fr.dralagen.groupDiv.persistence.UserRepository;
+import fr.dralagen.groupDiv.persistence.*;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
 
 import java.util.*;
@@ -44,7 +41,7 @@ public class ActionServices {
 
     persistedUe.getContents().add(content);
 
-    User user = UserRepository.getInstance().findOne(sessionId, ue.getAuthorId());
+    GroupDivUser user = UserRepository.getInstance().findOne(sessionId, ue.getAuthorId());
     user.getVersionUE().put(ue.getUeId(), content.getVersion());
 
     Session session = SessionRepository.getInstance().findOne(sessionId);
@@ -58,7 +55,7 @@ public class ActionServices {
     action.setTime(new Date());
     action.setResult("Commit UE on " + ue.getUeId() + " at version " + content.getVersion() + ":" + content.getKey().getId());
 
-    session.getActions().add(action);
+    LogRepository.getInstance().save(action);
 
     return LogBean.toBean(action);
   }
@@ -93,7 +90,7 @@ public class ActionServices {
       throw new IllegalAccessException("ERROR_REVIEW_UE");
     }
 
-    User user = UserRepository.getInstance().findOne(sessionId, review.getAuthorId());
+    GroupDivUser user = UserRepository.getInstance().findOne(sessionId, review.getAuthorId());
 
     Review rev = new Review();
     rev.setAuthor(user.getKey());
@@ -116,7 +113,7 @@ public class ActionServices {
     action.setTime(new Date());
     action.setResult("Commit review on " + ue.getKey().getId() + " at version :" + rev.getKey().getId());
 
-    session.getActions().add(action);
+    LogRepository.getInstance().save(action);
 
     return LogBean.toBean(action);
   }
@@ -143,19 +140,33 @@ public class ActionServices {
 
   public PullBean pull(long sessionId, long fromUserId, long toUserId) {
 
-    User toUser;
-    User fromUser = UserRepository.getInstance().findOne(sessionId, fromUserId);
+    boolean log = true;
+    boolean uselessPull = true;
+
+    GroupDivUser toUser;
+    GroupDivUser fromUser = UserRepository.getInstance().findOne(sessionId, fromUserId);
 
     Session session = SessionRepository.getInstance().findOne(sessionId);
+
+    LogAction logAction = new LogAction();
+    logAction.setAuthor(fromUserId);
+    logAction.setSession(session);
+    logAction.setTime(new Date());
 
     Set<Key> newReviewId;
 
     if (fromUserId == toUserId) {
 
       newReviewId = fromUser.getReview();
+      log = false;
+
+      logAction.setAction(Action.OTHER);
+      logAction.setResult(fromUser.getName() + " update all information");
 
     } else {
       toUser = UserRepository.getInstance().findOne(sessionId, toUserId);
+
+      logAction.setResult(fromUser.getName() + " pull on " + toUser.getName());
 
       int diffDivergence = 0;
 
@@ -163,6 +174,7 @@ public class ActionServices {
         Map<Long, Integer> toUserVersion = toUser.getVersionUE();
         for ( Map.Entry<Long, Integer> one : fromUser.getVersionUE().entrySet() ) {
           if ( one.getValue().compareTo(toUserVersion.get(one.getKey())) < 0 ) {
+            uselessPull = false;
             diffDivergence += (toUserVersion.get(one.getKey()) - one.getValue());
             one.setValue(toUserVersion.get(one.getKey()));
           }
@@ -181,14 +193,14 @@ public class ActionServices {
       UserRepository.getInstance().save(fromUser);
 
       LogDivergence lastDivergence = session.getLastDivergence();
-      Long userDiv = lastDivergence.getUserDivegence().get(fromUser);
-
-      assert userDiv >= diffDivergence;
 
       if (diffDivergence > 0) {
-        Map<User, Long> newUsersDivergence = new HashMap<>();
-        for ( Map.Entry<User, Long> e : lastDivergence.getUserDivegence().entrySet() ) {
-          if ( e.getKey().getKey().equals(fromUser.getKey()) ) {
+
+        uselessPull = false;
+
+        Map<Long, Long> newUsersDivergence = new HashMap<>();
+        for ( Map.Entry<Long, Long> e : lastDivergence.getUserDivegence().entrySet() ) {
+          if ( e.getKey().equals(fromUser.getKey().getId()) ) {
             newUsersDivergence.put(e.getKey(), e.getValue() - diffDivergence);
           } else {
             newUsersDivergence.put(e.getKey(), e.getValue());
@@ -231,19 +243,23 @@ public class ActionServices {
     result.setUe(ueList);
     result.setReview(reviewList);
 
-    //TODO dralagen 6/4/15 : Log Action Pull
+    if (log) {
+      logAction.setAction((uselessPull)?Action.USELESS_PULL:Action.PULL);
+    }
+
+    LogRepository.getInstance().save(logAction);
 
     return result;
   }
 
-  private void updateDivergenceOnCommit (User user, Session session) {
+  private void updateDivergenceOnCommit (GroupDivUser user, Session session) {
     LogDivergence lastDivergence = session.getLastDivergence();
-    Map<User, Long> newUsersDivergence = new HashMap<>();
-    for ( Map.Entry<User, Long> e: lastDivergence.getUserDivegence().entrySet()) {
-      User u = e.getKey();
-      Long value = (!u.getKey().equals(user.getKey())) ? e.getValue() + 1 : e.getValue();
+    Map<Long, Long> newUsersDivergence = new HashMap<>();
+    for ( Map.Entry<Long, Long> e: lastDivergence.getUserDivegence().entrySet()) {
 
-      newUsersDivergence.put(u, value);
+      Long value = (!e.getKey().equals(user.getKey().getId())) ? e.getValue() + 1 : e.getValue();
+
+      newUsersDivergence.put(e.getKey(), value);
     }
 
     LogDivergence divergence = new LogDivergence();

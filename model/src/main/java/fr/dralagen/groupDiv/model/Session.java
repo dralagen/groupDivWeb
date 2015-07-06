@@ -48,7 +48,7 @@ public class Session {
 
   @Persistent(mappedBy = "session")
   @Element(dependent = "true")
-  private List<User> users;
+  private List<GroupDivUser> users;
 
   public Key getKey () {
     return key;
@@ -110,11 +110,11 @@ public class Session {
     this.ues = ues;
   }
 
-  public List<User> getUsers() {
+  public List<GroupDivUser> getUsers() {
     return users;
   }
 
-  public void setUsers(List<User> users) {
+  public void setUsers(List<GroupDivUser> users) {
     this.users = users;
   }
 }
