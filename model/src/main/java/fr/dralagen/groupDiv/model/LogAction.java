@@ -22,7 +22,6 @@ public class LogAction {
   private Long author;
 
   @Persistent
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private Action action;
 
   @Persistent

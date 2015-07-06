@@ -13,6 +13,7 @@ import fr.dralagen.groupDiv.services.ActionServices;
 import fr.dralagen.groupDiv.services.SessionServices;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 
 /**
@@ -62,9 +63,9 @@ public class ActionApi {
 
 
   @ApiMethod(name = "action.list", httpMethod = ApiMethod.HttpMethod.GET, path = "session/{sessionId}/log")
-  public Collection<LogBean> getAllAction(@Named("sessionId") long sessionId) {
+  public Collection<LogBean> getAllAction(@Named("sessionId") long sessionId, @Nullable @Named("action") String action) {
 
-    return SessionServices.getInstance().getAllAction(sessionId);
+    return SessionServices.getInstance().getAllAction(sessionId, action);
   }
 
 }

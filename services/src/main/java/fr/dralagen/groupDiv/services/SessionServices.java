@@ -275,9 +275,9 @@ public class SessionServices {
     return divergences;
   }
 
-  public Collection<LogBean> getAllAction(long sessionId) {
+  public Collection<LogBean> getAllAction(long sessionId, String action) {
 
-    Collection<LogAction> persistedLog = LogRepository.getInstance().findAll(sessionId);
+    Collection<LogAction> persistedLog = LogRepository.getInstance().findAll(sessionId, action);
     List<LogBean> logs = new ArrayList<>();
     for (LogAction one : persistedLog) {
       logs.add(LogBean.toBean(one));

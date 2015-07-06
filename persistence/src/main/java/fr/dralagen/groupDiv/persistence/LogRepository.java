@@ -1,12 +1,12 @@
 package fr.dralagen.groupDiv.persistence;
 
+import fr.dralagen.groupDiv.model.Action;
 import fr.dralagen.groupDiv.model.LogAction;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created on 7/6/15.
@@ -28,16 +28,29 @@ public class LogRepository {
   }
 
 
-  public Collection<LogAction> findAll(Long sessionId) {
+  public Collection<LogAction> findAll(Long sessionId, String action) {
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
     List<LogAction> result;
     Query q = pm.newQuery(LogAction.class);
-    q.setFilter("session == paramSession");
-    q.declareParameters("long paramSession");
+
+    String filter = "session == paramSession";
+    String parameters = "long paramSession";
+
+    Map<String, Object> values = new HashMap<>();
+    values.put("paramSession", sessionId);
+
+    if (action != null) {
+      filter += " && action == paramAction";
+      parameters += ", Action paramAction";
+      values.put("paramAction", Action.valueOf(action));
+    }
+
+    q.setFilter(filter);
+    q.declareParameters(parameters);
 
     try {
-      result = (List<LogAction>) q.execute(sessionId);
+      result = (List<LogAction>) q.executeWithMap(values);
     } finally {
       q.closeAll();
     }
