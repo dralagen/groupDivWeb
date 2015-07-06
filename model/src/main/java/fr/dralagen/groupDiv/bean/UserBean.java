@@ -1,6 +1,6 @@
 package fr.dralagen.groupDiv.bean;
 
-import fr.dralagen.groupDiv.model.User;
+import fr.dralagen.groupDiv.model.GroupDivUser;
 
 /**
  * Created on 6/16/15.
@@ -29,7 +29,7 @@ public class UserBean {
     this.name = name;
   }
 
-  public static UserBean toBean(User one) {
+  public static UserBean toBean(GroupDivUser one) {
     UserBean bean = new UserBean();
     if (one.getKey() != null) {
       bean.setId(one.getKey().getId());

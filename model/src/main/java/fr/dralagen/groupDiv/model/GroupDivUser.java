@@ -12,7 +12,7 @@ import java.util.Set;
  * @author dralagen
  */
 @PersistenceCapable
-public class User {
+public class GroupDivUser {
 
   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
   @PrimaryKey

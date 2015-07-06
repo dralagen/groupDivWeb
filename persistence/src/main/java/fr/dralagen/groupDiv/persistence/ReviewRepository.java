@@ -2,7 +2,7 @@ package fr.dralagen.groupDiv.persistence;
 
 import com.google.appengine.api.datastore.Key;
 import fr.dralagen.groupDiv.model.Review;
-import fr.dralagen.groupDiv.model.User;
+import fr.dralagen.groupDiv.model.GroupDivUser;
 
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
@@ -33,7 +33,7 @@ public class ReviewRepository {
     return repo;
   }
 
-  public Collection<Review> findAllByUser(User user) {
+  public Collection<Review> findAllByUser(GroupDivUser user) {
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
     List<Review> result;
