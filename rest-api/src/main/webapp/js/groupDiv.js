@@ -61,11 +61,10 @@ app.controller("groupDivController", ['$scope', '$routeParams','$filter','$trans
 
 	//here we get divergences values
 	$scope.majDivergences = function(){
-		GApi.execute('groupDivWeb', 'divergence', {sessionId: $scope.sessionId}).then(
+		GApi.execute('groupDivWeb', 'divergence.get', {sessionId: $scope.sessionId}).then(
 			function(resp) {
 				$scope.GDtot = resp.globalDivergence;
 				angular.forEach(resp.userDivergence, function(div, usrId){
-					console.log(div + "  "  +usrId);
 					if(angular.isUndefined($scope.users[usrId])){
 						console.log("The user : " + usrId + " is unknow.");
 					}
@@ -83,13 +82,13 @@ app.controller("groupDivController", ['$scope', '$routeParams','$filter','$trans
 	}
 
 	$scope.refreshCanvas = function(){
-		//$scope.majDivergences();
+		$scope.majDivergences();
 		$scope.eraseCanvas();
 		$scope.putPicturesOnCanvas();
 	}
 
 	if($scope.showGroupDiv == true){
-		$interval( function(){$scope.refreshCanvas(); }, 3000);
+		$interval( function(){$scope.refreshCanvas(); }, 2000);
 	}
 }]);
 

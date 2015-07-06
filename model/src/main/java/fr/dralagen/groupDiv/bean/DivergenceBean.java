@@ -5,6 +5,7 @@ import fr.dralagen.groupDiv.model.User;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Date;
 
 /**
  * Created on 6/16/15.
@@ -16,6 +17,9 @@ public class DivergenceBean {
   private int globalDivergence;
 
   private Map<Long, Long> userDivergence; // userId -> value of divergence
+
+  private Date time;
+
 
   public int getGlobalDivergence() {
     return globalDivergence;
@@ -33,6 +37,14 @@ public class DivergenceBean {
     this.userDivergence = userDivergence;
   }
 
+  public Date getTime(){
+    return time;
+  }
+
+  public void setTime(Date time){
+    this.time = time;
+  }
+
   public static DivergenceBean toBean (LogDivergence divergence) {
 
     DivergenceBean bean = new DivergenceBean();
@@ -42,8 +54,8 @@ public class DivergenceBean {
       userDivergence.put(e.getKey().getKey().getId(), e.getValue());
     }
     bean.setUserDivergence(userDivergence);
-
     bean.setGlobalDivergence(divergence.getGDtot());
+    bean.setTime(divergence.getTime());
 
     return bean;
   }
