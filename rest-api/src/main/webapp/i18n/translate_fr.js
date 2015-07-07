@@ -37,6 +37,8 @@ var translateFr = {
 	MODIFY: 'Modifier',
 	MODIFY_SESSION: 'Modifier la session',
 	MY_DIVERGENCE : 'Ma divergence',
+
+	NEW_INFORMATION: 'à mis à disposition une nouvelle modification',
 	
 	POST: 'Poster',
 	

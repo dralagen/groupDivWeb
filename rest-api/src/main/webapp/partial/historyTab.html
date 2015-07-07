@@ -2,28 +2,15 @@
 	<table class="table table-striped" width=10%>
 		<thead>
 			<tr>
-				<th>{{ 'USER_ID' | translate }}</th>
+				<th>{{ 'USER_NAME' | translate }}</th>
 				<th>{{ 'ACTION' | translate }}</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td>User 1</td>
-				<td>1 commit</td>
+			<tr ng-repeat="commit in commits | toArray | orderBy:'date':true">
+				<td>{{ commit.userName }} </td>
+				<td>{{ 'NEW_INFORMATION' | translate }}</td>
 			</tr>
-						<tr>
-				<td>User 2</td>
-				<td>1 commit</td>
-			</tr>
-						<tr>
-				<td>User 5</td>
-				<td>1 commit</td>
-			</tr>
-						<tr>
-				<td>User 2</td>
-				<td>1 commit</td>
-			</tr>
-
 		</tbody>
 	</table>
 </div>

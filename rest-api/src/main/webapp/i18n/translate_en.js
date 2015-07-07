@@ -38,6 +38,8 @@ var translateEn = {
 	MODIFY_SESSION: 'Modify session',
 	MY_DIVERGENCE : 'My divergence',
 
+	NEW_INFORMATION: 'made available a new modification',
+
 	POST: 'post',
 	
 	REVIEWS: 'Reviews',

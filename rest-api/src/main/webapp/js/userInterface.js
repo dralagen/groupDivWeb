@@ -1,6 +1,6 @@
 var app = angular.module("groupDiv.userController", []);
 
-app.controller("userController", ['$scope','$rootScope', '$routeParams','$translate', 'GApi', 'Users', function($scope,$rootScope, $routeParams,$translate, GApi, Users){
+app.controller("userController", ['$scope','$rootScope', '$routeParams','$translate', 'GApi', 'Users', '$interval', function($scope,$rootScope, $routeParams,$translate, GApi, Users, $interval){
 
 	$scope.tab = 1;
 	$scope.waitForPull = false;
@@ -24,6 +24,8 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams','$transl
 	$scope.alerts = {};
 	$scope.alerts.descri = [];
 	$scope.alerts.review = [];
+
+	$scope.commits = [];
 
 	//here we get the id and the name of all the users. The same for ues. It is an initialisation
 	GApi.execute('groupDivWeb', 'session.get', {sessionId: $scope.sessionId}).then(
@@ -154,6 +156,22 @@ app.controller("userController", ['$scope','$rootScope', '$routeParams','$transl
 		var index = $scope.alerts.review.indexOf(alert);
 		$scope.alerts.review.splice(index, 1);
 	};
+
+	$scope.refreshHistory = function(){
+		GApi.execute('groupDivWeb', 'action.list', {sessionId: $scope.sessionId, action: "COMMIT"}).then(
+			function(resp) {
+				$scope.commits = [];
+				angular.forEach(resp.items, function(item){
+						$scope.commits.push({userName: $scope.users[item.userId].name, date: item.date});
+				});
+			}, function(err) {
+				console.log("error you can't get actions log : " + err.error.message);
+			}
+		);
+	}
+
+	$interval( function(){$scope.refreshHistory(); }, 2000);
+
 }]);
 
 //to convert an object of objects into an array of objects
