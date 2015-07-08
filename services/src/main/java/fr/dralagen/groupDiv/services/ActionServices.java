@@ -160,9 +160,6 @@ public class ActionServices {
       newReviewId = fromUser.getReview();
       log = false;
 
-      logAction.setAction(Action.OTHER);
-      logAction.setResult(fromUser.getName() + " update all information");
-
     } else {
       toUser = UserRepository.getInstance().findOne(sessionId, toUserId);
 
@@ -245,9 +242,8 @@ public class ActionServices {
 
     if (log) {
       logAction.setAction((uselessPull)?Action.USELESS_PULL:Action.PULL);
+      LogRepository.getInstance().save(logAction);
     }
-
-    LogRepository.getInstance().save(logAction);
 
     return result;
   }
