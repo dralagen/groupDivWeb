@@ -22,6 +22,9 @@ var translateEn = {
 	DOWNLOAD_DIVERGENCE: "Values of divergence",
 	DOWNLOAD_ACTION: 'Actions of users',
 
+	ERROR_GROUPDIVUSER_NOT_FOUND: 'GroupDiv user not found',
+	ERROR_LOGACTION_NOT_FOUND: 'Log action not found',
+	ERROR_LOGDIVERGENCE_NOT_FOUND: 'Log divergence not found',
 	ERROR_MAL_JSON: 'JSON malformed',
 	ERROR_MAND_CONTENT: 'Content is mandatory for an ue',
 	ERROR_MAND_NAME_SESSION: 'Name is mandatory for a session',
@@ -32,6 +35,10 @@ var translateEn = {
 	ERROR_MAND_USERNAME: 'User name is mandatory',
     ERROR_NULL_SESSION_NAME: 'Session Name can\'t be null',
     ERROR_REVIEW_UE: 'User can\'t write review on his ue',
+	ERROR_REVIEW_NOT_FOUND: 'Review not found',
+	ERROR_SESSION_NOT_FOUND: 'Session not found',
+	ERROR_UE_NOT_FOUND: 'Ue not found',
+	ERROR_UECONTENT_NOT_FOUND: 'Ue content not found',
     ERROR_USER_UE: 'User must be the UE\'s author',
 
 	LINK_FOR: 'Link for',
