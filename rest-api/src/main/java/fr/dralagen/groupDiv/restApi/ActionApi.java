@@ -5,6 +5,7 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.ForbiddenException;
+import com.google.api.server.spi.response.NotFoundException;
 import fr.dralagen.groupDiv.bean.CommitReviewBean;
 import fr.dralagen.groupDiv.bean.CommitUeBean;
 import fr.dralagen.groupDiv.bean.LogBean;
@@ -12,6 +13,7 @@ import fr.dralagen.groupDiv.bean.PullBean;
 import fr.dralagen.groupDiv.services.ActionServices;
 import fr.dralagen.groupDiv.services.SessionServices;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
+import fr.dralagen.groupDiv.services.exception.ObjectNotFoundException;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -32,7 +34,7 @@ import java.util.Collection;
 public class ActionApi {
 
   @ApiMethod(name = "action.commit.ue", httpMethod = ApiMethod.HttpMethod.POST, path = "session/{sessionId}/commit/ue")
-  public LogBean commitUe(@Named("sessionId") long sessionId, CommitUeBean ue) throws BadRequestException, ForbiddenException {
+  public LogBean commitUe(@Named("sessionId") long sessionId, CommitUeBean ue) throws BadRequestException, ForbiddenException, NotFoundException {
 
     try {
       return ActionServices.getInstance().commitUe(sessionId, ue);
@@ -40,11 +42,13 @@ public class ActionApi {
       throw new BadRequestException(e);
     } catch (IllegalAccessException e) {
       throw new ForbiddenException(e.getMessage());
+    } catch (ObjectNotFoundException e) {
+      throw new NotFoundException("ERROR_"+e.getObjectName().toUpperCase()+"_NOT_FOUND");
     }
   }
 
   @ApiMethod(name = "action.commit.review", httpMethod = ApiMethod.HttpMethod.POST, path = "session/{sessionId}/commit/review")
-  public LogBean commitReview(@Named("sessionId") long sessionId, CommitReviewBean review) throws BadRequestException, ForbiddenException {
+  public LogBean commitReview(@Named("sessionId") long sessionId, CommitReviewBean review) throws BadRequestException, ForbiddenException, NotFoundException {
 
     try {
       return ActionServices.getInstance().commitReview(sessionId, review);
@@ -52,20 +56,30 @@ public class ActionApi {
       throw new BadRequestException(e);
     } catch (IllegalAccessException e) {
       throw new ForbiddenException(e.getMessage());
+    } catch (ObjectNotFoundException e) {
+      throw new NotFoundException("ERROR_"+e.getObjectName().toUpperCase()+"_NOT_FOUND");
     }
   }
 
   @ApiMethod(name = "action.pull", httpMethod = ApiMethod.HttpMethod.GET, path = "session/{sessionId}/{fromUserId}/pull/{toUserId}/")
-  public PullBean pull(@Named("sessionId") long sessionId, @Named("fromUserId") long fromUserId, @Named("toUserId") long toUserId) {
+  public PullBean pull(@Named("sessionId") long sessionId, @Named("fromUserId") long fromUserId, @Named("toUserId") long toUserId) throws NotFoundException {
 
-    return ActionServices.getInstance().pull(sessionId, fromUserId, toUserId);
+    try {
+      return ActionServices.getInstance().pull(sessionId, fromUserId, toUserId);
+    } catch (ObjectNotFoundException e) {
+      throw new NotFoundException("ERROR_"+e.getObjectName().toUpperCase()+"_NOT_FOUND");
+    }
   }
 
 
   @ApiMethod(name = "action.list", httpMethod = ApiMethod.HttpMethod.GET, path = "session/{sessionId}/log")
-  public Collection<LogBean> getAllAction(@Named("sessionId") long sessionId, @Nullable @Named("action") String action) {
+  public Collection<LogBean> getAllAction(@Named("sessionId") long sessionId, @Nullable @Named("action") String action) throws NotFoundException {
 
-    return SessionServices.getInstance().getAllAction(sessionId, action);
+    try {
+      return SessionServices.getInstance().getAllAction(sessionId, action);
+    } catch (ObjectNotFoundException e) {
+      throw new NotFoundException("ERROR_"+e.getObjectName().toUpperCase()+"_NOT_FOUND");
+    }
   }
 
 }

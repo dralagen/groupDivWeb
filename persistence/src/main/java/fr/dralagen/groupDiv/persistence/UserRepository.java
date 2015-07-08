@@ -2,11 +2,10 @@ package fr.dralagen.groupDiv.persistence;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import fr.dralagen.groupDiv.model.Session;
 import fr.dralagen.groupDiv.model.GroupDivUser;
+import fr.dralagen.groupDiv.model.Session;
 
 import javax.jdo.JDOHelper;
-import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 
 /**
@@ -30,11 +29,7 @@ public class UserRepository {
   public GroupDivUser findOne(long sessionId, long userId) {
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
-    try {
-      return pm.getObjectById(GroupDivUser.class, forgeKey(sessionId, userId));
-    } catch (JDOObjectNotFoundException e) {
-      return null;
-    }
+    return pm.getObjectById(GroupDivUser.class, forgeKey(sessionId, userId));
   }
 
   public GroupDivUser save(GroupDivUser user) {

@@ -4,7 +4,6 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import fr.dralagen.groupDiv.model.Session;
 
-import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import java.util.Collection;
@@ -33,11 +32,7 @@ public class SessionRepository {
 
     Query q = pm.newQuery(Session.class);
 
-    try {
       return (Collection<Session>) q.execute();
-    } catch (JDOObjectNotFoundException e) {
-      return null;
-    }
   }
 
   public Session findOne(long sessionId) {
@@ -47,11 +42,7 @@ public class SessionRepository {
   public Session findOne(Key sessionId) {
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
-    try {
-      return pm.getObjectById(Session.class, sessionId);
-    } catch (JDOObjectNotFoundException e) {
-      return null;
-    }
+    return pm.getObjectById(Session.class, sessionId);
 
   }
 

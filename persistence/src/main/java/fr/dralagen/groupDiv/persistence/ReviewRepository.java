@@ -1,10 +1,9 @@
 package fr.dralagen.groupDiv.persistence;
 
 import com.google.appengine.api.datastore.Key;
-import fr.dralagen.groupDiv.model.Review;
 import fr.dralagen.groupDiv.model.GroupDivUser;
+import fr.dralagen.groupDiv.model.Review;
 
-import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import java.util.Collection;
@@ -70,11 +69,7 @@ public class ReviewRepository {
   public Review findOne(Key reviewId) {
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
-    try {
-      return pm.getObjectById(Review.class, reviewId);
-    } catch (JDOObjectNotFoundException e) {
-      return null;
-    }
+    return pm.getObjectById(Review.class, reviewId);
   }
 
   public Review add(Review review) {

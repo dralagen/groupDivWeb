@@ -5,7 +5,9 @@ import fr.dralagen.groupDiv.bean.*;
 import fr.dralagen.groupDiv.model.*;
 import fr.dralagen.groupDiv.persistence.*;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
+import fr.dralagen.groupDiv.services.exception.ObjectNotFoundException;
 
+import javax.jdo.JDOObjectNotFoundException;
 import java.util.*;
 
 /**
@@ -25,11 +27,16 @@ public class ActionServices {
     return service;
   }
 
-  public LogBean commitUe(long sessionId, CommitUeBean ue) throws InvalidFormException, IllegalAccessException {
+  public LogBean commitUe(long sessionId, CommitUeBean ue) throws InvalidFormException, IllegalAccessException, ObjectNotFoundException {
 
     checkCommitUe(ue);
 
-    Ue persistedUe = UeRepository.getInstance().findOne(sessionId, ue.getUeId());
+    Ue persistedUe;
+    try {
+      persistedUe = UeRepository.getInstance().findOne(sessionId, ue.getUeId());
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Ue.class);
+    }
 
     if (persistedUe.getAuthor().getKey().getId() != ue.getAuthorId()) {
       throw new IllegalAccessException("ERROR_USER_UE");
@@ -41,10 +48,20 @@ public class ActionServices {
 
     persistedUe.getContents().add(content);
 
-    GroupDivUser user = UserRepository.getInstance().findOne(sessionId, ue.getAuthorId());
+    GroupDivUser user;
+    try {
+      user = UserRepository.getInstance().findOne(sessionId, ue.getAuthorId());
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(GroupDivUser.class);
+    }
     user.getVersionUE().put(ue.getUeId(), content.getVersion());
 
-    Session session = SessionRepository.getInstance().findOne(sessionId);
+    Session session;
+    try {
+      session = SessionRepository.getInstance().findOne(sessionId);
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Session.class);
+    }
 
     updateDivergenceOnCommit(user, session);
 
@@ -80,17 +97,27 @@ public class ActionServices {
     }
   }
 
-  public LogBean commitReview(long sessionId, CommitReviewBean review) throws InvalidFormException, IllegalAccessException {
+  public LogBean commitReview(long sessionId, CommitReviewBean review) throws InvalidFormException, IllegalAccessException, ObjectNotFoundException {
 
     checkCommitReview(review);
 
-    Ue ue = UeRepository.getInstance().findOne(sessionId, review.getUeId());
+    Ue ue;
+    try {
+      ue = UeRepository.getInstance().findOne(sessionId, review.getUeId());
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Ue.class);
+    }
 
     if (ue.getAuthor().getKey().getId() == review.getAuthorId()) {
       throw new IllegalAccessException("ERROR_REVIEW_UE");
     }
 
-    GroupDivUser user = UserRepository.getInstance().findOne(sessionId, review.getAuthorId());
+    GroupDivUser user;
+    try {
+      user = UserRepository.getInstance().findOne(sessionId, review.getAuthorId());
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(GroupDivUser.class);
+    }
 
     Review rev = new Review();
     rev.setAuthor(user.getKey());
@@ -102,7 +129,12 @@ public class ActionServices {
 
     user.getReview().add(rev.getKey());
 
-    Session session = SessionRepository.getInstance().findOne(sessionId);
+    Session session;
+    try {
+      session = SessionRepository.getInstance().findOne(sessionId);
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Session.class);
+    }
 
     updateDivergenceOnCommit(user, session);
 
@@ -138,15 +170,25 @@ public class ActionServices {
     }
   }
 
-  public PullBean pull(long sessionId, long fromUserId, long toUserId) {
+  public PullBean pull(long sessionId, long fromUserId, long toUserId) throws ObjectNotFoundException {
 
     boolean log = true;
     boolean uselessPull = true;
 
     GroupDivUser toUser;
-    GroupDivUser fromUser = UserRepository.getInstance().findOne(sessionId, fromUserId);
+    GroupDivUser fromUser;
+    try {
+      fromUser = UserRepository.getInstance().findOne(sessionId, fromUserId);
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(GroupDivUser.class);
+    }
 
-    Session session = SessionRepository.getInstance().findOne(sessionId);
+    Session session;
+    try {
+      session = SessionRepository.getInstance().findOne(sessionId);
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Session.class);
+    }
 
     LogAction logAction = new LogAction();
     logAction.setAuthor(fromUserId);
@@ -161,7 +203,11 @@ public class ActionServices {
       log = false;
 
     } else {
-      toUser = UserRepository.getInstance().findOne(sessionId, toUserId);
+      try {
+        toUser = UserRepository.getInstance().findOne(sessionId, toUserId);
+      } catch (JDOObjectNotFoundException e) {
+        throw new ObjectNotFoundException(GroupDivUser.class);
+      }
 
       logAction.setResult(fromUser.getName() + " pull on " + toUser.getName());
 
@@ -230,7 +276,12 @@ public class ActionServices {
       }
     }
 
-    Set<Review> allReview = ReviewRepository.getInstance().findAll(newReviewId);
+    Set<Review> allReview;
+    try {
+      allReview = ReviewRepository.getInstance().findAll(newReviewId);
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Review.class);
+    }
     Set<ReviewBean> reviewList = new HashSet<>();
     for(Review rev:allReview) {
       reviewList.add(ReviewBean.toBean(rev));
