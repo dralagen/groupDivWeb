@@ -18,6 +18,10 @@ var translateFr = {
 	DIVERGENCE_OF: 'Divergence de',
 	DIV_STATS_AND_VALUES: 'Statistiques et valeures de divergence',
 	DO_PULL: 'Récupérer de',
+	DOWNLOAD: 'Téléchargements',
+	DOWNLOAD_DIVERGENCE: 'Valeurs de divergence',
+	DOWNLOAD_ACTION: 'Actions des utilisateurs',
+
 
 	ERROR_MAL_JSON: 'JSON malformé',
 	ERROR_MAND_CONTENT: 'Le contenu est nécessaire pour une ue',

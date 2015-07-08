@@ -109,7 +109,7 @@ textarea{
 }
 
 .divergenceGroupDiv {
-	max-height: 50px;
+	max-height: 150px;
 	overflow-y: auto;
 }
 
@@ -118,6 +118,6 @@ textarea{
 }
 .scrollArray {
 	display:block;
-	height:5em; /* 5 times the equivalent of a text "size". */
+	height:30em; /* 5 times the equivalent of a text "size". */
 	overflow-y:scroll;
 }

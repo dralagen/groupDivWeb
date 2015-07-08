@@ -18,6 +18,9 @@ var translateEn = {
 	DIVERGENCE_OF: 'Divergence of',
 	DIV_STATS_AND_VALUES:  'Statistics and values of divergence',
 	DO_PULL: 'Pull from',
+	DOWNLOAD: 'Download',
+	DOWNLOAD_DIVERGENCE: "Values of divergence",
+	DOWNLOAD_ACTION: 'Actions of users',
 
 	ERROR_MAL_JSON: 'JSON malformed',
 	ERROR_MAND_CONTENT: 'Content is mandatory for an ue',

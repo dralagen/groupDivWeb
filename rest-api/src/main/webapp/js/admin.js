@@ -10,6 +10,8 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 	$scope.useGroupDiv = true;
 	$scope.sessions = [];
 
+	$scope.url = "";
+
 	$scope.selectedUE = {};
 	$scope.selectedUE.sel = [];
 
@@ -291,5 +293,82 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 		}else{
 			$interval.cancel(interval);
 		}
+	}
+
+	$scope.getUserById = function(){
+		var tempUsers = {};
+
+		for(user in $scope.users){
+			tempUsers[$scope.users[user].id] = $scope.users[user].name;
+		}
+
+		return tempUsers;
+	}
+
+	$scope.generateLogFile = function(){
+		GApi.execute('groupDivWeb', 'action.list', {sessionId: $scope.selectedSession}).then(
+			function(data){
+				//Action date message utilisateur
+				var stringOfLog = "";
+
+				var tempUsers = $scope.getUserById();
+				console.log(tempUsers);
+				angular.forEach(data.items, function(action){
+					stringOfLog += action.action + "," + action.date + "," + action.message + "," + tempUsers[action.userId] + "\n";
+				});
+				var element = document.createElement('a');
+
+				element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(stringOfLog));
+				element.setAttribute('download', "Log.csv");
+				element.style.display = 'none';
+				document.body.appendChild(element);
+				element.click();
+				document.body.removeChild(element);
+			},
+			function(err){
+				console.log("error : we can't get the list of actions : " + err.error.message);
+			}
+		);
+	}
+
+	$scope.generateCSV = function(){
+
+		var stringOfDiv = "Time,";
+
+		var tempUsers = $scope.getUserById();
+
+		for (i in $scope.dataAndLabelForGraph) {
+			stringOfDiv += tempUsers[($scope.dataAndLabelForGraph[i]).label];
+			if(i != $scope.dataAndLabelForGraph.length-1){
+				stringOfDiv = stringOfDiv + ',';
+			}
+		}
+		stringOfDiv = stringOfDiv + "\n";
+
+		for(j in $scope.dataAndLabelForGraph[0].data) {
+			var tempString = '';
+
+			for (i in $scope.dataAndLabelForGraph) {
+				if(i == 0){
+					var date = new Date((($scope.dataAndLabelForGraph[i]).data[j])[0]);
+
+					tempString += date.toString() + ',';
+				}
+				tempString = tempString + (($scope.dataAndLabelForGraph[i]).data[j])[1] ;
+				if(!(i == $scope.dataAndLabelForGraph.length-1)){
+					tempString = tempString + ',';
+				}
+			}
+			stringOfDiv += tempString + "\n";
+		}
+		
+		var element = document.createElement('a');
+
+		element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(stringOfDiv));
+		element.setAttribute('download', "divergences.csv");
+		element.style.display = 'none';
+		document.body.appendChild(element);
+		element.click();
+		document.body.removeChild(element);
 	}
 }]);
