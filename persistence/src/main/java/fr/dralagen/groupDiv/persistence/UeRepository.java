@@ -5,7 +5,6 @@ import com.google.appengine.api.datastore.KeyFactory;
 import fr.dralagen.groupDiv.model.Session;
 import fr.dralagen.groupDiv.model.Ue;
 
-import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import java.util.Collection;
 
@@ -49,11 +48,7 @@ public class UeRepository {
   public Ue findOne(Key id) {
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
-    try {
-      return pm.getObjectById(Ue.class, id);
-    } catch (JDOObjectNotFoundException e) {
-      return null;
-    }
+    return pm.getObjectById(Ue.class, id);
   }
 
   private static Key forgeKey(long sessionId, long ueId) {

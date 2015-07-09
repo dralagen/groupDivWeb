@@ -6,7 +6,9 @@ import fr.dralagen.groupDiv.persistence.LogRepository;
 import fr.dralagen.groupDiv.persistence.SessionRepository;
 import fr.dralagen.groupDiv.persistence.UeRepository;
 import fr.dralagen.groupDiv.services.exception.InvalidFormException;
+import fr.dralagen.groupDiv.services.exception.ObjectNotFoundException;
 
+import javax.jdo.JDOObjectNotFoundException;
 import java.util.*;
 
 /**
@@ -87,8 +89,13 @@ public class SessionServices {
     return SessionBean.toBean(newSession);
   }
 
-  public Collection<SessionBean> getAll() {
-    Collection<Session> allSession = SessionRepository.getInstance().findAll();
+  public Collection<SessionBean> getAll() throws ObjectNotFoundException {
+    Collection<Session> allSession;
+    try {
+      allSession = SessionRepository.getInstance().findAll();
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Session.class);
+    }
 
     Collection<SessionBean> allBean = new ArrayList<>();
     for(Session oneSession: allSession) {
@@ -98,8 +105,14 @@ public class SessionServices {
     return allBean;
   }
 
-  public SessionBean get(long sessionId) {
-    return SessionBean.toBean(SessionRepository.getInstance().findOne(sessionId));
+  public SessionBean get(long sessionId) throws ObjectNotFoundException {
+    SessionBean sessionBean;
+    try {
+      sessionBean = SessionBean.toBean(SessionRepository.getInstance().findOne(sessionId));
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Session.class);
+    }
+    return sessionBean;
   }
 
   private void checkSession(NewSessionBean session) throws InvalidFormException {
@@ -188,9 +201,14 @@ public class SessionServices {
     }
   }
 
-  public SessionBean updateSessionName(Long sessionId, NewSessionBean session) {
+  public SessionBean updateSessionName(Long sessionId, NewSessionBean session) throws ObjectNotFoundException {
 
-    Session persistedSession = SessionRepository.getInstance().findOne(sessionId);
+    Session persistedSession;
+    try {
+      persistedSession = SessionRepository.getInstance().findOne(sessionId);
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Session.class);
+    }
 
     persistedSession.setName(session.getName());
     persistedSession.setWithGroupDiv(session.getWithGroupDiv());
@@ -199,11 +217,21 @@ public class SessionServices {
 
   }
 
-  public UeInfoBean updateUe(Long sessionId, Long ueId, NewUeBean ue) throws InvalidFormException {
+  public UeInfoBean updateUe(Long sessionId, Long ueId, NewUeBean ue) throws InvalidFormException, ObjectNotFoundException {
 
-    Session persistedSession = SessionRepository.getInstance().findOne(sessionId);
+    Session persistedSession;
+    try {
+      persistedSession = SessionRepository.getInstance().findOne(sessionId);
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Session.class);
+    }
 
-    Ue persistedUe = UeRepository.getInstance().findOne(sessionId, ueId);
+    Ue persistedUe;
+    try {
+      persistedUe = UeRepository.getInstance().findOne(sessionId, ueId);
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Ue.class);
+    }
 
     GroupDivUser persistedUser = persistedUe.getAuthor();
 
@@ -215,8 +243,13 @@ public class SessionServices {
     return UeInfoBean.toBean(persistedUe);
   }
 
-  public SessionBean deleteUe (Long sessionId, Long ueId) {
-    Session session = SessionRepository.getInstance().findOne(sessionId);
+  public SessionBean deleteUe (Long sessionId, Long ueId) throws ObjectNotFoundException {
+    Session session;
+    try {
+      session = SessionRepository.getInstance().findOne(sessionId);
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Session.class);
+    }
 
     Ue deleteUe = null;
     for (Ue ue : session.getUes()) {
@@ -233,9 +266,14 @@ public class SessionServices {
     return SessionBean.toBean(session);
   }
 
-  public UeInfoBean addUe(Long sessionId, NewUeBean ue) {
+  public UeInfoBean addUe(Long sessionId, NewUeBean ue) throws ObjectNotFoundException {
 
-    Session session = SessionRepository.getInstance().findOne(sessionId);
+    Session session;
+    try {
+      session = SessionRepository.getInstance().findOne(sessionId);
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Session.class);
+    }
 
     GroupDivUser newUser = new GroupDivUser();
     newUser.setName(ue.getUser());
@@ -256,16 +294,26 @@ public class SessionServices {
     return UeInfoBean.toBean(newUe);
   }
 
-  public DivergenceBean getDivergence(long sessionId) {
+  public DivergenceBean getDivergence(long sessionId) throws ObjectNotFoundException {
 
-    Session session = SessionRepository.getInstance().findOne(sessionId);
+    Session session;
+    try {
+      session = SessionRepository.getInstance().findOne(sessionId);
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Session.class);
+    }
 
     return DivergenceBean.toBean(session.getLastDivergence());
   }
 
-  public Collection<DivergenceBean> getAllDivergence(long sessionId) {
+  public Collection<DivergenceBean> getAllDivergence(long sessionId) throws ObjectNotFoundException {
 
-    Session session = SessionRepository.getInstance().findOne(sessionId);
+    Session session;
+    try {
+      session = SessionRepository.getInstance().findOne(sessionId);
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(Session.class);
+    }
 
     List<DivergenceBean> divergences = new ArrayList<>();
     for (LogDivergence one : session.getDivergences()) {
@@ -275,9 +323,15 @@ public class SessionServices {
     return divergences;
   }
 
-  public Collection<LogBean> getAllAction(long sessionId, String action) {
+  public Collection<LogBean> getAllAction(long sessionId, String action) throws ObjectNotFoundException {
 
-    Collection<LogAction> persistedLog = LogRepository.getInstance().findAll(sessionId, action);
+    Collection<LogAction> persistedLog;
+    try {
+      persistedLog = LogRepository.getInstance().findAll(sessionId, action);
+    } catch (JDOObjectNotFoundException e) {
+      throw new ObjectNotFoundException(LogAction.class);
+    }
+
     List<LogBean> logs = new ArrayList<>();
     for (LogAction one : persistedLog) {
       logs.add(LogBean.toBean(one));
