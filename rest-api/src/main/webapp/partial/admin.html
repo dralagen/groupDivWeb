@@ -101,7 +101,7 @@
 											<table>
 												<td>
 													<tr ng-repeat="div in getData(users[0].id)" >
-														<td style="width:10em;">{{ div[0] }}</td>
+														<td style="width:10em;">{{ getDate(div[0]) }}</td>
 													</tr>
 												</td>
 											</table>
@@ -119,6 +119,30 @@
 
 										</td>
 									</tr>
+								</tbody>
+							</table>
+
+							<table class="table-bordered"  align="center" style="margin: 0px auto;">
+								<thead>
+									<tr>
+										<th></th>
+										<th ng-repeat="user in users" class="check-element animate-show" ng-show=user.select> {{ user.name }}</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>MAX</td>
+										<td ng-repeat="user in users" ng-show=user.select>{{getMaxDiv(user.id)}}</td>
+									</tr>
+									<tr>
+										<td>MIN</td>
+										<td ng-repeat="user in users" ng-show=user.select>{{getMinDiv(user.id)}}</td>
+									</tr>
+									<tr>
+										<td>AVG</td>
+										<td ng-repeat="user in users" ng-show=user.select>{{getAvgDiv(user.id)}}</td>
+									</tr>
+
 								</tbody>
 							</table>
 						</div>

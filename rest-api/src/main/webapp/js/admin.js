@@ -222,7 +222,7 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 				var newMaxDate = 0;
 				angular.forEach(data.items, function(item){
 					if(Date.parse(item.time)>$scope.maxDate) {
-						newMaxDate = Math.max(newMaxDate,item.time );
+						newMaxDate = Math.max(newMaxDate,Date.parse(item.time) );
 						angular.forEach($scope.dataAndLabelForGraph, function (divValue) {
 							if (angular.isUndefined(item.userDivergence[divValue.label])) {
 								temp = [Date.parse(item.time), parseInt(item.globalDivergence)];
@@ -281,6 +281,70 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 			return data[a].data;
 		}
 	};
+
+
+	$scope.getMaxDiv = function(userId){
+		var a=-1;
+		var max = 0;
+		data = $scope.plotStep.getData();
+		for(i in data){
+			if(data[i].label == userId){
+				a = i;
+			}
+		}
+		if(a === -1){
+			return "no data";
+		}
+		else{
+			angular.forEach(data[a].data, function(div){
+				max = Math.max(div[1], max);
+			});
+			return max;
+		}
+	}
+
+	$scope.getMinDiv = function(userId){
+		var a=-1;
+		var min = 0;
+		data = $scope.plotStep.getData();
+		for(i in data){
+			if(data[i].label == userId){
+				a = i;
+			}
+		}
+		if(a === -1){
+			return "no data";
+		}
+		else{
+			for(i in data[a].data){
+				if(i !=0) {
+					min = Math.min((data[a].data[i])[1], min);
+				}
+			}
+			return min;
+		}
+	}
+
+	$scope.getAvgDiv = function(userId){
+		var a=-1;
+		var avg = 0;
+		data = $scope.plotStep.getData();
+		for(i in data){
+			if(data[i].label == userId){
+				a = i;
+			}
+		}
+		if(a === -1){
+			return "no data";
+		}
+		else{
+			angular.forEach(data[a].data, function(div){
+				avg += div[1];
+			});
+			avg = avg/data[0].data.length;
+			return avg;
+		}
+	}
 
 	$scope.updateLog = function() {
 		$scope.updateGraph();
@@ -361,7 +425,7 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 			}
 			stringOfDiv += tempString + "\n";
 		}
-		
+
 		var element = document.createElement('a');
 
 		element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(stringOfDiv));
@@ -370,5 +434,11 @@ app.controller("adminController",['$scope', 'GApi', '$location', '$interval', fu
 		document.body.appendChild(element);
 		element.click();
 		document.body.removeChild(element);
+	}
+
+	$scope.getDate = function(date){
+		var newDate = new Date(date);
+
+		return newDate.getDay() + "-" + newDate.getMonth() + " " + newDate.getHours() + ":" + newDate.getMinutes() + ":" + newDate.getSeconds();
 	}
 }]);

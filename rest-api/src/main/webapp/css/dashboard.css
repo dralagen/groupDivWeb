@@ -118,6 +118,6 @@ textarea{
 }
 .scrollArray {
 	display:block;
-	height:30em; /* 5 times the equivalent of a text "size". */
+	max-height:30em; /* 5 times the equivalent of a text "size". */
 	overflow-y:scroll;
 }
