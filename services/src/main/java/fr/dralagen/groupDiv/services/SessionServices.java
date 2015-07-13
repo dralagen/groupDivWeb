@@ -84,8 +84,6 @@ public class SessionServices {
 
     newSession.getDivergences().add(initDivergence);
 
-    SessionRepository.getInstance().save(newSession);
-
     return SessionBean.toBean(newSession);
   }
 
@@ -296,38 +294,36 @@ public class SessionServices {
 
   public DivergenceBean getDivergence(long sessionId) throws ObjectNotFoundException {
 
-    Session session;
     try {
-      session = SessionRepository.getInstance().findOne(sessionId);
+      return DivergenceBean.toBean(LogRepository.getInstance().getLastDivergence(sessionId));
     } catch (JDOObjectNotFoundException e) {
       throw new ObjectNotFoundException(Session.class);
     }
 
-    return DivergenceBean.toBean(session.getLastDivergence());
   }
 
   public Collection<DivergenceBean> getAllDivergence(long sessionId) throws ObjectNotFoundException {
 
-    Session session;
+    List<LogDivergence> divergences;
     try {
-      session = SessionRepository.getInstance().findOne(sessionId);
+      divergences = LogRepository.getInstance().findAllDivergence(sessionId);
     } catch (JDOObjectNotFoundException e) {
       throw new ObjectNotFoundException(Session.class);
     }
 
-    List<DivergenceBean> divergences = new ArrayList<>();
-    for (LogDivergence one : session.getDivergences()) {
-      divergences.add(DivergenceBean.toBean(one));
+    List<DivergenceBean> divergencesBean = new ArrayList<>();
+    for (LogDivergence one : divergences) {
+      divergencesBean.add(DivergenceBean.toBean(one));
     }
 
-    return divergences;
+    return divergencesBean;
   }
 
   public Collection<LogBean> getAllAction(long sessionId, String action) throws ObjectNotFoundException {
 
     Collection<LogAction> persistedLog;
     try {
-      persistedLog = LogRepository.getInstance().findAll(sessionId, action);
+      persistedLog = LogRepository.getInstance().findAllAction(sessionId, action);
     } catch (JDOObjectNotFoundException e) {
       throw new ObjectNotFoundException(LogAction.class);
     }

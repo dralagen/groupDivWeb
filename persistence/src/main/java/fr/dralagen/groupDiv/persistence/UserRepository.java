@@ -36,11 +36,7 @@ public class UserRepository {
 
     PersistenceManager pm = JDOHelper.getPersistenceManager(user);
 
-    try {
-      user = pm.makePersistent(user);
-    } finally {
-      pm.close();
-    }
+    user = pm.makePersistent(user);
 
     return user;
   }

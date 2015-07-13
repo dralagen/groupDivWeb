@@ -2,6 +2,7 @@ package fr.dralagen.groupDiv.persistence;
 
 import fr.dralagen.groupDiv.model.Action;
 import fr.dralagen.groupDiv.model.LogAction;
+import fr.dralagen.groupDiv.model.LogDivergence;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
@@ -28,7 +29,7 @@ public class LogRepository {
   }
 
 
-  public Collection<LogAction> findAll(Long sessionId, String action) {
+  public List<LogAction> findAllAction(Long sessionId, String action) {
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
     List<LogAction> result;
@@ -58,15 +59,46 @@ public class LogRepository {
     return result;
   }
 
-  public LogAction save(LogAction log) {
+  public LogAction saveAction(LogAction log) {
     PersistenceManager pm = JDOHelper.getPersistenceManager(log.getSession());
 
-    try {
-      log = pm.makePersistent(log);
-    } finally {
-      pm.close();
-    }
+    log = pm.makePersistent(log);
 
     return log;
+  }
+
+  public List<LogDivergence> findAllDivergence(Long sessionId) {
+    PersistenceManager pm = PMF.get().getPersistenceManager();
+
+    List<LogDivergence> result;
+    Query q = pm.newQuery(LogDivergence.class);
+
+    q.setFilter("session == paramSession");
+    q.declareParameters("long paramSession");
+    q.setOrdering("time desc");
+
+    try {
+      result = (List<LogDivergence>) q.execute(sessionId);
+    } finally {
+      q.closeAll();
+    }
+
+    return result;
+  }
+
+  public LogDivergence saveDivergence(LogDivergence divergence) {
+    PersistenceManager pm = JDOHelper.getPersistenceManager(divergence.getSession());
+
+    divergence = pm.makePersistent(divergence);
+
+    return divergence;
+  }
+
+  public LogDivergence getLastDivergence(Long sessionId) {
+    List<LogDivergence> divergences = findAllDivergence(sessionId);
+    if (!divergences.isEmpty()) {
+      return divergences.get(0);
+    }
+    return null;
   }
 }

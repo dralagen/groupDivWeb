@@ -77,11 +77,7 @@ public class ReviewRepository {
     Review persistedReview;
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
-    try {
-      persistedReview = pm.makePersistent(review);
-    } finally {
-      pm.close();
-    }
+    persistedReview = pm.makePersistent(review);
 
     return persistedReview;
   }

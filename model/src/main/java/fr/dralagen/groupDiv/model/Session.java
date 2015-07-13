@@ -82,10 +82,6 @@ public class Session {
     this.divergences = divergences;
   }
 
-  public LogDivergence getLastDivergence () {
-    return divergences.get(divergences.size() - 1);
-  }
-
   public List<LogAction> getActions () {
     return actions;
   }

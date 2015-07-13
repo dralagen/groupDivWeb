@@ -72,7 +72,7 @@ public class ActionServices {
     action.setTime(new Date());
     action.setResult("Commit UE on " + ue.getUeId() + " at version " + content.getVersion() + ":" + content.getKey().getId());
 
-    LogRepository.getInstance().save(action);
+    LogRepository.getInstance().saveAction(action);
 
     return LogBean.toBean(action);
   }
@@ -145,7 +145,7 @@ public class ActionServices {
     action.setTime(new Date());
     action.setResult("Commit review on " + ue.getKey().getId() + " at version :" + rev.getKey().getId());
 
-    LogRepository.getInstance().save(action);
+    LogRepository.getInstance().saveAction(action);
 
     return LogBean.toBean(action);
   }
@@ -235,7 +235,7 @@ public class ActionServices {
 
       UserRepository.getInstance().save(fromUser);
 
-      LogDivergence lastDivergence = session.getLastDivergence();
+      LogDivergence lastDivergence = LogRepository.getInstance().getLastDivergence(session.getKey().getId());
 
       if (diffDivergence > 0) {
 
@@ -244,7 +244,7 @@ public class ActionServices {
         Map<Long, Long> newUsersDivergence = new HashMap<>();
         for ( Map.Entry<Long, Long> e : lastDivergence.getUserDivegence().entrySet() ) {
           if ( e.getKey().equals(fromUser.getKey().getId()) ) {
-            newUsersDivergence.put(e.getKey(), e.getValue() - diffDivergence);
+            newUsersDivergence.put(e.getKey(), Math.max(e.getValue() - diffDivergence, 0));
           } else {
             newUsersDivergence.put(e.getKey(), e.getValue());
           }
@@ -252,12 +252,12 @@ public class ActionServices {
 
         LogDivergence divergence = new LogDivergence();
         divergence.setSession(session);
-        divergence.setGDtot(lastDivergence.getGDtot() - diffDivergence);
+        divergence.setGDtot(Math.max(lastDivergence.getGDtot() - diffDivergence, 0));
         divergence.setTime(new Date());
         divergence.setUserDivegence(newUsersDivergence);
 
         //Update last Divergence
-        session.getDivergences().add(divergence);
+        LogRepository.getInstance().saveDivergence(divergence);
       }
     }
 
@@ -293,14 +293,14 @@ public class ActionServices {
 
     if (log) {
       logAction.setAction((uselessPull)?Action.USELESS_PULL:Action.PULL);
-      LogRepository.getInstance().save(logAction);
+      LogRepository.getInstance().saveAction(logAction);
     }
 
     return result;
   }
 
   private void updateDivergenceOnCommit (GroupDivUser user, Session session) {
-    LogDivergence lastDivergence = session.getLastDivergence();
+    LogDivergence lastDivergence = LogRepository.getInstance().getLastDivergence(session.getKey().getId());
     Map<Long, Long> newUsersDivergence = new HashMap<>();
     for ( Map.Entry<Long, Long> e: lastDivergence.getUserDivegence().entrySet()) {
 
@@ -316,6 +316,6 @@ public class ActionServices {
     divergence.setUserDivegence(newUsersDivergence);
 
     //Update last Divergence
-    session.getDivergences().add(divergence);
+    LogRepository.getInstance().saveDivergence(divergence);
   }
 }
