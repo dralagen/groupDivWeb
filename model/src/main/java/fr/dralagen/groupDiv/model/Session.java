@@ -26,18 +26,6 @@ public class Session {
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private Date createDate;
 
-  @Persistent(mappedBy = "session")
-  @Element(dependent = "true")
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
-  @Order(extensions = @Extension(vendorName="datanucleus",key="list-ordering", value="time asc"))
-  private List<LogDivergence> divergences;
-
-  @Persistent(mappedBy = "session")
-  @Element(dependent = "true")
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
-  @Order(extensions = @Extension(vendorName="datanucleus",key="list-ordering", value="time asc"))
-  private List<LogAction> actions;
-
   @Persistent
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private Boolean withGroupDiv;
@@ -72,22 +60,6 @@ public class Session {
 
   public void setCreateDate(Date createDate) {
     this.createDate = createDate;
-  }
-
-  public List<LogDivergence> getDivergences () {
-    return divergences;
-  }
-
-  public void setDivergences (List<LogDivergence> divergences) {
-    this.divergences = divergences;
-  }
-
-  public List<LogAction> getActions () {
-    return actions;
-  }
-
-  public void setActions (List<LogAction> actions) {
-    this.actions = actions;
   }
 
   public Boolean getWithGroupDiv () {

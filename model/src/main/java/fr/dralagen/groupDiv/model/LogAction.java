@@ -29,7 +29,6 @@ public class LogAction {
   private String result;
 
   @Persistent
-  @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   private Date time;
 
   @Persistent

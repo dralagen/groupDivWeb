@@ -3,6 +3,8 @@ package fr.dralagen.groupDiv.model;
 import com.google.appengine.api.datastore.Key;
 
 import javax.jdo.annotations.*;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,6 +36,11 @@ public class GroupDivUser {
   @Extension(vendorName="datanucleus", key="gae.unindexed", value="true")
   @Element(dependent = "true")
   private Session session;
+
+  public GroupDivUser() {
+    review = new HashSet<>();
+    versionUE = new HashMap<>();
+  }
 
   public Key getKey () {
     return key;

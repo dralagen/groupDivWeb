@@ -82,7 +82,7 @@ public class SessionServices {
     initDivergence.setTime(new Date());
     initDivergence.setSession(newSession);
 
-    newSession.getDivergences().add(initDivergence);
+    LogRepository.getInstance().saveDivergence(initDivergence);
 
     return SessionBean.toBean(newSession);
   }

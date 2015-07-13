@@ -84,6 +84,10 @@ public class ReviewRepository {
 
   public Set<Review> findAll(Set<Key> ids) {
 
+    if (ids == null) {
+      return new HashSet<>();
+    }
+
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
     HashSet<Review> allReview = new HashSet<>();
