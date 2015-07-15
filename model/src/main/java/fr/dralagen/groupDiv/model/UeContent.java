@@ -3,6 +3,7 @@ package fr.dralagen.groupDiv.model;
 import com.google.appengine.api.datastore.Key;
 
 import javax.jdo.annotations.*;
+import java.io.Serializable;
 
 /**
  * Created on 6/2/15.
@@ -10,7 +11,7 @@ import javax.jdo.annotations.*;
  * @author dralagen
  */
 @PersistenceCapable
-public class UeContent {
+public class UeContent implements Serializable {
 
   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
   @PrimaryKey

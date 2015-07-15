@@ -36,7 +36,9 @@ public class MemcacheRepository {
     MemcacheService cache = getService(namespace);
     try {
       cache.put(key, value);
-    } catch (Exception ignore) {}
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   public Object get(String namespace, Object key) {
@@ -46,7 +48,9 @@ public class MemcacheRepository {
 
       return cache.get(key);
 
-    } catch (Exception ignore) {}
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
 
     return null;

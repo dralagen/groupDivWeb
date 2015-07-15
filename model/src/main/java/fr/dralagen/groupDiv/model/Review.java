@@ -3,6 +3,7 @@ package fr.dralagen.groupDiv.model;
 import com.google.appengine.api.datastore.Key;
 
 import javax.jdo.annotations.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Date;
  * @author dralagen
  */
 @PersistenceCapable
-public class Review  {
+public class Review implements Serializable {
 
   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
   @PrimaryKey

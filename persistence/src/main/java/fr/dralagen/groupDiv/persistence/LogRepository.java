@@ -7,6 +7,7 @@ import fr.dralagen.groupDiv.model.LogDivergence;
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class LogRepository {
 
   public List<LogAction> findAllAction(Long sessionId, String action) {
 
-    List<LogAction> result = (List<LogAction>) MemcacheRepository.getInstance().get(LogAction.class.getName(), sessionId);
+    List<LogAction> result = (List<LogAction>) MemcacheRepository.getInstance().get(LogAction.class.getSimpleName(), sessionId);
 
 
     if (result == null) {
@@ -62,9 +63,8 @@ public class LogRepository {
       } finally {
         q.closeAll();
       }
+      MemcacheRepository.getInstance().add(LogAction.class.getSimpleName(), sessionId, new ArrayList<>(result));
     }
-
-    MemcacheRepository.getInstance().add(LogAction.class.getName(), sessionId, result);
 
     return result;
   }
@@ -74,13 +74,13 @@ public class LogRepository {
 
     log = pm.makePersistent(log);
 
-    MemcacheRepository.getInstance().clean(LogAction.class.getName(), log.getSession().getKey().getId());
+    MemcacheRepository.getInstance().clean(LogAction.class.getSimpleName(), log.getSession().getKey().getId());
 
     return log;
   }
 
   public List<LogDivergence> findAllDivergence(Long sessionId) {
-    List<LogDivergence> result = (List<LogDivergence>) MemcacheRepository.getInstance().get(LogDivergence.class.getName(), sessionId);
+    List<LogDivergence> result = (List<LogDivergence>) MemcacheRepository.getInstance().get(LogDivergence.class.getSimpleName(), sessionId);
 
     if (result == null) {
       PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -96,9 +96,10 @@ public class LogRepository {
       } finally {
         q.closeAll();
       }
-    }
 
-    MemcacheRepository.getInstance().add(LogDivergence.class.getName(), sessionId, result);
+      MemcacheRepository.getInstance().add(LogDivergence.class.getSimpleName(), sessionId, new ArrayList<>(result));
+
+    }
 
     return result;
   }
@@ -108,7 +109,7 @@ public class LogRepository {
 
     divergence = pm.makePersistent(divergence);
 
-    MemcacheRepository.getInstance().clean(LogDivergence.class.getName(), divergence.getSession().getKey().getId());
+    MemcacheRepository.getInstance().clean(LogDivergence.class.getSimpleName(), divergence.getSession().getKey().getId());
     MemcacheRepository.getInstance().clean("LastDivergence", divergence.getSession().getKey().getId());
 
     MemcacheRepository.getInstance().add("LastDivergence", divergence.getSession().getKey().getId(), divergence);

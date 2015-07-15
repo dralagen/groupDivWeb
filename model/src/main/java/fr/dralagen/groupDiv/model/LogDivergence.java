@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 import javax.jdo.annotations.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  * @author dralagen
  */
 @PersistenceCapable
-public class LogDivergence {
+public class LogDivergence implements Serializable {
 
   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
   @PrimaryKey
