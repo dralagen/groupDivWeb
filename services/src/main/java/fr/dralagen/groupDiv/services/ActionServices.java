@@ -233,9 +233,9 @@ public class ActionServices {
       // merge Review
       fromUser.getReview().addAll(toUser.getReview());
 
-      UserRepository.getInstance().save(fromUser);
-
       LogDivergence lastDivergence = LogRepository.getInstance().getLastDivergence(session.getKey().getId());
+
+      int GDtot = 0;
 
       if (diffDivergence > 0) {
 
@@ -243,22 +243,24 @@ public class ActionServices {
 
         Map<Long, Long> newUsersDivergence = new HashMap<>();
         for ( Map.Entry<Long, Long> e : lastDivergence.getUserDivegence().entrySet() ) {
+          Long userDivergence = e.getValue();
           if ( e.getKey().equals(fromUser.getKey().getId()) ) {
-            newUsersDivergence.put(e.getKey(), Math.max(e.getValue() - diffDivergence, 0));
-          } else {
-            newUsersDivergence.put(e.getKey(), e.getValue());
+            userDivergence = Math.max(e.getValue() - diffDivergence, 0);
           }
+          newUsersDivergence.put(e.getKey(), userDivergence);
+          GDtot += userDivergence;
         }
 
         LogDivergence divergence = new LogDivergence();
         divergence.setSession(session);
-        divergence.setGDtot(Math.max(lastDivergence.getGDtot() - diffDivergence, 0));
+        divergence.setGDtot(GDtot);
         divergence.setTime(new Date());
         divergence.setUserDivegence(newUsersDivergence);
 
         //Update last Divergence
         LogRepository.getInstance().saveDivergence(divergence);
       }
+      UserRepository.getInstance().save(fromUser);
     }
 
     List<UeBean> ueList = new ArrayList<>();
