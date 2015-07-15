@@ -10,6 +10,9 @@
   <artifactId>rest-api</artifactId>
   <packaging>war</packaging>
 
+  <name>groupDivWeb :: Rest API</name>
+  <description>groupDivWeb Rest API</description>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <appengine.target.version>1.9.23</appengine.target.version>

@@ -11,6 +11,9 @@
 
   <artifactId>services</artifactId>
 
+  <name>groupDivWeb :: Services</name>
+  <description>groupDivWeb services module</description>
+
   <dependencies>
     <dependency>
       <groupId>${project.parent.groupId}</groupId>

@@ -10,6 +10,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>persistence</artifactId>
+
+  <name>groupDivWeb :: Persistence</name>
+  <description>groupDivWeb persistence module</description>
+
   <dependencies>
 
     <dependency>

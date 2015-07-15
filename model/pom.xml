@@ -11,6 +11,9 @@
 
   <artifactId>model</artifactId>
 
+  <name>groupDivWeb :: Model</name>
+  <description>groupDivWeb data object module</description>
+
   <dependencies>
     <dependency>
       <groupId>javax.jdo</groupId>
