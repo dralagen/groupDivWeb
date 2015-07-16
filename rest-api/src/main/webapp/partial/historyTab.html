@@ -1,0 +1,16 @@
+<div class="table-responsive">
+	<table class="table table-striped" width=10%>
+		<thead>
+			<tr>
+				<th>{{ 'USER_NAME' | translate }}</th>
+				<th>{{ 'ACTION' | translate }}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="commit in commits | toArray | orderBy:'date':true">
+				<td>{{ commit.userName }} </td>
+				<td>{{ 'NEW_INFORMATION' | translate }}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

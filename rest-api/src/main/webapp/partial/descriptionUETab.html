@@ -1,0 +1,31 @@
+<span class="text-center">
+	<h2 class="page-header">{{ 'UE_DESCRIPTION' | translate }} : {{current.ue.title}}</h2>
+</span>
+
+<h3 class="sub-header">{{ 'UE_DESCRIPTION' | translate }}</h3>
+<form name="reviewForm">
+	<div class="jumbotron">
+		<textarea class="form-control" ng-model="current.ue.content" rows="20"></textarea>
+		<p>
+			<button class="btn btn-primary btn-lg pull-right" type="submit" style="margin-top:5px;" ng-click="postUE()">{{ 'POST' | translate }}</button>
+		</p>
+	</div>
+</form>
+<h3 class="sub-header">{{ 'REVIEWS' | translate }}</h3>
+<div class="table-responsive">
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>N° User</th>
+				<th>Review</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="review in reviews[current.ue.id] | orderBy:'postDate'">
+				<td>{{users[review.authorId].name}}</td>
+				<td>{{review.content}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+

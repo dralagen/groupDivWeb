@@ -1,0 +1,68 @@
+<div ng-include="'partial/adminInterface.html'"></div>
+
+<div class="row" ng-controller="createUeUser">
+	<div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-2 main">
+		<h1> {{ 'CREATE_SESSION' | translate }} </h1>
+		<div>
+			<table class="userUeList">
+				<tr>
+					<th colspan="2">
+						<input type="text"
+							 name="group"
+							 placeholder="{{ 'SESSION_NAME' | translate }}"
+							 class="form-control"
+							 ng-model="session.name"/>
+					</th>
+					<th class="action"> </th>
+				</tr>
+				<tr>
+					<th>
+						<label>
+							<input type="checkbox" ng-model="session.withGroupDiv"/> {{ 'WITH_GD' | translate }}
+						</label>
+					</th>
+				</tr>
+				<tr>
+					<th> {{ 'USER_NAME' | translate }} </th>
+					<th> {{ 'COURSE_NAME' | translate }} </th>
+					<th class="action"> </th>
+				</tr>
+				<tr ng-repeat="oneUE in session.ue">
+					<td>
+						<input type="text"  class="form-control" value="{{oneUE.user}}" ng-model="oneUE.user"/>
+					</td>
+					<td>
+						<input type="text"  class="form-control" value="{{oneUE.title}}" ng-model="oneUE.title"/>
+					</td>
+					<td class="action">
+						<button class="btn btn-danger" ng-click="deleteUe(oneUE);">
+							<span class="glyphicon glyphicon-trash" ></span>
+						</button>
+					</td>
+				</tr>
+				<tr>
+					<th class="cell-lg" colspan="3">
+						<div>
+							<button class="btn btn-info" ng-click="addUe();"> <span class="glyphicon glyphicon-plus" ></span> &nbsp; {{ 'ADD_USER' | translate }} </button>
+						</div>
+					</th>
+				</tr>
+			</table>
+		</div>
+		<div class="text-center">
+			<button class="btn btn-info" ng-click="createSession(session);">
+				<span class=" glyphicon glyphicon-ok"></span>
+				&nbsp; {{ 'CREATE_THE_SESSION' | translate }}
+			</button>
+		</div>
+
+		<div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="closeAlert($index)">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			{{alert.msg}}
+		</div>
+	</div>
+	
+</div>
+

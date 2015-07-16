@@ -1,0 +1,169 @@
+<div ng-include="'partial/adminInterface.html'"></div>
+<div ng-hide="sessionChoosen">
+	<div class="text-center">
+		<h2 class="text-center page-header">{{ 'CHOOSE_SESSION_WATCH' | translate }} : </h2>
+			<form>
+				<select ng-selected="sessions[0]" ng-model="selectedSession" ng-options="session.id as session.name for session in sessions">
+					<option value="">-- {{ 'SELECT_OPTION' | translate }}--</option>
+				</select>
+				<input type="button" value="Ok" ng-click="chooseSession()"/>
+			</form>
+	</div>
+</div>
+<div ng-show="sessionChoosen">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6">
+				<h2 class="text-center page-header"> {{ 'LINKS_TITLE' | translate }}</h2>
+					<div class="text-center">
+						<div ng-repeat="user in users | filter:'!GDTot'">
+							<a href="{{hostLink}}{{user.id}}/{{selectedSession}}"> {{ 'LINK_FOR' | translate }} {{user.name}} : {{hostLink}}{{user.id}}/{{selectedSession}} </a>
+						</div>
+					</div>
+				<h2 class="text-center page-header">{{ 'XP_RESULT' | translate }}</h2>
+
+				<div class="text-center">
+
+					<table align="center" style="margin: 0px auto;">
+						<tr>
+							<td>
+								<p>Refresh auto : </p>
+							</td>
+							<td>
+								<div class="onoffswitch">
+									<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="autoRefresh" ng-model="onOff" ng-init="onOff=true" ng-click="setManualRefresh()" checked/>
+									<label class="onoffswitch-label" for="autoRefresh">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</td>
+							<td>
+								<input type="button" value="Refresh" ng-show="refresh.manualRefreshLog" ng-click="updateLog()"/>
+							</td>
+						</tr>
+					</table>
+
+					<form>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="checkedStepGraph" ng-click="visibilityStepGraph(checkedStepGraph)" /> {{ 'SHOW_SG' | translate }}
+							</label>
+							<label>
+								<input type="checkbox" ng-model="checkedCurve" ng-click="visibilityCurve(checkedCurve)" /> {{ 'SHOW_SC' | translate }}
+							</label>
+						</div>
+						<h4>{{ 'SHOW_STATS_OF' | translate }} :</h4>
+						<div class="checkbox" >
+							<label ng-repeat="user in users">
+								<input type="checkbox" ng-model="user.select" ng-init="user.select=true" ng-click="watchDivergence(user.id)" ng-checked="true" />{{user.name}}
+							</label>
+						</div>
+					</form>
+				</div>
+
+				<div ng-init="init_plot()">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="check-element animate-show" ng-show="checkedStepGraph">
+								<h2 class="text-center page-header">{{ 'SG' | translate }}</h2>
+								<div id="stepGraph" style="width:95%; height:300px" ></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="check-element animate-show" ng-show="checkedCurve">
+								<h2 class="text-center page-header">{{ 'SC' | translate }}</h2>
+								<div id="curve" style="width:95%; height:300px"></div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<h2 class="text-center page-header">{{ 'DIV_STATS_AND_VALUES' | translate }}</h2>
+						<div class="text-center">
+							<table class="table-bordered" id="divergenceArray"  align="center" style="margin: 0px auto;">
+								<thead>
+									<tr >
+										<th class="check-element animate-show" style="width:10em;">Time</th>
+										<th ng-repeat="user in users" class="check-element animate-show" ng-show=user.select style="width:5em;"> {{ user.name }}</th>
+									</tr>
+								</thead>
+
+								<tbody class="scrollArray">
+
+									<tr>
+										<td class="check-element animate-show">
+											<table>
+												<td>
+													<tr ng-repeat="div in getData(users[0].id)" >
+														<td style="width:10em;">{{ getDate(div[0]) }}</td>
+													</tr>
+												</td>
+											</table>
+
+										</td>
+										<td ng-repeat="user in users" class="check-element animate-show" ng-show=user.select>
+
+											<table>
+												<td>
+													<tr ng-repeat="div in getData(user.id)" >
+														<td style="width:5em;">{{ div[1] }}</td>
+													</tr>
+												</td>
+											</table>
+
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<table class="table-bordered"  align="center" style="margin: 0px auto;">
+								<thead>
+									<tr>
+										<th></th>
+										<th ng-repeat="user in users" class="check-element animate-show" ng-show=user.select> {{ user.name }}</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>MAX</td>
+										<td ng-repeat="user in users" ng-show=user.select>{{getMaxDiv(user.id)}}</td>
+									</tr>
+									<tr>
+										<td>MIN</td>
+										<td ng-repeat="user in users" ng-show=user.select>{{getMinDiv(user.id)}}</td>
+									</tr>
+									<tr>
+										<td>AVG</td>
+										<td ng-repeat="user in users" ng-show=user.select>{{getAvgDiv(user.id)}}</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<h2 class="text-center page-header">{{ 'DOWNLOAD' | translate }}</h2>
+						<div class="text-center">
+							<input type="button" value="{{ 'DOWNLOAD_DIVERGENCE' | translate }}" ng-click="generateCSV()"/>
+							<input type="button" value="{{ 'DOWNLOAD_ACTION' | translate }}" ng-click="generateLogFile()"/>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6" >
+				<div ng-include="'partial/seeUEAndReview.html'"></div>
+			</div>
+
+		</div>
+	</div>
+</div>

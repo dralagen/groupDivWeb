@@ -1,0 +1,79 @@
+<div ng-include="'partial/adminInterface.html'"></div>
+<div ng-controller="modifySession">
+	<div ng-hide="sessionChoosen">
+		<span class="text-center">
+			<h2 class="text-center page-header">{{ 'CHOOSE_SESSION_MODIFY' | translate }} : </h2>
+			<form>
+				<select ng-selected="sessions[0]" ng-model="selectedSession" ng-options="session.id as session.name for session in sessions">
+					<option value="">-- {{ 'SELECT_OPTION' | translate }}--</option>
+				</select>
+				<input type="button" value="Ok" ng-click="chooseSession()"/>
+			</form>
+		</span>
+	</div>
+	<div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-2 main">
+		<div ng-show="sessionChoosen">
+			<h2> Session : {{ name }} </h2>
+			<table class="userUeList">
+				<tr>
+					<th colspan="2">
+						<input type="text"
+							 name="group"
+							 class="form-control"
+							 ng-model="new_.sessionName"/>
+					</th>
+					<th class="action"></th>
+				</tr>
+				<tr>
+					<th>
+						<label>
+							<input type="checkbox" ng-model="new_.useGroupDiv"/> {{ 'WITH_GD' | translate }}
+						</label>
+					</th>
+				</tr>
+				<tr>
+					<th> {{ 'USER_NAME' | translate }} </th>
+					<th> {{ 'COURSE_NAME' | translate }} </th>
+					<th class="action"> </th>
+				</tr>
+				<tr ng-repeat="oneUE in ues ">
+					<td>
+						<input type="text"  class="form-control" ng-model="oneUE.userName" ng-change="updateUE(oneUE)" ng-blur="quitInput(oneUE)"/>
+					</td>
+					<td>
+						<input type="text"  class="form-control"  ng-model="oneUE.title" ng-change="updateUE(oneUE)" ng-blur="quitInput(oneUE)"/>
+					</td>
+					<td class="action">
+						<button class="btn btn-danger" ng-click="deleteUe(oneUE);">
+							<span class="glyphicon glyphicon-trash" ></span>
+						</button>
+					</td>
+				</tr>
+
+				<tr>
+					<th class="cell-lg" colspan="3">
+						<div>
+							<button class="btn btn-info" ng-click="addUe();">
+								<span class="glyphicon glyphicon-plus" ></span>
+								&nbsp; {{ 'ADD_USER' | translate }}
+							</button>
+						</div>
+					</th>
+				</tr>
+			</table>
+			<div class="text-center">
+				<button class="btn btn-info" ng-click="modifySession();">
+					<span class=" glyphicon glyphicon-ok"></span>
+					&nbsp; {{ 'MODIFY_SESSION' | translate }}
+				</button>
+			</div>
+
+		</div>
+		<div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="closeAlert($index)">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			{{alert.msg}}
+		</div>
+	</div>
+</div>

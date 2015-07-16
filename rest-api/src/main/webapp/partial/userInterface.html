@@ -1,0 +1,89 @@
+<div>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" >GroupDiv</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a >Name</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+    <div class="container-fluid">
+		<div class="row">
+			<div ng-controller="userController" >
+				<fieldset ng-disabled="waitForPull">
+
+					<div class="col-sm-3 col-md-2 sidebar">
+						<ul class="nav nav-sidebar">
+							<div ng-include="'partial/pullZone.html'"></div>
+						</ul>
+					</div>
+
+					<div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-2 main">
+						<section>
+							<div class="panel-heading">
+								<ul class="nav nav-tabs">
+									<li ng-class="{ active: isSelected(1)}" >
+										<a href ng-click="selectTab(1)">{{ 'DESCRIPTION' | translate }}</a>
+									</li>
+									<li ng-class="{ active: isSelected(2)}">
+										<a href  ng-click="selectTab(2)">{{ 'REVIEWS' | translate }}</a>
+									</li>
+									<li ng-class="{ active: isSelected(3)}">
+										<a href ng-click="selectTab(3)">{{ 'CHANGELOG' | translate }}</a>
+									</li>
+
+								</ul>
+							</div>
+							<div class="panel-body">
+								<li class="list-group-item">
+
+									<div class="panel" ng-show="isSelected(1)">
+										<div ng-include="'partial/descriptionUETab.html'"></div>
+										<div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.descri" type="alert.type" close="closeAlertDescri($index)">
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="closeAlertDescri(alert)">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											{{alert.msg}}
+										</div>
+									</div>
+
+									<div class="panel" ng-show="isSelected(2)">
+										<div ng-include="'partial/reviewsTab.html'"></div>
+										<div class="alert alert-{{alert.type}} alert-dismissible" role="alert" ng-repeat="alert in alerts.review" type="alert.type" close="closeAlertReview($index)">
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="closeAlertReview(alert)">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											{{alert.msg}}
+										</div>
+									</div>
+
+									<div class="panel" ng-show="isSelected(3)">
+										<div ng-include="'partial/historyTab.html'"></div>
+									</div>
+								</li>
+							</div>
+						</section>
+					</div>
+					<!-- new controller for this -->
+					<div class="col-md-2 col-xs-10 main" >
+						<ul class="nav nav-sidebar">
+							<div class="container-fluid" style="position: fixed;">
+								<div ng-controller="groupDivController" ng-show="showGroupDiv">
+									<canvas id="mon_canvas" width="170" height="500" class="bg-info"></canvas>
+									<div ng-include="'partial/groupDivWidget.html'"></div>
+								</div>
+							</div>
+						</ul>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+</div>

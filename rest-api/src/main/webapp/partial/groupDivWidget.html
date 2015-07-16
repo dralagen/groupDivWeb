@@ -1,0 +1,12 @@
+<h3> GroupDiv </h3>
+<span class="text-center">
+
+	<div class="divergenceGroupDiv scrollable">
+		<p>GDTot : {{GDtot}}</p>
+		<p>{{ 'MY_DIVERGENCE' | translate }} : {{users[currentUsr.id].groupDivergence}}</p>
+		<p>{{ 'DIVERGENCE_OF' | translate }} : </p>
+		<p ng-repeat="user in users | toArray | filter:'!'+currentUsr.name">{{user.name}} : {{user.groupDivergence}}</p>
+	</div>
+									
+</span>
+													
