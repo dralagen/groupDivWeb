@@ -92,7 +92,12 @@ public class ReviewRepository {
 
     HashSet<Review> allReview = new HashSet<>();
     for (Key oneId:ids) {
-      allReview.add(pm.getObjectById(Review.class, oneId));
+      Review cachedReview = (Review) MemcacheRepository.getInstance().get(Review.class.getSimpleName(), oneId);
+      if (cachedReview == null) {
+        cachedReview = pm.getObjectById(Review.class, oneId);
+        MemcacheRepository.getInstance().add(Review.class.getSimpleName(), oneId, cachedReview);
+      }
+      allReview.add(cachedReview);
     }
 
     return allReview;
