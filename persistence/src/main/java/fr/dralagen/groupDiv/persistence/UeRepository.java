@@ -46,9 +46,17 @@ public class UeRepository {
   }
 
   public Ue findOne(Key id) {
-    PersistenceManager pm = PMF.get().getPersistenceManager();
 
-    return pm.getObjectById(Ue.class, id);
+    Ue ue = (Ue) MemcacheRepository.getInstance().get(Ue.class.getSimpleName(), id);
+
+    if (ue == null) {
+      PersistenceManager pm = PMF.get().getPersistenceManager();
+      ue = pm.getObjectById(Ue.class, id);
+
+      MemcacheRepository.getInstance().add(Ue.class.getSimpleName(), id, ue);
+    }
+
+    return ue;
   }
 
   private static Key forgeKey(long sessionId, long ueId) {
