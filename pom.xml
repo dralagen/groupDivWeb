@@ -10,7 +10,7 @@
 
   <groupId>fr.dralagen.groupDiv</groupId>
   <artifactId>groupDivWeb</artifactId>
-  <version>1.0-alpha-1-SNAPSHOT</version>
+  <version>1.0-alpha-1</version>
 
   <name>groupDivWeb</name>
   <description>Web experience for divergence awareness system</description>
