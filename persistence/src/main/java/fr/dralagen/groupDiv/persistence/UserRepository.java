@@ -27,9 +27,19 @@ public class UserRepository {
   }
 
   public GroupDivUser findOne(long sessionId, long userId) {
-    PersistenceManager pm = PMF.get().getPersistenceManager();
 
-    return pm.getObjectById(GroupDivUser.class, forgeKey(sessionId, userId));
+    Key userKey = forgeKey(sessionId, userId);
+
+    GroupDivUser user = (GroupDivUser) MemcacheRepository.getInstance().get(GroupDivUser.class.getSimpleName(), userKey);
+    if (user == null) {
+      PersistenceManager pm = PMF.get().getPersistenceManager();
+
+      user = pm.getObjectById(GroupDivUser.class, userKey);
+
+      MemcacheRepository.getInstance().add(GroupDivUser.class.getSimpleName(), userKey, user);
+    }
+
+    return user;
   }
 
   public GroupDivUser save(GroupDivUser user) {
@@ -37,6 +47,9 @@ public class UserRepository {
     PersistenceManager pm = JDOHelper.getPersistenceManager(user);
 
     user = pm.makePersistent(user);
+
+    MemcacheRepository.getInstance().clean(GroupDivUser.class.getSimpleName(), user.getKey());
+    MemcacheRepository.getInstance().add(GroupDivUser.class.getSimpleName(), user.getKey(), user);
 
     return user;
   }
