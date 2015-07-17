@@ -45,3 +45,17 @@ And execute this command for recompile the project with good profile, and deploy
 mvn clean install -P groupDivWebProd && mvn -pl rest-api appengine:update
 ```
 
+How to release
+--------------
+
+On branch develop you can release with two command :
+```
+mvn jgitflow:release-start
+mvn jgitflow:release-finish -DnoDeploy=true -Dgpg.skip=true
+```
+release-start create a new branch for create release and release-finish create tag for the new version.
+
+To publish the release launch this command :
+```
+git push origin master && git push origin develop && git push --tags
+```
